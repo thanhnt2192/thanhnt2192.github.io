@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo</title>
+    <style>
+      canvas {
+        display: block;
+        width: 640px;
+        height: 576px;
+        margin: 0 auto;
+      }
+    </style>
+    <script>
+      window.game = {
+      };
+      function loadGame() {
+        game.launch(document.getElementById('game'));
+      }
+    </script>
+    <script src="./js/core.js"></script>
+    <script src="./js/render.js"></script>
+    <script src="./js/tactics.js"></script>
+    <script src="./js/player.js"></script>
+    <script src="./js/ball.js"></script>
+  </head>
+  <body onload="loadGame()">
+    <canvas id="game" width="640" height="576"></canvas>
+  </body>
+</html>
