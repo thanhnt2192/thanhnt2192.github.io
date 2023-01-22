@@ -29,6 +29,10 @@ window.game = {
     if (this.ball.x > this.ball.dx)  {
       this.ball.x -= this.ball.speed;
     }
+    
+    // passing
+    this.ball.x += 1;
+    this.ball.y += 1;
   },
   processShootingBallAnimation: function () {
     if (this.ball.frame === 1) {
