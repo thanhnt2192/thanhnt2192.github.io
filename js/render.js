@@ -29,6 +29,8 @@ window.game = {
       // this.drawPlayer(10, 15, parseInt(this.player.step / 10) % 4);
       this.drawBall(this.ball.x, this.ball.y, this.ball.step);
       // this.drawRedBall(this.ball.x, this.ball.y, this.ball.step);
+
+      this.renderConversationScreen();
     }
     window.requestAnimationFrame(this.render.bind(this));
   },
