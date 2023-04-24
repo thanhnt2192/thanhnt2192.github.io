@@ -1,6 +1,7 @@
 window.game = {
   ...window.game,
   fpsInterval: 1000 / 60,
+  scaledResize: 4,
   launch: function (canvas) {
     this.context = canvas.getContext('2d');
     this.context.imageSmoothingEnabled = false;

@@ -1,5 +1,11 @@
 window.game = {
   ...window.game,
+  story: [
+    'Hello',
+    'How are you?'
+  ],
+  cursorRow: 0,
+  cursorColumn: 0,
   renderConversationScreen: function () {
     // draw background
     this.context.fillStyle = '#000000';
@@ -7,13 +13,20 @@ window.game = {
 
     this.drawConversationImage();
 
-    this.drawConversationText(['Test', 'fdsaf asf sdaf sa'], 1, 4);
+    if (this.cursorRow < (this.story.length - 1) || this.cursorColumn < (this.story[this.story.length - 1].length - 1)) {
+      this.cursorColumn++;
+      if (this.cursorColumn > this.story[this.cursorRow].length) {
+        this.cursorRow++;
+        this.cursorColumn = 0;
+      }
+    }
+    this.drawConversationText(this.story, this.cursorRow, this.cursorColumn);
   },
   drawConversationImage: function () {},
   drawConversationText: function (arr, row, col) {
     // Draw text background
     this.context.fillStyle = '#ffffff';
-    this.context.fillRect(0, 12 * 8 * 4, 160 * 4, 144 * 4);
+    this.context.fillRect(0, 12 * 8 * 4, 160 * this.scaledResize, 144 * this.scaledResize);
 
     var str;
     for (var r = 0; r < row; r++) {
