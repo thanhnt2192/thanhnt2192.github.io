@@ -31,6 +31,10 @@ window.game = {
       // this.drawRedBall(this.ball.x, this.ball.y, this.ball.step);
 
       this.renderConversationScreen();
+
+      // refresh input
+      this.input.mouse.button.press = false;
+      this.input.mouse.button.release = false;
     }
     window.requestAnimationFrame(this.render.bind(this));
   },

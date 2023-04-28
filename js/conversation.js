@@ -19,6 +19,10 @@ window.game = {
         this.cursorRow++;
         this.cursorColumn = 0;
       }
+    } else {
+      if (this.input.mouse.button.press) {
+        console.log('mouse press');
+      }
     }
     this.drawConversationText(this.story, this.cursorRow, this.cursorColumn);
   },
