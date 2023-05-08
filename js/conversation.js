@@ -1,30 +1,42 @@
 window.game = {
   ...window.game,
   story: [
-    'Hello',
-    'How are you?'
+    [
+      'Hello',
+      'How are you?'
+    ],
+    [
+      'I am fine'
+    ]
   ],
+  cursorPart: 0,
   cursorRow: 0,
   cursorColumn: 0,
   renderConversationScreen: function () {
     // draw background
     this.context.fillStyle = '#000000';
-    this.context.fillRect(0, 0, 160 * 4, 144 * 4);
+    this.context.fillRect(0, 0, 160 * this.scaledResize, 144 * this.scaledResize);
 
     this.drawConversationImage();
 
-    if (this.cursorRow < (this.story.length - 1) || this.cursorColumn < (this.story[this.story.length - 1].length - 1)) {
+    var p = this.story[this.cursorPart];
+    if (this.cursorRow < (p.length - 1) || this.cursorColumn < (p[p.length - 1].length - 1)) {
       this.cursorColumn++;
-      if (this.cursorColumn > this.story[this.cursorRow].length) {
+      if (this.cursorColumn >= p[this.cursorRow].length) {
         this.cursorRow++;
         this.cursorColumn = 0;
       }
     } else {
       if (this.input.mouse.button.press) {
         console.log('mouse press');
+        if (this.cursorPart < (this.story.length - 1)) {
+          this.cursorPart++;
+          this.cursorRow = 0;
+          this.cursorColumn = 0;
+        }
       }
     }
-    this.drawConversationText(this.story, this.cursorRow, this.cursorColumn);
+    this.drawConversationText(p, this.cursorRow, this.cursorColumn);
   },
   drawConversationImage: function () {},
   drawConversationText: function (arr, row, col) {
@@ -40,7 +52,7 @@ window.game = {
       }
     }
     str = arr[row];
-    for (var i = 0; i < col; i++) {
+    for (var i = 0; i <= col; i++) {
       this.drawImage(this.characterMapper[str.charAt(i)].x, this.characterMapper[str.charAt(i)].y, 8, 8, i * 8, (13 + row) * 8);
     }
   },

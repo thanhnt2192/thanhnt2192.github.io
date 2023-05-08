@@ -1,6 +1,8 @@
 window.game = {
   ...window.game,
   fpsInterval: 1000 / 60,
+  screenWidth: 160,
+  screenHeight: 144,
   scaledResize: 4,
   input: {
     mouse: {

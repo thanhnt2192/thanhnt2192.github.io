@@ -6,10 +6,15 @@ window.game = {
       // console.log('flip');
       // this.context.translate(32, 8 * 4 + 8 * 4 + 8 * 4);
       // this.context.scale(-1, -1);
-      this.context.translate((horizontalFlip || 0) * sWidth * 4 + 2 * dx * 4, (verticalFlip || 0) * sHeight * 4 + 2 * dy * 4);
+      this.context.translate(
+        (horizontalFlip || 0) * sWidth * this.scaledResize + 2 * dx * this.scaledResize,
+        (verticalFlip || 0) * sHeight * this.scaledResize + 2 * dy * this.scaledResize
+      );
       this.context.scale(horizontalFlip || 0 ? -1 : 1, verticalFlip || 0 ? -1 : 1);
     }
-    this.context.drawImage(this.img, sx, sy, sWidth, sHeight, dx * 4, dy * 4, sWidth * 4, sHeight * 4);
+    this.context.drawImage(this.img, sx, sy, sWidth, sHeight,
+      dx * this.scaledResize, dy * this.scaledResize,
+      sWidth * this.scaledResize, sHeight * this.scaledResize);
     this.context.restore();
   },
   render: function (timestamp) {
