@@ -14,10 +14,12 @@ window.game = {
   cursorColumn: 0,
   renderConversationScreen: function () {
     // draw background
-    this.context.fillStyle = '#000000';
+    this.context.fillStyle = '#0000ff';
     this.context.fillRect(0, 0, 160 * this.scaledResize, 144 * this.scaledResize);
 
     this.drawConversationImage();
+
+    this.drawObject(this.sprites.dialogFrame, 0, 0);
 
     var p = this.story[this.cursorPart];
     if (this.cursorRow < (p.length - 1) || this.cursorColumn < (p[p.length - 1].length - 1)) {

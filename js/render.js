@@ -17,7 +17,7 @@ window.game = {
       sWidth * this.scaledResize, sHeight * this.scaledResize);
     this.context.restore();
   },
-  drawTile: function (tileKey, sCanvas, dContext, dRow, dColumn, horizontalFlip, verticalFlip) {
+  drawTile: function (sRow, sColumn, dRow, dColumn, dContext, horizontalFlip, verticalFlip) {
     dContext.save();
     if (horizontalFlip || verticalFlip) {
       dContext.translate(
@@ -25,10 +25,34 @@ window.game = {
         (verticalFlip || 0) * 8 + 2 * dRow * 8
       );
     }
-    dContext.drawImage(sCanvas, this.tileSheet[tileKey].x, this.tileSheet[tileKey].y, 8, 8, dColumn * 8, dRow * 8, 8, 8);
+    dContext.drawImage(this.img, sColumn * 8, sRow * 8, 8, 8, dColumn * 8, dRow * 8, 8, 8);
     dContext.restore();
   },
-  drawObject: function () {},
+  drawSprite: function (tileMap) {
+    var spriteCanvas = document.createElement("canvas");
+    var spriteContext = spriteCanvas.getContext("2d");
+    for (var i = 0; i < tileMap.length; i++) {
+      for (var j = 0; j < tileMap[i].length; j++) {
+        var tile = tileMap[i][j];
+        this.drawTile(tile.row, tile.column, i, j, spriteContext, tile.horizontalFlip, tile.verticalFlip);
+      }
+    }
+    return spriteCanvas;
+  },
+  drawObject: function (sCanvas, dx, dy, horizontalFlip, verticalFlip) {
+    this.context.save();
+    if (horizontalFlip || verticalFlip) {
+      this.context.translate(
+        (horizontalFlip || 0) * sCanvas.width * this.scaledResize + 2 * dx * this.scaledResize,
+        (verticalFlip || 0) * sCanvas.height * this.scaledResize + 2 * dy * this.scaledResize
+      );
+      this.context.scale(horizontalFlip || 0 ? -1 : 1, verticalFlip || 0 ? -1 : 1);
+    }
+    this.context.drawImage(sCanvas, 0, 0, sCanvas.width, sCanvas.height,
+      dx * this.scaledResize, dy * this.scaledResize,
+      sCanvas.width * this.scaledResize, sCanvas.height * this.scaledResize);
+    this.context.restore();
+  },
   drawForeground: function () {},
   drawBackground: function () {},
   drawScreen: function () {},
