@@ -19,7 +19,7 @@ window.game = {
 
     this.drawConversationImage();
 
-    this.drawObject(this.sprites.dialogFrame, 0, 0);
+    this.drawObject(this.sprites["dialog-frame"], 0, 0);
 
     var p = this.story[this.cursorPart];
     if (this.cursorRow < (p.length - 1) || this.cursorColumn < (p[p.length - 1].length - 1)) {
