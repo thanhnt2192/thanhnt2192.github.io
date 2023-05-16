@@ -1,6 +1,6 @@
 window.game = {
   ...window.game,
-  tiles: {},
+  tileset: {},
   images: {
     "border-top": [
       [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
@@ -35,7 +35,7 @@ window.game = {
     return tileCanvas;
   },
   loadTiles: function () {
-    this.tiles.border = {
+    this.tileset.border = {
       left: this.createTile([
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -78,7 +78,7 @@ window.game = {
 
       ])
     };
-    this.tiles.corner = {
+    this.tileset.corner = {
       top: {
         left: this.createTile([
           0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
@@ -157,18 +157,18 @@ window.game = {
       // Draw image data to the canvas
       bufferContext.putImageData(imageData, 0, 0);
 
-      this.tiles[property] = bufferCanvas;
+      this.tileset[property] = bufferCanvas;
     }
   },
   loadSprites: function () {
-    const { border, corner } = this.tiles;
+    const { border, corner } = this.tileset;
     const object = {
       "dialog-frame": [
         [corner.top.left, border.top, border.top, border.top, border.top, border.top, border.top, border.top, border.top, border.top, border.top, border.top, border.top, border.top, border.top, border.top, border.top, border.top, border.top, corner.top.right],
-        [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
-        [null, border.top, border.top, border.top, border.top, border.top, border.top, border.top, border.top, border.top, border.top, border.top, border.top, border.top, border.top, border.top, border.top, border.top, border.top, null]
+        [border.left, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, border.right],
+        [border.left, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, border.right],
+        [border.left, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, border.right],
+        [corner.bottom.left, border.bottom, border.bottom, border.bottom, border.bottom, border.bottom, border.bottom, border.bottom, border.bottom, border.bottom, border.bottom, border.bottom, border.bottom, border.bottom, border.bottom, border.bottom, border.bottom, border.bottom, border.bottom, corner.bottom.right]
       ]
     };
     const property = "dialog-frame";
