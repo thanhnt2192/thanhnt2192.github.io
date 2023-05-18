@@ -42,8 +42,8 @@ window.game = {
     }
   },
   launch: function (canvas) {
-    this.context = canvas.getContext('2d');
-    this.context.imageSmoothingEnabled = false;
+    this.screenContext = canvas.getContext('2d');
+    this.screenContext.imageSmoothingEnabled = false;
     canvas.addEventListener('touchstart', function (e) {
       this.input.mouse.button.press = true;
       this.input.mouse.button.hold = true;
@@ -52,6 +52,10 @@ window.game = {
       this.input.mouse.button.press = false;
       this.input.mouse.button.hold = false;
     }.bind(this));
+
+    this.virtualCanvas = document.createElement("canvas");
+    this.virtualCanvas.width = this.screenWidth;
+    this.virtualCanvas.height = this.screenHeight;
 
     this.loadTiles();
     this.loadSprites();
