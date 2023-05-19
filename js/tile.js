@@ -1,18 +1,6 @@
 window.game = {
   ...window.game,
   tileset: {},
-  images: {
-    "border-top": [
-      [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
-      [[0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255]],
-      [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
-      [[0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255]],
-      [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
-      [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
-      [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
-      [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
-    ]
-  },
   createTile: function (tileData) {
     const tileCanvas = document.createElement("canvas");
     tileCanvas.width = 8;
@@ -35,6 +23,18 @@ window.game = {
     return tileCanvas;
   },
   loadTiles: function () {
+    // Tileset data
+    // data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAABACAYAAADS1n9/AAAD6klEQVR42u1cu27kMAzMGlumTJn//7KUV17vqwzoCPFN2XQ8Ayyw8EOWKYrkUJQ/PoBH43X8+fr83o//f/7+TI+P0K45zkvnpPaP67TzWh+Pc7NnWtvn+uppn7Y1YM+MWxbvWYe/Pr932mH6gsc1nABoG+Ngae1bBmMm7IgAZkrEtaUpXLA/kX7vVUqw0Q5bXtIi1IwQ74qgMu7O36E0e5kF8LycdcZGhce1bZmhUh9XK1zCEr2umv3/KYAmIM3EZxF1AdVxR3RgJffZGRs12xWdPwSxwmd3xh3dW9oFjJpvjaA1E++d9ZLCed+LKqn1/TRLEH0/AFibB4jwWHrMmwfI5hEq7s/w+MrzbWKAo1Oa79bMJSd47vzq+2dxTVWsE3E13eKDzTLIZ1GpymDsitnlYR9d/P+bmkMuPVodbHkFkA1Cr5zhVKadgr+tmotrs1KanZKCzdLKUttV1kpyOVb50L50sqRbdcKmKhkkCXgU4BnCnMUV3DVW+ttFCbZK4Ywz2Koo9P6ZydQGY3x29vnc/dwAe+UE7g/cMw+g8WhrFtDL47VAMFovYM0TVPS/cxZQTQVbiiKseQIa7HnqCTSl9NQLSPUKXIwR7T+XNOuyaPT2XByhMpwCeXyixa97aKAUbK7O0mlW63QFqFrMySqPZlm0ApMZnZTMsNQHqiCSfLL5kRYWQEtUVA2+dVZaV9OiFFNzMV4XYol5WitAtdn3DH50hlea7Ewb1nu7FoqEq4IzLMEbZWtCz0ThkfjiN7EA4Ol5gJXmsbLN6GKP51kec04t3Kqy9VY0sAPOWou4qg+XKEAkm5f1gVYfK62kZaqGvBSxMrBtSQM1Hl2VCfNm2rRgTWvfQgMrl5DvVvX8XsFbs4miSGbtau7dteBDVQDrDFo9C7LFJqsSMZ6NIZx1iSxTn8oCLLtrq3mwNw8gCdDL8727gzPtVzAZAAAqTPlv3JGcxQYRPBuviH/2xADR+6mPllYsIzHMrH0pRsie197hUho4do7b3Fj1hRBvnmA8Nou0rauJZ0Th3JdPZnsGblMStoInjwKw8nitZHzVihudEFGK2zVPcJoCWItBvDzeqgxVSqA9U9puLlmK2yrA1VuzLDEGd71n///oIi1xCvfxqW5FocDTWcCT8gDZ+MHCQu42q19PGnxp8CLHPErWFe/KL2mumqErhVtZKXTHL4W5dgZlTF2k+vfMoPKpCzWbdf/7nf2clkOg1z4pOjfNbs9XOjUfGRXu1f71t8YAG+XAWlKG7qP3CFATXjTeoNaLS8ZoH3m21gZwMnmS6wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAoC/+AVwicf6Mny6FAAAAAElFTkSuQmCC
+    this.tileset.white = this.createTile([
+      0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+      0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+      0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+      0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+      0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+      0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+      0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+      0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
+    ]);
     this.tileset.border = {
       left: this.createTile([
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -124,41 +124,6 @@ window.game = {
         ])
       }
     };
-
-    return;
-    const object = {
-      "border-top": [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 255, 0, 0, 0, 255, 0, 0, 0, 255, 0, 0, 0, 255, 0, 0, 0, 255, 0, 0, 0, 255, 0, 0, 0, 255, 0, 0, 0, 255,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 255, 0, 0, 0, 255, 0, 0, 0, 255, 0, 0, 0, 255, 0, 0, 0, 255, 0, 0, 0, 255, 0, 0, 0, 255, 0, 0, 0, 255,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-      ]
-    };
-    for (const property in object) {
-      const bufferCanvas = document.createElement("canvas");
-      bufferCanvas.width = 8;
-      bufferCanvas.height = 8;
-      const bufferContext = bufferCanvas.getContext("2d");
-      const imageData = bufferContext.createImageData(8, 8);
-
-      // Iterate through every pixel
-      for (let i = 0; i < imageData.data.length; i += 4) {
-        // Modify pixel data
-        imageData.data[i + 0] = object[property][i + 0]; // R value
-        imageData.data[i + 1] = object[property][i + 1]; // G value
-        imageData.data[i + 2] = object[property][i + 2]; // B value
-        imageData.data[i + 3] = object[property][i + 3]; // A value
-      }
-
-      // Draw image data to the canvas
-      bufferContext.putImageData(imageData, 0, 0);
-
-      this.tileset[property] = bufferCanvas;
-    }
   },
   loadSprites: function () {
     const { border, corner } = this.tileset;
