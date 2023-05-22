@@ -11,7 +11,7 @@ window.game = {
   drawLayer: function ({ tilemap, x, y }) {
     // Draw to virtualCanvas
     for (let i = 0; i < tilemap.length; i++) {
-      for (let j = 0; j < tilemap.length; j++) {
+      for (let j = 0; j < tilemap[i].length; j++) {
         var tile = tilemap[i][j];
         if (tile) {
           this.virtualContext.drawImage(tile, 0, 0, 8, 8, j * 8 + x, i * 8 + y, 8, 8);
@@ -20,6 +20,7 @@ window.game = {
     }
   },
   drawScreen: function () {
+    this.screenContext.clearRect(0, 0, this.screenWidth * this.scaledResize, this.screenHeight * this.scaledResize);
     this.screenContext.drawImage(this.virtualCanvas, this.scx, this.scy, this.screenWidth, this.screenHeight,
       0, 0, this.screenWidth * this.scaledResize, this.screenHeight * this.scaledResize);
   },
@@ -34,7 +35,7 @@ window.game = {
       this.virtualContext.clearRect(0, 0, this.backgroundWidth, this.backgroundHeight);
 
       // draw stuff here
-      this.renderActivity();
+      this.renderScene();
 
       // draw screen after finish rendering virtual canvas
       this.drawScreen();

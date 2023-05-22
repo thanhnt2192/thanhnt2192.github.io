@@ -38,7 +38,7 @@ window.game = {
     this.virtualContext = this.virtualCanvas.getContext("2d");
 
     this.loadTiles();
-    this.loadConversationActivity();
+    this.initialize();
 
     // Start render
     this.previousTimeStamp = performance.now();
