@@ -49,7 +49,8 @@
         var imageData = ctx.getImageData(0, 0, 8, 8);
         var hexValue = "";
         for (let i = 0; i < imageData.data.length; i += 4) {
-          if (i % 32 === 0) {
+          if (i > 0 && i % 32 === 0) {
+            hexValue = hexValue.substr(0, hexValue.length - 1); // Remove last whitespace
             hexValue += "\n";
           }
           var number;
@@ -62,9 +63,34 @@
           number = imageData.data[i + 3]; // A value
           hexValue += "0x" + ("0" + number.toString(16).toUpperCase()).slice(-2) + ", ";
         }
+        hexValue = hexValue.substr(0, hexValue.length - 2);  // Remove last colon and whitespace
         var hex = document.getElementById("hex");
         hex.value = hexValue;
       }
+
+      function increaseX(n) {
+        document.getElementById("x").value = parseInt(document.getElementById("x").value) + n;
+      }
+      function decreaseX(n) {
+        document.getElementById("x").value = parseInt(document.getElementById("x").value) - n;
+      }
+      function increaseY(n) {
+        document.getElementById("y").value = parseInt(document.getElementById("y").value) + n;
+      }
+      function decreaseY(n) {
+        document.getElementById("y").value = parseInt(document.getElementById("y").value) - n;
+      }
+
+      function copyHex() {
+        var copyText = document.getElementById("hex");
+        /* Select the text field */
+        copyText.select();
+        // copyText.setSelectionRange(0, 99999); /* For mobile devices */
+        /* Copy the text inside the text field */
+        navigator.clipboard.writeText(copyText.value);
+        /* Alert the copied text */
+        // alert("Copied the text: " + copyText.value);
+      };
     </script>
   </head>
   <body>
@@ -77,8 +103,16 @@
     </div>
 
     <div>
-      <div>x: <input type="number" id="x" value="0"></div>
-      <div>y: <input type="number" id="y" value="0"></div>
+      <div>
+        x: <input type="number" id="x" value="0">
+        <button onclick="increaseX(8)">+8</button>
+        <button onclick="decreaseX(8)">-8</button>
+      </div>
+      <div>
+        y: <input type="number" id="y" value="0">
+        <button onclick="increaseY(8)">+8</button>
+        <button onclick="decreaseY(8)">-8</button>
+      </div>
       <div>horizontalFlip: <input type="number" id="h" value="0"></div>
       <div>verticalFlip: <input type="number" id="v" value="0"></div>
       <div><button onclick="loadImage()">Generate</button></div>
@@ -91,5 +125,6 @@
     <div>
       <textarea id="hex" readonly></textarea>
     </div>
+    <div><button onclick="copyHex()">Copy</button></div>
   </body>
 </html>

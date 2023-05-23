@@ -2,7 +2,7 @@ window.game = {
   ...window.game,
   story: [
     [
-      'AHello',
+      'Hello',
       'How are you?'
     ],
     [
@@ -11,11 +11,34 @@ window.game = {
   ],
   cursorPart: 0,
   cursorRow: 0,
-  cursorColumn: 0,
+  cursorColumn: -1,
   renderConversationScene: function () {
-    const p = this.story[this.cursorPart];
-    const r = p[this.cursorRow];
-    this.dialog.tilemap[1 + this.cursorRow * 2][1 + this.cursorColumn] = this.tileset.unicode[r[this.cursorColumn]];
+    if (this.cursorColumn < (this.story[this.cursorPart][this.cursorRow].length - 1)) {
+      this.cursorColumn++;
+    } else {
+      if (this.cursorRow < (this.story[this.cursorPart].length - 1)) {
+        this.cursorRow++;
+        this.cursorColumn = 0;
+      } else {
+        if (this.input.mouse.button.press) {
+          console.log('mouse press');
+          if (this.cursorPart < (this.story.length - 1)) {
+            // clear old part
+            for (let i = 1; i < 19; i++) {
+              this.dialog.tilemap[1][i] = null;
+              this.dialog.tilemap[3][i] = null;
+            }
+            this.cursorPart++;
+            this.cursorRow = 0;
+            this.cursorColumn = -1;
+          }
+        }
+      }
+    }
+    if (this.cursorColumn >= 0) {
+      this.dialog.tilemap[1 + this.cursorRow * 2][1 + this.cursorColumn] = this.tileset.unicode[this.story[this.cursorPart][this.cursorRow][this.cursorColumn]];
+    }
+
     this.drawLayer(this.background);
     this.drawLayer(this.dialog);
   },
