@@ -30,8 +30,11 @@
     <script>
       window.game = {
       };
+      // window.onload
       function loadGame() {
-        game.launch(document.getElementById('screen'));
+        game.launch(document.getElementById('screen'), {
+          a: document.getElementById('a')
+        });
       }
     </script>
     <script src="./js/core.js"></script>

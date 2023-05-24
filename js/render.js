@@ -43,6 +43,8 @@ window.game = {
       // refresh input
       this.input.mouse.button.press = false;
       this.input.mouse.button.release = false;
+      this.input.a.press = false;
+      this.input.a.release = false;
     }
     window.requestAnimationFrame(this.render.bind(this));
   }

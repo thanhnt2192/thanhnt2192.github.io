@@ -14,19 +14,19 @@ window.game = {
   cursorColumn: -1,
   cursorDelay: 0,
   updateConversationText: function () {
-    if (this.cursorDelay < 2) {
-      this.cursorDelay++;
-      return;
-    }
-    this.cursorDelay = 0;
     if (this.cursorColumn < (this.story[this.cursorPart][this.cursorRow].length - 1)) {
+      if (this.cursorDelay < 2) {
+        this.cursorDelay++;
+        return;
+      }
+      this.cursorDelay = 0;
       this.cursorColumn++;
     } else {
       if (this.cursorRow < (this.story[this.cursorPart].length - 1)) {
         this.cursorRow++;
-        this.cursorColumn = 0;
+        this.cursorColumn = -1;
       } else {
-        if (this.input.mouse.button.press) {
+        if (this.input.a.press) {
           console.log('mouse press');
           if (this.cursorPart < (this.story.length - 1)) {
             // clear old part
