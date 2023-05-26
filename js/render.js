@@ -23,6 +23,8 @@ window.game = {
     this.screenContext.clearRect(0, 0, this.screenWidth * this.scaledResize, this.screenHeight * this.scaledResize);
     this.screenContext.drawImage(this.virtualCanvas, this.scx, this.scy, this.screenWidth, this.screenHeight,
       0, 0, this.screenWidth * this.scaledResize, this.screenHeight * this.scaledResize);
+    this.screenContext.drawImage(this.maskCanvas, 0, 0, this.screenWidth, this.screenHeight,
+      0, 0, this.screenWidth * this.scaledResize, this.screenHeight * this.scaledResize)
   },
   render: function (timestamp) {
     const elapsed = timestamp - this.previousTimeStamp;
@@ -33,6 +35,7 @@ window.game = {
 
       // clear canvas
       this.virtualContext.clearRect(0, 0, this.backgroundWidth, this.backgroundHeight);
+      this.maskContext.clearRect(0, 0, this.screenWidth, this.screenHeight);
 
       // draw stuff here
       this.renderScene();

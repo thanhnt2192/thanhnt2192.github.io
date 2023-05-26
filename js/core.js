@@ -58,6 +58,11 @@ window.game = {
     this.virtualCanvas.height = this.backgroundHeight;
     this.virtualContext = this.virtualCanvas.getContext("2d");
 
+    this.maskCanvas = document.createElement("canvas");
+    this.maskCanvas.width = this.screenWidth;
+    this.maskCanvas.height = this.screenHeight;
+    this.maskContext = this.maskCanvas.getContext("2d");
+
     this.loadTiles();
     this.initialize();
 
