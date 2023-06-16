@@ -45,9 +45,21 @@ window.game = {
       this.dialog.tilemap[1 + this.cursorRow * 2][1 + this.cursorColumn] = this.tileset.unicode[this.story[this.cursorPart][this.cursorRow][this.cursorColumn]];
     }
   },
+  updatePlayerRunA: function () {
+    const run = this.tileset.player.run;
+    this.player.a.frame = ((this.player.a.frame || 0) + 1) % (4 * this.player.a.delay);
+    const step = parseInt(this.player.a.frame / this.player.a.delay);
+    this.player.a.tilemap = [
+      [run[step].top.left, run[step].top.right],
+      [run[step].middle.left, run[step].middle.right],
+      [run[step].bottom.left, run[step].bottom.right]
+    ];
+  },
   renderConversationScene: function () {
     this.updateConversationText();
+    this.updatePlayerRunA();
 
+    this.drawLayer(this.player.a);
     this.drawLayer(this.background);
     this.drawLayer(this.dialog);
   }
