@@ -62,7 +62,12 @@ window.game = {
         ]
       }
     }
+    this.ball = {
+      x: 100, y: 100,
+      delay: 3,
+      tilemap: [[this.tileset.ball.normal[0]]]
+    };
 
-    this.renderScene = this.renderConversationScene;
+    this.renderScene = this.renderMatchScene;
   }
 };
