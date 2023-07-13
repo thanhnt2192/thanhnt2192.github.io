@@ -68,6 +68,6 @@ window.game = {
       tilemap: [[this.tileset.ball.normal[0]]]
     };
 
-    this.renderScene = this.renderMatchScene;
+    this.renderScene = this.renderConversationScene;
   }
 };

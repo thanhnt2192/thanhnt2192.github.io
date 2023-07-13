@@ -13,6 +13,14 @@ window.game = {
   cursorRow: 0,
   cursorColumn: -1,
   cursorDelay: 0,
+  updateEffectBackground: function () {
+    for (i = 0; i < 13; i++) {
+      for (j = 0; j < 19; j++) {
+        this.background.tilemap[i][j] = this.background.tilemap[i][j + 1];
+      }
+      this.background.tilemap[i][19] = this.background.tilemap[i][0];
+    }
+  },
   updateConversationText: function () {
     if (this.cursorColumn < (this.story[this.cursorPart][this.cursorRow].length - 1)) {
       if (this.cursorDelay < 2) {
@@ -56,6 +64,7 @@ window.game = {
     ];
   },
   renderConversationScene: function () {
+    this.updateEffectBackground();
     this.updateConversationText();
     this.updatePlayerRunA();
 
