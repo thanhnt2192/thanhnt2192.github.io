@@ -46,6 +46,7 @@
         ctx.clearRect(0, 0, 8, 8);
         drawTile(ctx, img, x, y, 8, 8, 0, 0, h, v);
 
+        var isTransparent = true;
         var imageData = ctx.getImageData(0, 0, 8, 8);
         var hexValue = "";
         for (let i = 0; i < imageData.data.length; i += 4) {
@@ -61,11 +62,18 @@
           number = imageData.data[i + 2]; // B value
           hexValue += "0x" + ("0" + number.toString(16).toUpperCase()).slice(-2) + ", ";
           number = imageData.data[i + 3]; // A value
+          if (number > 0) {
+            console.log("Not transpanrent " + number);
+            isTransparent = false;
+          }
           hexValue += "0x" + ("0" + number.toString(16).toUpperCase()).slice(-2) + ", ";
         }
         hexValue = hexValue.substr(0, hexValue.length - 2);  // Remove last colon and whitespace
         var hex = document.getElementById("hex");
         hex.value = hexValue;
+        if (isTransparent) {
+          alert("This tile is transparent!");
+        }
       }
 
       function increaseX(n) {
@@ -96,6 +104,10 @@
   <body>
     <div>
       <input type="file" accept="image/*" onchange="loadFile(event)">
+    </div>
+
+    <div>
+      <button onclick="document.getElementById('output').style.display = 'none'">Hide image</button>
     </div>
 
     <div>
