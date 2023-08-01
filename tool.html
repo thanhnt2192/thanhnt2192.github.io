@@ -63,7 +63,6 @@
           hexValue += "0x" + ("0" + number.toString(16).toUpperCase()).slice(-2) + ", ";
           number = imageData.data[i + 3]; // A value
           if (number > 0) {
-            console.log("Not transpanrent " + number);
             isTransparent = false;
           }
           hexValue += "0x" + ("0" + number.toString(16).toUpperCase()).slice(-2) + ", ";
