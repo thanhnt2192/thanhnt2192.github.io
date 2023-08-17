@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAA4klEQVRo3u2YQRKDMAwD4wz//7J666Uz1IQEbGf3A1iRJQKtAQAAAAAAOLAHnqFIM9kLgl6d2QILW6LFEgsc0mbFRP4VbwvEzi6dqXP14s7+HFzfROxXdN/t4nEM5jLiVrj6qIrD5i3O7VaaDDvfpdEyLW+Gj0Lm6Y7DWQpK1TNsF6PndlhVPzJ6e+avR5gNybbSurtpGUtLs0pgq+/hfUJcpX29Ord3uKLL5ikYLTpMz6Vm6Qz9oaaNsr2nGbZqYq+IUnahoy4qq9AZa6ssIlflVBEFvlFMCjgTAAAAAADAOR+TyyNDEQe2VgAAAABJRU5ErkJggg==">
+    <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEwAAABMCAYAAADHl1ErAAABWElEQVR42u3b2w7DIAiA4Wl4/1d2t43JVlHwgD/Xy4qfiHbtUimlfIjmyBAABhhggAFGAAYYYIABRgAGGGCAAQYYARhggB0RsjqBlJLq86uf2chuIKPf5w0qu8JY52EFKacD9ebbCyiRkVrHosGT2VjWPcYir5RSc175tsoaHWMGSzdWDq4rjhX1+t+xKp85juR3RYXVEzqy8bAkAduwh72V9G49rT5njeQjt1SG1aSFA7OqpCt6mOVuaFphb3f+ke8OsnbWbjqvhV+SdWV7VHq4pu/dDqS1VP8lEqFnmf4eRjyKQ/Nfo6i7n2Zjo8I8D64RjxjaMUnPBSyW5q9EWx+HeeZgviQjVFrvGPLsC56Mpd4lT989LSbZ9CHIrnCWq0G8EluN59UyZFbC3oCzeqqsnnFeqAu+23JrBBhggAEGGAEYYIABBhgBGGCAAQYYYARggAF2RnwBJhSNpBigTwoAAAAASUVORK5CYII=">
+    <title>Demo</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      .shell {
+        width: 220px;
+        height: auto;
+        padding-top: 10px;
+        padding-bottom: 20px;
+        margin: 0 auto;
+        border-radius: 4px;
+        background: #cccccc;
+      }
+      .border-black {
+        border: 2px solid #000000;
+      }
+      canvas {
+        display: block;
+        width: 160px; /* 320px */
+        height: 144px; /* 288px */
+        margin: 0 auto;
+        box-sizing: content-box;
+        background: #000000;
+      }
+      @media (min-width: 768px) {
+        /* canvas {
+          width: 640px;
+          height: 576px;
+        } */
+      }
+      .monitor {
+        width: 200px;
+        height: 184px;
+        padding-top: 20px;
+        margin: 0 auto;
+        border-radius: 10px 10px 10px 10px;
+        background: #333333;
+      }
+      .input {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+      #a {
+        width: 50px;
+        height: 50px;
+        margin: 20px 10px 0px 0px;
+        border-radius: 50%;
+        background: #dc3545;
+        box-sizing: border-box;
+      }
+    </style>
+    <script>
+      window.game = {
+      };
+      // window.onload
+      function loadGame() {
+        game.launch(document.getElementById('screen'), {
+          a: document.getElementById('a')
+        });
+      }
+    </script>
+    <script src="./js/core.js"></script>
+    <script src="./js/init.js"></script>
+    <script src="./js/render.js"></script>
+    <script src="./js/tile.js"></script>
+    <script src="./js/tactics.js"></script>
+    <script src="./js/player.js"></script>
+    <script src="./js/ball.js"></script>
+    <script src="./js/conversation.js"></script>
+    <script src="./js/match.js"></script>
+  </head>
+  <body onload="loadGame()">
+    <div class="shell border-black">
+      <div class="monitor border-black">
+        <canvas id="screen" width="640" height="576"></canvas>
+      </div>
+      <div class="input">
+        <div class="d-pad"></div>
+        <div id="a" class="border-black"><div></div></div>
+      </div>
+    </div>
+  </body>
+</html>

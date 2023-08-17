@@ -9,85 +9,25 @@
       * {
         margin: 0;
         padding: 0;
-        box-sizing: border-box;
-      }
-      .shell {
-        width: 220px;
-        height: auto;
-        padding-top: 10px;
-        padding-bottom: 20px;
-        margin: 0 auto;
-        border-radius: 4px;
-        background: #cccccc;
-      }
-      .border-black {
-        border: 2px solid #000000;
       }
       canvas {
         display: block;
-        width: 160px; /* 320px */
-        height: 144px; /* 288px */
+        width: 320px;
+        height: 288px;
         margin: 0 auto;
         box-sizing: content-box;
         background: #000000;
       }
-      @media (min-width: 768px) {
-        /* canvas {
-          width: 640px;
-          height: 576px;
-        } */
-      }
-      .monitor {
-        width: 200px;
-        height: 184px;
-        padding-top: 20px;
-        margin: 0 auto;
-        border-radius: 10px 10px 10px 10px;
-        background: #333333;
-      }
-      .input {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-      }
-      #a {
-        width: 50px;
-        height: 50px;
-        margin: 20px 10px 0px 0px;
-        border-radius: 50%;
-        background: #dc3545;
-        box-sizing: border-box;
-      }
     </style>
     <script>
-      window.game = {
-      };
-      // window.onload
+      window.game = {};
+
       function loadGame() {
-        game.launch(document.getElementById('screen'), {
-          a: document.getElementById('a')
-        });
+        game.launch(document.getElementById("screen"));
       }
     </script>
-    <script src="./js/core.js"></script>
-    <script src="./js/init.js"></script>
-    <script src="./js/render.js"></script>
-    <script src="./js/tile.js"></script>
-    <script src="./js/tactics.js"></script>
-    <script src="./js/player.js"></script>
-    <script src="./js/ball.js"></script>
-    <script src="./js/conversation.js"></script>
-    <script src="./js/match.js"></script>
   </head>
   <body onload="loadGame()">
-    <div class="shell border-black">
-      <div class="monitor border-black">
-        <canvas id="screen" width="640" height="576"></canvas>
-      </div>
-      <div class="input">
-        <div class="d-pad"></div>
-        <div id="a" class="border-black"><div></div></div>
-      </div>
-    </div>
+    <canvas id="screen" width="640" height="576"></canvas>
   </body>
 </html>
