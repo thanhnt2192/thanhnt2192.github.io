@@ -20,10 +20,18 @@
       }
     </style>
     <script>
-      window.game = {};
+      window.game = {
+        canvas: {
+          screen: {
+            context: window.getElementById('screen').getContext('2d')
+          },
+          scene: {}
+        }
+      };
 
       function loadGame() {
-        window.game.launch(document.getElementById("screen"));
+        window.game.launch(window.getElementById("screen"));
+        window.requestAnimationFrame(window.game.run.bind(window.game));
       }
     </script>
   </head>
