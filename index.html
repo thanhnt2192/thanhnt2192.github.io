@@ -29,13 +29,33 @@
         }
       };
 
-      function loadGame() {
-        window.game.launch(window.getElementById("screen"));
-        window.requestAnimationFrame(window.game.run.bind(window.game));
+      window.keymap = {
+        "87": "up", // W
+        "83": "down", // S
+        "65": "left", // A
+        "68": "right", // D
+        "76": "a", // L
+        "80": "b" // P
+      };
+
+      window.loadGame = function () {
+        this.game.launch(this.getElementById('screen'));
+
+        this.document.addEventListener('keydown', function (event) {
+          var key = this.keymap[event.keyCode.toString()];
+          this.game.listener.button.press(key);
+        }.bind(window));
+
+        this.document.addEventListener('keyup', function (event) {
+          var key = this.keymap[event.keyCode.toString()];
+          this.game.listener.button.release(key);
+        }.bind(this));
+
+        this.requestAnimationFrame(this.game.run.bind(this.game));
       }
     </script>
   </head>
-  <body onload="loadGame()">
+  <body onload="window.loadGame()">
     <canvas id="screen" width="640" height="576"></canvas>
   </body>
 </html>
