@@ -38,24 +38,46 @@
         "80": "b" // P
       };
 
-      window.loadGame = function () {
-        this.game.launch(this.getElementById('screen'));
+      window.process = function (timestamp) {
+        const elapsed = timestamp - this.previousTimeStamp;
+        if (elapsed > this.game.fps.interval) {
+          // Get ready for next frame by setting previousTimeStamp=timestamp, but...
+          // Also, adjust for fpsInterval not being multiple of 16.67
+          this.previousTimestamp = timestamp - (elapsed % this.game.fps.interval);
+
+
+          this.game.render();
+
+          // draw screen after finish rendering virtual canvas
+
+          this.game.button.refresh();
+        }
+
+        this.requestAnimationFrame(this.process.bind(this.game));
+      };
+
+      window.launch = function () {
+        this.game.screen.context = this.document.getElementById('screen').getContext('2d');
+        this.game.screen.scale = 4;
 
         this.document.addEventListener('keydown', function (event) {
           var key = this.keymap[event.keyCode.toString()];
-          this.game.listener.button.press(key);
-        }.bind(window));
+          this.game.button.press(key);
+        }.bind(this));
 
         this.document.addEventListener('keyup', function (event) {
           var key = this.keymap[event.keyCode.toString()];
-          this.game.listener.button.release(key);
+          this.game.button.release(key);
         }.bind(this));
 
-        this.requestAnimationFrame(this.game.run.bind(this.game));
-      }
+        this.game.initialize();
+
+        this.previousTimestamp = this.performance.now();
+        this.requestAnimationFrame(this.process.bind(this.game));
+      };
     </script>
   </head>
-  <body onload="window.loadGame()">
+  <body onload="window.launch()">
     <canvas id="screen" width="640" height="576"></canvas>
   </body>
 </html>
