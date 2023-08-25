@@ -20,14 +20,7 @@
       }
     </style>
     <script>
-      window.game = {
-        canvas: {
-          screen: {
-            context: window.getElementById('screen').getContext('2d')
-          },
-          scene: {}
-        }
-      };
+      window.game = {};
 
       window.keymap = {
         "87": "up", // W
@@ -40,40 +33,89 @@
 
       window.process = function (timestamp) {
         const elapsed = timestamp - this.previousTimeStamp;
-        if (elapsed > this.game.fps.interval) {
+        if (elapsed > this.fpsInterval) {
           // Get ready for next frame by setting previousTimeStamp=timestamp, but...
           // Also, adjust for fpsInterval not being multiple of 16.67
-          this.previousTimestamp = timestamp - (elapsed % this.game.fps.interval);
+          this.previousTimestamp = timestamp - (elapsed % this.fpsInterval);
 
+          // clear canvas
+          this.sceneCanvas.clearRect(0, 0, this.sceneWidth, this.sceneHeight);
+          this.windowCanvas.clearRect(0, 0, this.screenWidth, this.screenHeight);
 
+          // draw stuff here
           this.game.render();
 
           // draw screen after finish rendering virtual canvas
+          this.screenContext.clearRect(0, 0, this.screenWidth * this.screenScale, this.screenHeight * this.screenScale);
+          this.screenContext.drawImage(this.sceneCanvas, this.scx, this.scy, this.screenWidth, this.screenHeight,
+            0, 0, this.screenWidth * this.screenScale, this.screenHeight * this.screenScale);
+          this.screenContext.drawImage(this.windowCanvas, 0, 0, this.screenWidth, this.screenHeight,
+            0, 0, this.screenWidth * this.screenScale, this.screenHeight * this.screenScale);
 
-          this.game.button.refresh();
+          // refresh button state
+          for (const button of this.game.button) {
+            button.press = false;
+            button.release = false;
+          }
         }
 
-        this.requestAnimationFrame(this.process.bind(this.game));
+        this.requestAnimationFrame(this.process);
       };
 
       window.launch = function () {
-        this.game.screen.context = this.document.getElementById('screen').getContext('2d');
-        this.game.screen.scale = 4;
+        this.fpsInterval = 1000 / 30;
+        this.screenWidth = 160;
+        this.screenHeight = 144;
+        this.screenScale = 4;
+        this.sceneWidth = 256;
+        this.sceneHeight = 256;
+
+        this.screenCanvas = this.document.getElementById('screen');
+        this.screenCanvas.imageSmoothingEnabled = false;
+        this.screenContext = this.screenCanvas.getContext('2d');
+
+        this.sceneCanvas = this.document.createElement('canvas');
+        this.sceneCanvas.width = this.sceneWidth;
+        this.sceneCanvas.height = this.sceneHeight;
+        this.sceneContext = this.sceneCanvas.getContext('2d');
+
+        this.windowCanvas = this.document.createElement('canvas');
+        this.windowCanvas.width = this.screenWidth;
+        this.windowCanvas.height = this.screenHeight;
+        this.windowContext = this.sceneCanvas.getContext('2d');
+
+        this.game.drawScene = function () {};
+        this.game.drawWindow = function () {};
+
+        this.game.button = {};
+        for (const key of this.keymap) {
+          this.game.button[key] = {
+            press: false,
+            release: false,
+            hold: false
+          };
+        }
 
         this.document.addEventListener('keydown', function (event) {
-          var key = this.keymap[event.keyCode.toString()];
-          this.game.button.press(key);
+          const key = this.keymap[event.keyCode.toString()];
+          const button = this.game.button[key];
+          if (button) {
+            button.press = true;
+            button.hold = true;
+          }
         }.bind(this));
 
         this.document.addEventListener('keyup', function (event) {
-          var key = this.keymap[event.keyCode.toString()];
-          this.game.button.release(key);
+          const key = this.keymap[event.keyCode.toString()];
+          const button = this.game.button[key];
+          if (button) {
+            button.release = true;
+            button.hold = false;
+          }
         }.bind(this));
 
-        this.game.initialize();
-
         this.previousTimestamp = this.performance.now();
-        this.requestAnimationFrame(this.process.bind(this.game));
+        this.requestAnimationFrame(this.process);
       };
     </script>
   </head>
