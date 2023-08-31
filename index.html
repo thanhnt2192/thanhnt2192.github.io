@@ -32,15 +32,15 @@
       };
 
       window.process = function (timestamp) {
-        const elapsed = timestamp - this.previousTimeStamp;
+        const elapsed = timestamp - this.previousTimestamp;
         if (elapsed > this.fpsInterval) {
-          // Get ready for next frame by setting previousTimeStamp=timestamp, but...
+          // Get ready for next frame by setting previousTimestamp=timestamp, but...
           // Also, adjust for fpsInterval not being multiple of 16.67
           this.previousTimestamp = timestamp - (elapsed % this.fpsInterval);
 
           // clear canvas
-          this.sceneCanvas.clearRect(0, 0, this.sceneWidth, this.sceneHeight);
-          this.windowCanvas.clearRect(0, 0, this.screenWidth, this.screenHeight);
+          this.sceneContext.clearRect(0, 0, this.sceneWidth, this.sceneHeight);
+          this.windowContext.clearRect(0, 0, this.screenWidth, this.screenHeight);
 
           // draw stuff here
           this.game.render();
@@ -88,7 +88,8 @@
         this.game.drawWindow = function () {};
 
         this.game.button = {};
-        for (const key of this.keymap) {
+        for (const prop in this.keymap) {
+          const key = this.keymap[prop];
           this.game.button[key] = {
             press: false,
             release: false,
