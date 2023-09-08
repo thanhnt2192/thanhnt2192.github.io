@@ -84,8 +84,19 @@
         this.windowCanvas.height = this.screenHeight;
         this.windowContext = this.sceneCanvas.getContext('2d');
 
-        this.game.drawScene = function () {};
-        this.game.drawWindow = function () {};
+        var draw = function ({ tilemap, x, y }) {
+          for (let i = 0; i < tilemap.length; i++) {
+            for (let j = 0; j < tilemap[i].length; j++) {
+              var tile = tilemap[i][j];
+              if (tile) {
+                this.drawImage(tile, 0, 0, 8, 8, j * 8 + x, i * 8 + y, 8, 8);
+              }
+            }
+          }
+        };
+
+        this.game.drawScene = draw.bind(this.sceneContext);
+        this.game.drawWindow = draw.bind(this.windowContext);
 
         this.game.button = {};
         for (const prop in this.keymap) {
