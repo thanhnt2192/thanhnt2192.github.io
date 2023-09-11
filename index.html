@@ -20,7 +20,29 @@
       }
     </style>
     <script>
-      window.game = {};
+      window.game = {
+        createTile: function (tileData) {
+          const tileCanvas = this.document.createElement("canvas");
+          tileCanvas.width = 8;
+          tileCanvas.height = 8;
+          const tileContext = tileCanvas.getContext("2d");
+          const imageData = tileContext.createImageData(8, 8);
+
+          // Iterate through every pixel
+          for (let i = 0; i < imageData.data.length; i += 4) {
+            // Modify pixel data
+            imageData.data[i + 0] = tileData[i + 0]; // R value
+            imageData.data[i + 1] = tileData[i + 1]; // G value
+            imageData.data[i + 2] = tileData[i + 2]; // B value
+            imageData.data[i + 3] = tileData[i + 3]; // A value
+          }
+
+          // Draw image data to the canvas
+          tileContext.putImageData(imageData, 0, 0);
+
+          return tileCanvas;
+        }.bind(this)
+      };
 
       window.keymap = {
         "87": "up", // W
@@ -53,7 +75,8 @@
             0, 0, this.screenWidth * this.screenScale, this.screenHeight * this.screenScale);
 
           // refresh button state
-          for (const button of this.game.button) {
+          for (const prop in this.game.button) {
+            const button = this.game.button[prop];
             button.press = false;
             button.release = false;
           }
@@ -84,10 +107,10 @@
         this.windowCanvas.height = this.screenHeight;
         this.windowContext = this.sceneCanvas.getContext('2d');
 
-        var draw = function ({ tilemap, x, y }) {
+        const draw = function ({ tilemap, x, y }) {
           for (let i = 0; i < tilemap.length; i++) {
             for (let j = 0; j < tilemap[i].length; j++) {
-              var tile = tilemap[i][j];
+              const tile = tilemap[i][j];
               if (tile) {
                 this.drawImage(tile, 0, 0, 8, 8, j * 8 + x, i * 8 + y, 8, 8);
               }
@@ -130,6 +153,8 @@
         this.requestAnimationFrame(this.process);
       };
     </script>
+    <script src="./js/tile.js"></script>
+    <script src="./js/title.js"></script>
   </head>
   <body onload="window.launch()">
     <canvas id="screen" width="640" height="576"></canvas>
