@@ -120,6 +120,17 @@
 
         this.game.drawScene = draw.bind(this.sceneContext);
         this.game.drawWindow = draw.bind(this.windowContext);
+        this.game.draw = function ({ tilemap, position: { x, y, absolute } }) {
+          for (let i = 0; i < tilemap.length; i++) {
+            for (let j = 0; j < tilemap[i].length; j++) {
+              const tile = tilemap[i][j];
+              if (tile) {
+                this.sceneContext.drawImage(tile, 0, 0, 8, 8, j * 8 + x, i * 8 + y, 8, 8);
+                //
+              }
+            }
+          }
+        };
 
         this.game.button = {};
         for (const prop in this.keymap) {
