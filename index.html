@@ -64,6 +64,9 @@
           this.sceneContext.clearRect(0, 0, this.sceneWidth, this.sceneHeight);
           this.windowContext.clearRect(0, 0, this.screenWidth, this.screenHeight);
 
+          // clear image data
+          this.imageData.fill(0);
+
           // draw stuff here
           this.game.render();
 
@@ -73,6 +76,23 @@
             0, 0, this.screenWidth * this.screenScale, this.screenHeight * this.screenScale);
           this.screenContext.drawImage(this.windowCanvas, 0, 0, this.screenWidth, this.screenHeight,
             0, 0, this.screenWidth * this.screenScale, this.screenHeight * this.screenScale);
+
+          // draw screen after finish rendering
+          for (let i = 0; i < this.screenHeight; i++) {
+            for (let si = 0; si < this.screenScale; si++) {
+              for (let j = 0; j < this.screenWidth; j++) {
+                for (let sj = 0; sj < this.screenScale; sj++) {
+                  const screenDataIndex = (i * this.screenScale + si) * 4 * this.screenWidth + (j * this.screenScale + sj) * 4;
+                  const imageDataIndex = i * 4 * this.screenWidth + j * 4;
+                  this.screenData.data[screenDataIndex] = this.imageData[imageDataIndex];
+                  this.screenData.data[screenDataIndex + 1] = this.imageData[imageDataIndex + 1];
+                  this.screenData.data[screenDataIndex + 2] = this.imageData[imageDataIndex + 2];
+                  this.screenData.data[screenDataIndex + 3] = this.imageData[imageDataIndex + 3];
+                }
+              }
+            }
+          }
+          this.screenContext.putImageData(this.screenData, 0, 0);
 
           // refresh button state
           for (const prop in this.game.button) {
@@ -96,6 +116,10 @@
         this.screenCanvas = this.document.getElementById('screen');
         this.screenCanvas.imageSmoothingEnabled = false;
         this.screenContext = this.screenCanvas.getContext('2d');
+        this.screenData = this.screenContext.getImageData(0, 0, this.screenWidth, this.screenHeight);
+        this.imageData = [];
+        this.imageData.length = this.screenWidth * this.screenHeight * 4;
+        this.imageData.fill(0);
 
         this.sceneCanvas = this.document.createElement('canvas');
         this.sceneCanvas.width = this.sceneWidth;
@@ -120,17 +144,37 @@
 
         this.game.drawScene = draw.bind(this.sceneContext);
         this.game.drawWindow = draw.bind(this.windowContext);
-        this.game.draw = function ({ tilemap, position: { x, y, absolute } }) {
-          for (let i = 0; i < tilemap.length; i++) {
-            for (let j = 0; j < tilemap[i].length; j++) {
-              const tile = tilemap[i][j];
+        this.game.draw = function ({ tilemap, position }) {
+          for (let row = 0; row < tilemap.length; row++) {
+            const dy = position.absolute
+              ? row * 8 + position.y
+              : row * 8 + position.y - this.game.scy;
+            if (dy < 0 || dy >= this.screenHeight) {
+              continue;
+            }
+            for (let column = 0; column < tilemap[row].length; column++) {
+              const dx = position.absolute
+                ? column * 8 + position.x
+                : column * 8 + position.x - this.game.scx;
+              if (dx < 0 || dx >= this.screenWidth) {
+                continue;
+              }
+              const tile = tilemap[row][column];
               if (tile) {
-                this.sceneContext.drawImage(tile, 0, 0, 8, 8, j * 8 + x, i * 8 + y, 8, 8);
-                //
+                for (let i = 0; i < 8; i++) {
+                  for (let j = 0; j < 8; j++) {
+                    const imageDataIndex = (dx + i) * 4 * this.screenWidth + (dy + j) * 4;
+                    const tileDataIndex = i * 4 * 8 + j * 4;
+                    this.imageData[imageDataIndex] = tile[tileDataIndex];
+                    this.imageData[imageDataIndex + 1] = tile[tileDataIndex + 1];
+                    this.imageData[imageDataIndex + 2] = tile[tileDataIndex + 2];
+                    this.imageData[imageDataIndex + 3] = tile[tileDataIndex + 3];
+                  }
+                }
               }
             }
           }
-        };
+        }.bind(this);
 
         this.game.button = {};
         for (const prop in this.keymap) {
@@ -159,6 +203,8 @@
             button.hold = false;
           }
         }.bind(this));
+
+        this.game.initialize();
 
         this.previousTimestamp = this.performance.now();
         this.requestAnimationFrame(this.process);
