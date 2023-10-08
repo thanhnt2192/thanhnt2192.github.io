@@ -13,5 +13,11 @@ window.game.initialize = function () {
     }
   };
 
+  const this.pitch = {
+    tilemap: [
+      []
+    ]
+  };
+
   this.render = this.renderTitle;
 };
