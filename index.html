@@ -82,7 +82,7 @@
             for (let si = 0; si < this.screenScale; si++) {
               for (let j = 0; j < this.screenWidth; j++) {
                 for (let sj = 0; sj < this.screenScale; sj++) {
-                  const screenDataIndex = (i * this.screenScale + si) * 4 * this.screenWidth + (j * this.screenScale + sj) * 4;
+                  const screenDataIndex = (i * this.screenScale + si) * 4 * this.screenWidth * this.screenScale + (j * this.screenScale + sj) * 4;
                   const imageDataIndex = i * 4 * this.screenWidth + j * 4;
                   this.screenData.data[screenDataIndex] = this.imageData[imageDataIndex];
                   this.screenData.data[screenDataIndex + 1] = this.imageData[imageDataIndex + 1];
@@ -116,7 +116,7 @@
         this.screenCanvas = this.document.getElementById('screen');
         this.screenCanvas.imageSmoothingEnabled = false;
         this.screenContext = this.screenCanvas.getContext('2d');
-        this.screenData = this.screenContext.getImageData(0, 0, this.screenWidth, this.screenHeight);
+        this.screenData = this.screenContext.getImageData(0, 0, this.screenWidth * this.screenScale, this.screenHeight * this.screenScale);
         this.imageData = [];
         this.imageData.length = this.screenWidth * this.screenHeight * 4;
         this.imageData.fill(0);
@@ -163,7 +163,7 @@
               if (tile) {
                 for (let i = 0; i < 8; i++) {
                   for (let j = 0; j < 8; j++) {
-                    const imageDataIndex = (dx + i) * 4 * this.screenWidth + (dy + j) * 4;
+                    const imageDataIndex = (dy + i) * 4 * this.screenWidth + (dx + j) * 4;
                     const tileDataIndex = i * 4 * 8 + j * 4;
                     this.imageData[imageDataIndex] = tile[tileDataIndex];
                     this.imageData[imageDataIndex + 1] = tile[tileDataIndex + 1];
@@ -211,7 +211,9 @@
       };
     </script>
     <script src="./js/tile.js"></script>
+    <script src="./js/init.js"></script>
     <script src="./js/title.js"></script>
+    <script src="./js/pitch.js"></script>
   </head>
   <body onload="window.launch()">
     <canvas id="screen" width="640" height="576"></canvas>
