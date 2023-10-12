@@ -149,22 +149,42 @@
             const dy = position.absolute
               ? row * 8 + position.y
               : row * 8 + position.y - this.game.scy;
-            if (dy < 0 || dy >= this.screenHeight) {
-              continue;
+            if (dy + 8 <= 0 || dy >= this.screenHeight) {
+              // TODO: remove if not necessary
+              // continue;
             }
             for (let column = 0; column < tilemap[row].length; column++) {
               const dx = position.absolute
                 ? column * 8 + position.x
                 : column * 8 + position.x - this.game.scx;
-              if (dx < 0 || dx >= this.screenWidth) {
-                continue;
+              if (dx + 8 <= 0 || dx >= this.screenWidth) {
+                // TODO: remove if not necessary
+                // continue;
               }
               const tile = tilemap[row][column];
               if (tile) {
-                for (let i = 0; i < 8; i++) {
-                  for (let j = 0; j < 8; j++) {
+                let iStart = 0;
+                if (dy < 0) {
+                  iStart = 0 - dy;
+                }
+                let iEnd = 8;
+                if (this.screenHeight - dy < 8) {
+                  iEnd = this.screenHeight - dy;
+                }
+                for (let i = iStart; i < iEnd; i++) {
+                  let jStart = 0;
+                  if (dx < 0) {
+                    jStart = 0 - dx;
+                  }
+                  let jEnd = 8;
+                  if (this.screenWidth - dx < 8) {
+                    jEnd = this.screenWidth - dx;
+                  }
+                  for (let j = jStart; j < jEnd; j++) {
                     const imageDataIndex = (dy + i) * 4 * this.screenWidth + (dx + j) * 4;
                     const tileDataIndex = i * 4 * 8 + j * 4;
+                    // Not clear background with transparent pixels
+                    if (tile[tileDataIndex + 3] === 0) continue;
                     this.imageData[imageDataIndex] = tile[tileDataIndex];
                     this.imageData[imageDataIndex + 1] = tile[tileDataIndex + 1];
                     this.imageData[imageDataIndex + 2] = tile[tileDataIndex + 2];

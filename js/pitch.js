@@ -19,10 +19,37 @@ window.game.initializePitch = function () {
       this.sprite.pitch.tilemap[i].push(lightPlain);
     }
   }
-  console.log(this.sprite.pitch.tilemap);
+
+  this.sprite.player = {
+    delay: -1,
+    step: 0,
+    speed: 1,
+    vector: {
+      x: -1,
+      y: 1
+    },
+    tilemap: this.tileset.player.run[0],
+    position: {
+      x: 50,
+      y: 0,
+      absolute: false
+    }
+  }
 };
 
 window.game.renderPitch = function () {
-  const { pitch } = this.sprite;
+  const { pitch, player } = this.sprite;
+
+  player.delay = player.delay + 1;
+  if (player.delay > (6 - player.speed)) {
+    player.delay = 0;
+    player.step = (player.step + 1) % 4;
+  }
+  player.tilemap = this.tileset.player.run[player.step];
+  player.position.x = player.position.x + player.vector.x;
+  player.position.y = player.position.y + player.vector.y;
+  // player.step = (player.step + 1) % (4 * 10);
+  // player.tilemap = this.tileset.player.run[(player.step - (player.step % 10)) / 10]
   this.draw(pitch);
+  this.draw(player);
 };
