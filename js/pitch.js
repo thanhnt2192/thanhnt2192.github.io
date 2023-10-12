@@ -35,10 +35,19 @@ window.game.initializePitch = function () {
       absolute: false
     }
   }
+
+  this.sprite.ball = {
+    tilemap: [[this.tileset.ball[0]]],
+    position: {
+      x: 50,
+      y: 0,
+      absolute: false
+    }
+  };
 };
 
 window.game.renderPitch = function () {
-  const { pitch, player } = this.sprite;
+  const { pitch, player, ball } = this.sprite;
 
   player.delay = player.delay + 1;
   if (player.delay > (6 - player.speed)) {
@@ -50,6 +59,19 @@ window.game.renderPitch = function () {
   player.position.y = player.position.y + player.vector.y;
   // player.step = (player.step + 1) % (4 * 10);
   // player.tilemap = this.tileset.player.run[(player.step - (player.step % 10)) / 10]
+
   this.draw(pitch);
   this.draw(player);
+  ball.position.y = ball.position.y + 1;
+  this.draw(ball);
+  ball.position.y = ball.position.y + 1;
+  this.draw(ball);
+  ball.position.y = ball.position.y + 1;
+  this.draw(ball);
+  ball.position.y = ball.position.y + 1;
+  this.draw(ball);
+  ball.position.y = ball.position.y + 1;
+  this.draw(ball);
+  ball.position.y = ball.position.y + 1;
+  this.draw(ball);
 };
