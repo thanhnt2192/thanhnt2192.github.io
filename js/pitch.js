@@ -62,16 +62,17 @@ window.game.renderPitch = function () {
 
   this.draw(pitch);
   this.draw(player);
-  ball.position.y = ball.position.y + 1;
+
+  ball.position.y = ball.position.y - 10;
   this.draw(ball);
-  ball.position.y = ball.position.y + 1;
+  ball.position.y = ball.position.y + 5;
   this.draw(ball);
-  ball.position.y = ball.position.y + 1;
+  ball.position.y = ball.position.y + 5;
   this.draw(ball);
-  ball.position.y = ball.position.y + 1;
+  ball.position.y = ball.position.y + 5;
   this.draw(ball);
-  ball.position.y = ball.position.y + 1;
-  this.draw(ball);
-  ball.position.y = ball.position.y + 1;
-  this.draw(ball);
+  // ball.position.y = ball.position.y + 1;
+  // this.draw(ball);
+  // ball.position.y = ball.position.y + 1;
+  // this.draw(ball);
 };

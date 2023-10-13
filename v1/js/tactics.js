@@ -1,5 +1,47 @@
 window.game = {
   ...window.game,
+  positions: {
+    gk: [
+      "sweeper" // TODO: low priority
+    ],
+    cb: [
+      "gum", // kèm chặt
+      "playmaker", // dâng cao kiến thiết lối chơi
+    ],
+    rb: [
+      "gum",
+      "crosser",
+      "cut insider",
+      "playmaker"
+    ],
+    cm: [
+      "gum",
+      "playmaker",
+      "crosser"
+    ],
+    dm: [
+      "gum",
+      "playmaker"
+    ],
+    am: [
+      "playmaker",
+      "false nine"
+    ],
+    rm: [
+      "gum",
+      "crosser",
+      "cut insider",
+      "playmaker"
+    ],
+    cf: [
+      "target man", // poacher, advanced...
+      "false nine"
+    ],
+    rw: [
+      "crosser",
+      "cut insider"
+    ],
+  },
   skills: [
     {
       name: "Intuition",
