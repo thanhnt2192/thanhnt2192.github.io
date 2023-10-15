@@ -4,43 +4,35 @@ window.game = {
     gk: [
       "sweeper" // TODO: low priority
     ],
-    cb: [
-      "gum", // kèm chặt
-      "playmaker", // dâng cao kiến thiết lối chơi
-    ],
-    rb: [
-      "gum",
-      "crosser",
-      "cut insider",
-      "playmaker"
-    ],
-    cm: [
-      "gum",
-      "playmaker",
-      "crosser"
-    ],
-    dm: [
-      "gum",
-      "playmaker"
-    ],
-    am: [
-      "playmaker",
-      "false nine"
-    ],
-    rm: [
-      "gum",
-      "crosser",
-      "cut insider",
-      "playmaker"
-    ],
-    cf: [
-      "target man", // poacher, advanced...
-      "false nine"
-    ],
-    rw: [
-      "crosser",
-      "cut insider"
-    ],
+    cb: {
+      "defender": "Central Defender", // kèm chặt
+      "playmaker": "Ball Playing Defender", // dâng cao kiến thiết lối chơi
+    },
+    rb: {
+      "defender": "Full Back", // hậu vệ cánh
+      "winger": "Wing Back", // hậu vệ chạy cánh
+      "playmaker": "Inverted Wing Back" // Hậu vệ cánh ảo
+    },
+    cm: {
+      "playmaker": "Central Playmaker", // Tiền vệ kiến thiết
+      "winger": "Wide Playmaker" // Tiền vệ kiến thiết chơi rộng
+    },
+    dm: {
+      "defender": "Box to Box Midfielder", // Tiền vệ con thoi
+      "playmaker": "Deep Lying Playmaker" // Tiền vệ kiến thiết lùi sâu
+    },
+    am: {
+      "playmaker": "Advanced Playmaker", // Tiền vệ kiến thiết dâng cao
+      "striker": "Shadow Striker" // Tiền đạo ẩn
+    },
+    cf: {
+      "striker": "Advanced Forward", // Tiền đạo cắm
+      "playmaker": "False Nine" // Số 9 ảo
+    },
+    rw: {
+      "winger": "Winger", // Tiền vệ chạy cánh
+      "striker": "Inside Forward" // Tiền đạo cánh
+    },
   },
   skills: [
     {
