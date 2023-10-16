@@ -183,12 +183,36 @@
                   for (let j = jStart; j < jEnd; j++) {
                     const imageDataIndex = (dy + i) * 4 * this.screenWidth + (dx + j) * 4;
                     const tileDataIndex = i * 4 * 8 + j * 4;
+                    // The formula for combining C1 = (R1,G1,B1) and C2 = (R2,G2,B2) into a new color C3, where C2 is overlayed on top of C1 with opacity p is usually ( (1-p)R1 + p*R2, (1-p)*G1 + p*G2, (1-p)*B1 + p*B2 ).
+                    // https://en.wikipedia.org/wiki/Transparency_%28graphic%29
+                    // Alpha Compositing: https://en.wikipedia.org/wiki/Alpha_compositing
+                    // R = (R1 * a1 / 255) + (R2 * a2 * (255 - a1) / (255^2))
+                    // G = (G1 * a1 / 255) + (G2 * a2 * (255 - a1) / (255^2))
+                    // B = (B1 * a1 / 255) + (B2 * a2 * (255 - a1) / (255^2))
+                    // Alpha = a1 + (a2 * (255 - a1) / 255)
+                    this.imageData[imageDataIndex] = this.Math.floor(
+                      (tile[tileDataIndex] * tile[tileDataIndex + 3] / 255) +
+                      (this.imageData[imageDataIndex] * this.imageData[imageDataIndex + 3] * (255 - tile[tileDataIndex + 3]) / (255 * 255))
+                    );
+                    this.imageData[imageDataIndex + 1] = this.Math.floor(
+                      (tile[tileDataIndex + 1] * tile[tileDataIndex + 3] / 255) +
+                      (this.imageData[imageDataIndex + 1] * this.imageData[imageDataIndex + 3] * (255 - tile[tileDataIndex + 3]) / (255 * 255))
+                    );
+                    this.imageData[imageDataIndex + 2] = this.Math.floor(
+                      (tile[tileDataIndex + 2] * tile[tileDataIndex + 3] / 255) +
+                      (this.imageData[imageDataIndex + 2] * this.imageData[imageDataIndex + 3] * (255 - tile[tileDataIndex + 3]) / (255 * 255))
+                    );
+                    this.imageData[imageDataIndex + 3] = this.Math.floor(
+                      tile[tileDataIndex + 3] + (this.imageData[imageDataIndex + 3] * (255 - tile[tileDataIndex + 3]) / 255)
+                    );
+                    /*
                     // Not clear background with transparent pixels
                     if (tile[tileDataIndex + 3] === 0) continue;
                     this.imageData[imageDataIndex] = tile[tileDataIndex];
                     this.imageData[imageDataIndex + 1] = tile[tileDataIndex + 1];
                     this.imageData[imageDataIndex + 2] = tile[tileDataIndex + 2];
                     this.imageData[imageDataIndex + 3] = tile[tileDataIndex + 3];
+                    */
                   }
                 }
               }

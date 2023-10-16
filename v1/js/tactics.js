@@ -5,11 +5,11 @@ window.game = {
       "sweeper" // TODO: low priority
     ],
     cb: {
-      "defender": "Central Defender", // kèm chặt
-      "playmaker": "Ball Playing Defender", // dâng cao kiến thiết lối chơi
+      "defender": "Central Defender", // Hậu vệ trung tâm
+      "playmaker": "Ball Playing Defender", // Hậu vệ làm bóng
     },
     rb: {
-      "defender": "Full Back", // hậu vệ cánh
+      "defender": "Full Back", // hậu vệ biên
       "winger": "Wing Back", // hậu vệ chạy cánh
       "playmaker": "Inverted Wing Back" // Hậu vệ cánh ảo
     },
@@ -18,7 +18,7 @@ window.game = {
       "winger": "Wide Playmaker" // Tiền vệ kiến thiết chơi rộng
     },
     dm: {
-      "defender": "Box to Box Midfielder", // Tiền vệ con thoi
+      "defender": "Anchor Man", // Tiền vệ mỏ neo/đánh chặn
       "playmaker": "Deep Lying Playmaker" // Tiền vệ kiến thiết lùi sâu
     },
     am: {
