@@ -15,6 +15,7 @@ window.game = {
     },
     cm: {
       "playmaker": "Central Playmaker", // Tiền vệ kiến thiết
+      "balancer": "Box to Box Midfielder", // Tiền vệ con thoi
       "winger": "Wide Playmaker" // Tiền vệ kiến thiết chơi rộng
     },
     dm: {

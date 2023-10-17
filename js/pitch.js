@@ -44,6 +44,17 @@ window.game.initializePitch = function () {
       absolute: false
     }
   };
+  this.sprite.ball.shadows = [];
+  for (let i = 0; i < 10; i++) {
+    const shadow = [[...this.tileset.ball[0]], [...this.tileset.ball[1]], [...this.tileset.ball[2]]];
+    for (let j = 0; j < 64; j++) {
+      if (shadow[0][j * 4 + 3] > 0) {
+        shadow[0][j * 4 + 3] = parseInt(255 / (10 - i));
+      }
+    }
+    this.sprite.ball.shadows.push(shadow);
+  }
+  
 };
 
 window.game.renderPitch = function () {
@@ -63,13 +74,13 @@ window.game.renderPitch = function () {
   this.draw(pitch);
   this.draw(player);
 
-  ball.position.y = ball.position.y - 10;
+  ball.position.y = ball.position.y - 20;
   this.draw(ball);
-  ball.position.y = ball.position.y + 5;
+  ball.position.y = ball.position.y + 10;
   this.draw(ball);
-  ball.position.y = ball.position.y + 5;
+  ball.position.y = ball.position.y + 10;
   this.draw(ball);
-  ball.position.y = ball.position.y + 5;
+  ball.position.y = ball.position.y + 10;
   this.draw(ball);
   // ball.position.y = ball.position.y + 1;
   // this.draw(ball);
