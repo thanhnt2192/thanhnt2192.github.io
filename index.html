@@ -54,6 +54,10 @@
       };
 
       window.process = function (timestamp) {
+        this.game.timestamp = timestamp;
+        if (!this.previousTimestamp) {
+          this.previousTimestamp = timestamp;
+        }
         const elapsed = timestamp - this.previousTimestamp;
         if (elapsed > this.fpsInterval) {
           // Get ready for next frame by setting previousTimestamp=timestamp, but...
@@ -106,7 +110,7 @@
       };
 
       window.launch = function () {
-        this.fpsInterval = 1000 / 30;
+        this.fpsInterval = 1000 / 60;
         this.screenWidth = 160;
         this.screenHeight = 144;
         this.screenScale = 4;
@@ -250,7 +254,7 @@
 
         this.game.initialize();
 
-        this.previousTimestamp = this.performance.now();
+        // this.previousTimestamp = this.performance.now();
         this.requestAnimationFrame(this.process);
       };
     </script>

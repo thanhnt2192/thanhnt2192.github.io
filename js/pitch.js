@@ -37,7 +37,7 @@ window.game.initializePitch = function () {
   }
 
   this.sprite.ball = {
-    tilemap: [[this.tileset.ball[0]]],
+    // tilemap: [[this.tileset.ball[0]]],
     position: {
       x: 50,
       y: 0,
@@ -48,13 +48,13 @@ window.game.initializePitch = function () {
   for (let i = 0; i < 10; i++) {
     const shadow = [[...this.tileset.ball[0]], [...this.tileset.ball[1]], [...this.tileset.ball[2]]];
     for (let j = 0; j < 64; j++) {
-      if (shadow[0][j * 4 + 3] > 0) {
-        shadow[0][j * 4 + 3] = parseInt(255 / (10 - i));
+      for (let s = 0; s < 3; s++) {
+        shadow[s][j * 4 + 3] = parseInt(shadow[s][j * 4 + 3] * (10 - i) / 10);
       }
     }
     this.sprite.ball.shadows.push(shadow);
   }
-  
+  this.sprite.ball.tilemap = [[this.sprite.ball.shadows[0][0]]];
 };
 
 window.game.renderPitch = function () {
@@ -71,15 +71,43 @@ window.game.renderPitch = function () {
   // player.step = (player.step + 1) % (4 * 10);
   // player.tilemap = this.tileset.player.run[(player.step - (player.step % 10)) / 10]
 
+  ball.animation = {
+    sprite: {
+      sheet: [
+        [[this.tileset.ball[0]]],
+        [[this.tileset.ball[1]]],
+        [[this.tileset.ball[2]]]
+      ],
+      frame: 0,
+      loop: true,
+      period: 10,
+      timestamp: this.timestamp
+    },
+    horizontal: {
+      vector: 0,
+      period: 10,
+      timestamp: this.timestamp
+    },
+    vertical: {
+      vector: 5,
+      period: 10,
+      timestamp: this.timestamp
+    }
+  };
+
   this.draw(pitch);
   this.draw(player);
 
+  ball.tilemap = [[ball.shadows[9][0]]];
   ball.position.y = ball.position.y - 20;
   this.draw(ball);
+  ball.tilemap = [[ball.shadows[6][0]]];
   ball.position.y = ball.position.y + 10;
   this.draw(ball);
+  ball.tilemap = [[ball.shadows[3][0]]];
   ball.position.y = ball.position.y + 10;
   this.draw(ball);
+  ball.tilemap = [[ball.shadows[0][0]]];
   ball.position.y = ball.position.y + 10;
   this.draw(ball);
   // ball.position.y = ball.position.y + 1;
