@@ -17,3 +17,15 @@ window.game.initialize = function () {
   this.render = this.renderPitch;
   // this.render = this.renderTitle;
 };
+
+window.game.animate = function (obj) {
+  if (this.timestamp - obj.animation.sprite.period > obj.animation.sprite.timestamp) {
+    obj.animation.sprite.frame = (obj.animation.sprite.frame + 1) % obj.animation.sprite.sheet.length;
+    obj.tilemap = obj.animation.sprite.sheet[obj.animation.sprite.frame];
+    obj.animation.sprite.timestamp = this.timestamp;
+  }
+  if (this.timestamp - obj.animation.vertical.period > obj.animation.vertical.timestamp) {
+    obj.position.y = obj.position.y + obj.animation.vertical.vector;
+    obj.animation.vertical.timestamp = this.timestamp;
+  }
+};
