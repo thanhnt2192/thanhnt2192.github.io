@@ -7,11 +7,33 @@ window.game = {
     cb: {
       "defender": "Central Defender", // Hậu vệ trung tâm
       "playmaker": "Ball Playing Defender", // Hậu vệ làm bóng
+      "attributes": [
+        "marking", // Kèm người, hạn chế tiền đạo chạy chỗ
+        "Stading Tackle", // Cướp bóng
+        "Sliding Tackle", // Xoạc bóng, khả năng nhận thẻ cao hơn
+        "Interceptions", // Cắt bóng, chặn những đường chuyền và sút
+        "Heading", // Đánh đầu, phá bóng (chuyền dài, phạt góc) hoặc ghi bàn (phạt góc)
+        "Short Passing", // Chuyền ngắn
+        "Long Passing", // Chuyền dài
+        "Strength", // Sức mạnh, tì đè
+        "Agility" // Tốc độ, nhanh nhẹn trong những pha bóng chạy về sau tình huống phạt góc để chống phản công
+      ]
     },
     rb: {
       "defender": "Full Back", // hậu vệ biên
       "winger": "Wing Back", // hậu vệ chạy cánh
-      "playmaker": "Inverted Wing Back" // Hậu vệ cánh ảo
+      "playmaker": "Inverted Wing Back", // Hậu vệ cánh ảo
+      "attributes": [
+        "Stading Tackle", // Cướp bóng
+        "Sliding Tackle", // Xoạc bóng, khả năng nhận thẻ cao hơn
+        "Interceptions", // Cắt bóng, chặn những đường chuyền và sút
+        "Heading", // Đánh đầu, phá bóng (chuyền dài, phạt góc) hoặc ghi bàn (phạt góc)
+        "Passing", // Chuyền bóng, chuyền ngắn và chuyền dài
+        "Crossing", // Tạt bóng
+        "Stamina", // Sức bền, di chuyển nhiều hơn
+        "Sprint", // Tốc độ, nhanh nhẹn trong những pha bóng chạy về sau tình huống phạt góc để chống phản công
+        "Acceleration" // Tăng tốc, bứt tốc để qua người
+      ]
     },
     cm: {
       "playmaker": "Central Playmaker", // Tiền vệ kiến thiết
@@ -20,19 +42,58 @@ window.game = {
     },
     dm: {
       "defender": "Anchor Man", // Tiền vệ mỏ neo/đánh chặn
-      "playmaker": "Deep Lying Playmaker" // Tiền vệ kiến thiết lùi sâu
+      "playmaker": "Deep Lying Playmaker", // Tiền vệ kiến thiết lùi sâu
+      "attributes": [
+        "Marking", // Kèm người, hạn chế tiền đạo chạy chỗ
+        "Tackle", // Cướp bóng
+        "Interceptions", // Cắt bóng, chặn những đường chuyền và sút
+        "Heading", // Đánh đầu, phá bóng (chuyền dài, phạt góc) hoặc ghi bàn (phạt góc)
+        "Short Passing", // Chuyền ngắn
+        "Long Passing", // Chuyền dài
+        "Finishing", // Dứt điểm
+        "Stamina", // Sức bền, di chuyển nhiều hơn
+        "Agility" // Tốc độ, nhanh nhẹn trong những pha bóng chạy về sau tình huống phạt góc để chống phản công
+      ]
     },
     am: {
       "playmaker": "Advanced Playmaker", // Tiền vệ kiến thiết dâng cao
-      "striker": "Shadow Striker" // Tiền đạo ẩn
+      "striker": "Shadow Striker", // Tiền đạo ẩn
+      "attributes": [
+        "Pressing", // Gây áp lực, phòng ngự, cướp bóng
+        "Tackle", // Cướp bóng
+        "Interceptions", // Cắt bóng, chặn những đường chuyền và sút
+        "Heading", // Đánh đầu, phá bóng (chuyền dài, phạt góc) hoặc ghi bàn (phạt góc)
+        "Passing", // Chuyền
+        "Long Shot", // Sút xa
+        "Finishing", // Dứt điểm
+        "Stamina", // Sức bền, di chuyển nhiều hơn
+        "Agility" // Tốc độ, nhanh nhẹn trong những pha bóng chạy về sau tình huống phạt góc để chống phản công
+      ]
     },
     cf: {
       "striker": "Advanced Forward", // Tiền đạo cắm
-      "playmaker": "False Nine" // Số 9 ảo
+      "playmaker": "False Nine", // Số 9 ảo
+      "attributes": [
+        "Finishing", // Dứt điểm
+        "Positioning", // Chọn vị trí, chạy chỗ không bóng (off the ball)
+        "Acceleration", // Tăng tốc, bứt tốc để qua người
+        "Pressing", // Gây áp lực, phòng ngự, cướp bóng
+        "Heading", // Đánh đầu
+        "Strength", // Sức mạnh, tì đè
+        "Passing", // Chuyền
+      ]
     },
     rw: {
       "winger": "Winger", // Tiền vệ chạy cánh
-      "striker": "Inside Forward" // Tiền đạo cánh
+      "striker": "Inside Forward", // Tiền đạo cánh
+      "attributes": [
+        "Crossing", // Tạt bóng
+        "Acceleration", // Tăng tốc, bứt tốc để qua người
+        "Pressing", // Gây áp lực, phòng ngự, cướp bóng
+        "Passing", // Chuyền
+        "Stamina", // Sức bền, di chuyển nhiều hơn
+        "Sprint", // Tốc độ, nhanh nhẹn trong những pha bóng chạy về sau tình huống phạt góc để chống phản công
+      ]
     },
   },
   skills: [
