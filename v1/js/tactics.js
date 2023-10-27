@@ -1,5 +1,191 @@
 window.game = {
   ...window.game,
+  styles: [
+    {
+      "role": "defender",
+      "title": {
+        "en": "No-Nonsense Defender",
+        "vi": "Hậu vệ phá bóng"
+      },
+      "attributes": [
+        { "en": "Tackling", "vi": "Cản phá" },
+        { "en": "Marking", "vi": "Kèm người" },
+        { "en": "Heading", "vi": "Đánh đầu" },
+        { "en": "Strength", "vi": "Sức mạnh" },
+        { "en": "Slide Tackling", "vi": "Xoạc bóng" }
+      ]
+    },
+    {
+      "role": "playmaker",
+      "title": {
+        "en": "Ball-Playing Defender",
+        "vi": "Hậu vệ làm bóng"
+      },
+      "attributes": [
+        { "en": "Tackling", "vi": "Cản phá" },
+        { "en": "Heading", "vi": "Đánh đầu" },
+        { "en": "Passing", "vi": "Chuyền bóng" },
+        { "en": "Strength", "vi": "Sức mạnh" },
+        { "en": "Slide Tackling", "vi": "Xoạc bóng" }
+      ]
+    },
+    {
+      "role": "defender",
+      "title": {
+        "en": "Anchor Man",
+        "vi": "Tiền vệ đánh chặn"
+      },
+      "attributes": [
+        { "en": "Marking", "vi": "Kèm người" },
+        { "en": "Tackling", "vi": "Cản phá" },
+        { "en": "Interceptions", "vi": "Cắt bóng" },
+        { "en": "Passing", "vi": "Chuyền bóng" },
+        { "en": "Heading", "vi": "Đánh đầu" }
+      ]
+    },
+    {
+      "role": "playmaker",
+      "title": {
+        "en": "Deep Lying Playmaker",
+        "vi": "Tiền vệ kiến thiết lùi sâu"
+      },
+      "attributes": [
+        { "en": "Short passing", "vi": "Chuyền ngắn" },
+        { "en": "Long passing", "vi": "Chuyền dài" },
+        { "en": "Long shots", "vi": "Sút xa" },
+        { "en": "Dribbling", "vi": "Rê bóng" },
+      ]
+    },
+    {
+      "role": "balancer",
+      "title": {
+        "en": "Box to Box Midfielder",
+        "vi": "Tiền vệ con thoi"
+      },
+      "attributes": [
+        { "en": "Passing", "vi": "Chuyền bóng" },
+        { "en": "Tackling", "vi": "Cản phá" },
+        { "en": "Finishing", "vi": "Dứt điểm" },
+        { "en": "Stamina", "vi": "Sức bền" }
+      ]
+    },
+    {
+      "role": "playmaker",
+      "title": {
+        "en": "Advanced Playmaker",
+        "vi": "Tiền vệ kiến thiết"
+      },
+      "attributes": [
+        { "en": "Passing", "vi": "Chuyền bóng" },
+        { "en": "Long shots", "vi": "Sút xa" },
+        { "en": "Dribbling", "vi": "Rê bóng" },
+        { "en": "Finishing", "vi": "Dứt điểm" },
+      ]
+    },
+    {
+      "role": "striker",
+      "title": {
+        "en": "Shadow Striker",
+        "vi": "Hộ công"
+      },
+      "attributes": [
+        { "en": "Long shots", "vi": "Sút xa" },
+        { "en": "Dribbling", "vi": "Rê bóng" },
+        { "en": "Finishing", "vi": "Dứt điểm" },
+        { "en": "Positioning", "vi": "Chạy chỗ" }, // Chọn vị trí, chạy chỗ không bóng (off the ball)
+        { "en": "Passing", "vi": "Chuyền bóng" },
+        { "en": "Heading", "vi": "Đánh đầu" },
+      ]
+    },
+    {
+      "role": "winger",
+      "title": {
+        "en": "Wing Back",
+        "vi": "Hậu vệ cánh"
+      },
+      "attributes": [
+        { "en": "Tackling", "vi": "Cản phá" },
+        { "en": "Stamina", "vi": "Sức bền" },
+        { "en": "Sprint", "vi": "Tốc độ" },
+        { "en": "Crossing", "vi": "Tạt bóng" },
+        { "en": "Passing", "vi": "Chuyền bóng" },
+        { "en": "Slide Tackling", "vi": "Xoạc bóng" }
+      ]
+    },
+    {
+      "role": "playmaker",
+      "title": {
+        "en": "Inverted Wing Back",
+        "vi": "Hậu vệ cánh ngược"
+      },
+      "attributes": [
+        { "en": "Tackling", "vi": "Cản phá" },
+        { "en": "Stamina", "vi": "Sức bền" },
+        { "en": "Passing", "vi": "Chuyền bóng" },
+        { "en": "Dribbling", "vi": "Rê bóng" },
+        { "en": "Sprint", "vi": "Tốc độ" },
+        { "en": "Slide Tackling", "vi": "Xoạc bóng" },
+      ]
+    },
+    {
+      "role": "winger",
+      "title": {
+        "en": "Dual Winger",
+        "vi": "Tiền vệ cánh"
+      },
+      "attributes": [
+        { "en": "Crossing", "vi": "Tạt bóng" },
+        { "en": "Sprint", "vi": "Tốc độ" },
+        { "en": "Stamina", "vi": "Sức bền" },
+        { "en": "Tackling", "vi": "Cản phá" },
+        { "en": "Passing", "vi": "Chuyền bóng" },
+        { "en": "Dribbling", "vi": "Rê bóng" },
+      ]
+    },
+    {
+      "role": "striker",
+      "title": {
+        "en": "Inside Forward",
+        "vi": "Tiền đạo cánh"
+      },
+      "attributes": [
+        { "en": "Dribbling", "vi": "Rê bóng" },
+        { "en": "Finishing", "vi": "Dứt điểm" },
+        { "en": "Acceleration", "vi": "Tăng tốc" },
+        { "en": "Long shots", "vi": "Sút xa" },
+        { "en": "Passing", "vi": "Chuyền bóng" },
+        { "en": "Positioning", "vi": "Chạy chỗ" } // Chọn vị trí, chạy chỗ không bóng (off the ball)
+      ]
+    },
+    {
+      "role": "playmaker",
+      "title": {
+        "en": "False Nine",
+        "vi": "Số 9 ảo"
+      },
+      "attributes": [
+        { "en": "Dribbling", "vi": "Rê bóng" },
+        { "en": "Finishing", "vi": "Dứt điểm" },
+        { "en": "Passing", "vi": "Chuyền bóng" },
+        { "en": "Positioning", "vi": "Chạy chỗ" }, // Chọn vị trí, chạy chỗ không bóng (off the ball)
+        { "en": "Acceleration", "vi": "Tăng tốc" },
+        { "en": "Pressing", "vi": "Gây áp lực" }
+      ]
+    },
+    {
+      "role": "striker",
+      "title": {
+        "en": "Advanced Forward",
+        "vi": "Tiền đạo cắm"
+      },
+      "attributes": [
+        { "en": "Finishing", "vi": "Dứt điểm" },
+        { "en": "Positioning", "vi": "Chạy chỗ" }, // Chọn vị trí, chạy chỗ không bóng (off the ball)
+        { "en": "Strength", "vi": "Sức mạnh" },
+        { "en": "Heading", "vi": "Đánh đầu" },
+      ]
+    }
+  ],
   positions: {
     gk: [
       "sweeper" // TODO: low priority
@@ -8,7 +194,7 @@ window.game = {
       "defender": "Central Defender", // Hậu vệ trung tâm
       "playmaker": "Ball Playing Defender", // Hậu vệ làm bóng
       "attributes": [
-        "marking", // Kèm người, hạn chế tiền đạo chạy chỗ
+        "Marking", // Kèm người, hạn chế tiền đạo chạy chỗ
         "Stading Tackle", // Cướp bóng
         "Sliding Tackle", // Xoạc bóng, khả năng nhận thẻ cao hơn
         "Interceptions", // Cắt bóng, chặn những đường chuyền và sút
@@ -24,7 +210,7 @@ window.game = {
       "winger": "Wing Back", // hậu vệ chạy cánh
       "playmaker": "Inverted Wing Back", // Hậu vệ cánh ảo
       "attributes": [
-        "Stading Tackle", // Cướp bóng
+        "Standing Tackle", // Cướp bóng
         "Sliding Tackle", // Xoạc bóng, khả năng nhận thẻ cao hơn
         "Interceptions", // Cắt bóng, chặn những đường chuyền và sút
         "Heading", // Đánh đầu, phá bóng (chuyền dài, phạt góc) hoặc ghi bàn (phạt góc)
