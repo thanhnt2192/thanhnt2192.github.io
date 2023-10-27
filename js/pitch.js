@@ -44,6 +44,7 @@ window.game.initializePitch = function () {
       absolute: false
     }
   };
+  /*
   this.sprite.ball.shadows = [];
   for (let i = 0; i < 10; i++) {
     const shadow = {
@@ -58,6 +59,7 @@ window.game.initializePitch = function () {
     }
     this.sprite.ball.shadows.push(shadow);
   }
+  */
   // this.sprite.ball.tilemap = [[this.sprite.ball.shadows[0][0]]];
 
   this.sprite.ball.animation = {
@@ -72,22 +74,15 @@ window.game.initializePitch = function () {
       period: 50,
       timestamp: this.timestamp
     },
-    shadows: [
-      {
-        tilemap: [],
-        position: {},
+    shadow: {
+        instances: [],
         sprite: {
-          sheet: [
-            [[this.tileset.ball[0]]],
-            [[this.tileset.ball[1]]],
-            [[this.tileset.ball[2]]]
-          ],
+          sheet: [],
           period: 50,
           duration: 100,
           timestamp: this.timestamp
         }
-      }
-    ],
+    },
     horizontal: {
       vector: 0,
       period: 10,
@@ -99,6 +94,21 @@ window.game.initializePitch = function () {
       timestamp: this.timestamp
     }
   };
+
+  for (let i = 0; i < 10; i++) {
+    const shadow = [[...this.tileset.ball[0]], [...this.tileset.ball[1]], [...this.tileset.ball[2]]];
+    for (let j = 0; j < 64; j++) {
+      for (let s = 0; s < 3; s++) {
+        shadow[s][j * 4 + 3] = parseInt(shadow[s][j * 4 + 3] * (10 - i) / 10);
+      }
+    }
+    const tileset = [
+      [[shadow[0]]],
+      [[shadow[1]]],
+      [[shadow[2]]]
+    ];
+    this.sprite.ball.animation.shadow.sprite.sheet.push(tileset);
+  }
 };
 
 window.game.renderPitch = function () {

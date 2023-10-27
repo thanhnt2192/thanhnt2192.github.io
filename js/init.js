@@ -28,4 +28,6 @@ window.game.animate = function (obj) {
     obj.position.y = obj.position.y + obj.animation.vertical.vector;
     obj.animation.vertical.timestamp = this.timestamp;
   }
+  if (this.timestamp - obj.animation.shadow.sprite.period > obj.animation.shadow.sprite.timestamp) {
+  }
 };
