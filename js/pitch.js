@@ -75,13 +75,14 @@ window.game.initializePitch = function () {
       timestamp: this.timestamp
     },
     shadow: {
-        instances: [],
-        sprite: {
-          sheet: [],
-          period: 50,
-          duration: 100,
-          timestamp: this.timestamp
-        }
+      instances: [],
+      sprite: {
+        sheet: [],
+        period: 50,
+        duration: 100,
+        timestamp: this.timestamp
+      },
+      period: 50
     },
     horizontal: {
       vector: 0,
@@ -95,6 +96,9 @@ window.game.initializePitch = function () {
     }
   };
 
+  this.sprite.ball.animation.shadow.sprite.sheet = [
+    [], [], []
+  ];
   for (let i = 0; i < 10; i++) {
     const shadow = [[...this.tileset.ball[0]], [...this.tileset.ball[1]], [...this.tileset.ball[2]]];
     for (let j = 0; j < 64; j++) {
@@ -107,7 +111,10 @@ window.game.initializePitch = function () {
       [[shadow[1]]],
       [[shadow[2]]]
     ];
-    this.sprite.ball.animation.shadow.sprite.sheet.push(tileset);
+    this.sprite.ball.animation.shadow.sprite.sheet[0].push([[shadow[0]]]);
+    this.sprite.ball.animation.shadow.sprite.sheet[1].push([[shadow[1]]]);
+    this.sprite.ball.animation.shadow.sprite.sheet[2].push([[shadow[2]]]);
+    // this.sprite.ball.animation.shadow.sprite.sheet.push(tileset);
   }
 };
 
@@ -134,6 +141,9 @@ window.game.renderPitch = function () {
   if (!ball.animation.vertical.timestamp) {
     ball.animation.vertical.timestamp = this.timestamp;
   }
+  if (!ball.animation.shadow.timestamp) {
+    ball.animation.shadow.timestamp = this.timestamp;
+  }
   this.animate(ball);
   // ball.tilemap = [[ball.shadows[9][0]]];
   // ball.position.y = ball.position.y - 20;
@@ -146,6 +156,9 @@ window.game.renderPitch = function () {
   // this.draw(ball);
   // ball.tilemap = [[ball.shadows[0][0]]];
   // ball.position.y = ball.position.y + 10;
+  for (const i of this.sprite.ball.animation.shadow.instances) {
+    this.draw(i);
+  }
   this.draw(ball);
   // ball.position.y = ball.position.y + 1;
   // this.draw(ball);

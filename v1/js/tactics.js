@@ -2,6 +2,20 @@ window.game = {
   ...window.game,
   styles: [
     {
+      "role": "keeper",
+      "title": {
+        "en": "Goalkeeper",
+        "vi": "Thu mon",
+      },
+      "attributes": [
+        { "en": "Diving", "vi": "Cản phá" },
+        { "en": "Handling", "vi": "Handling người" },
+        { "en": "Kicking", "vi": "Đánh đầu" },
+        { "en": "Reactions", "vi": "Sức mạnh" },
+        { "en": "Reflexes", "vi": "Xoạc bóng" }
+      ]
+    },
+    {
       "role": "defender",
       "title": {
         "en": "No-Nonsense Defender",
@@ -140,6 +154,21 @@ window.game = {
         { "en": "Tackling", "vi": "Cản phá" },
         { "en": "Passing", "vi": "Chuyền bóng" },
         { "en": "Dribbling", "vi": "Rê bóng" },
+      ]
+    },
+    {
+      "role": "playmaker",
+      "title": {
+        "en": "Wide Playmaker",
+        "vi": "Tiền vệ kiến thiết chơi rộng"
+      },
+      "attributes": [
+        { "en": "Crossing", "vi": "Tạt bóng" },
+        { "en": "Long shots", "vi": "Sút xa" },
+        { "en": "Passing", "vi": "Chuyền bóng" },
+        { "en": "Dribbling", "vi": "Rê bóng" },
+        { "en": "Sprint", "vi": "Tốc độ" },
+        { "en": "Tackling", "vi": "Cản phá" },
       ]
     },
     {
