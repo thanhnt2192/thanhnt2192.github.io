@@ -79,7 +79,6 @@ window.game.initializePitch = function () {
       sprite: {
         sheet: [],
         period: 50,
-        duration: 100,
         timestamp: this.timestamp
       },
       period: 50
@@ -90,8 +89,8 @@ window.game.initializePitch = function () {
       timestamp: this.timestamp
     },
     vertical: {
-      vector: 5,
-      period: 20,
+      vector: 1,
+      period: 5,
       timestamp: this.timestamp
     }
   };
