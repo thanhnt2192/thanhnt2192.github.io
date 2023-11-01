@@ -115,6 +115,13 @@ window.game.initializePitch = function () {
     this.sprite.ball.animation.shadow.sprite.sheet[2].push([[shadow[2]]]);
     // this.sprite.ball.animation.shadow.sprite.sheet.push(tileset);
   }
+
+  this.script = [
+    {
+      start: {},
+      end: {}
+    }
+  ];
 };
 
 window.game.renderPitch = function () {
