@@ -13,9 +13,10 @@ window.game.initializePitch = function () {
     }
   };
 
-  for (let i = 0; i < 115; i++) {
+  // Pitch size: 68m (74 yards) x 105m (115 yards)
+  for (let i = 0; i < 88; i++) { // inner size
     this.sprite.pitch.tilemap.push([]);
-    for (let j = 0; j < 74; j++) {
+    for (let j = 0; j < 68; j++) { // inner size
       this.sprite.pitch.tilemap[i].push(lightPlain);
     }
   }
@@ -44,23 +45,6 @@ window.game.initializePitch = function () {
       absolute: false
     }
   };
-  /*
-  this.sprite.ball.shadows = [];
-  for (let i = 0; i < 10; i++) {
-    const shadow = {
-      tileset: [[...this.tileset.ball[0]], [...this.tileset.ball[1]], [...this.tileset.ball[2]]],
-      tilemap: [],
-      position: { ...this.sprite.ball.position }
-    };
-    for (let j = 0; j < 64; j++) {
-      for (let s = 0; s < 3; s++) {
-        shadow.tileset[s][j * 4 + 3] = parseInt(shadow.tileset[s][j * 4 + 3] * (10 - i) / 10);
-      }
-    }
-    this.sprite.ball.shadows.push(shadow);
-  }
-  */
-  // this.sprite.ball.tilemap = [[this.sprite.ball.shadows[0][0]]];
 
   this.sprite.ball.animation = {
     sprite: {
@@ -105,15 +89,9 @@ window.game.initializePitch = function () {
         shadow[s][j * 4 + 3] = parseInt(shadow[s][j * 4 + 3] * (10 - i) / 10);
       }
     }
-    const tileset = [
-      [[shadow[0]]],
-      [[shadow[1]]],
-      [[shadow[2]]]
-    ];
     this.sprite.ball.animation.shadow.sprite.sheet[0].push([[shadow[0]]]);
     this.sprite.ball.animation.shadow.sprite.sheet[1].push([[shadow[1]]]);
     this.sprite.ball.animation.shadow.sprite.sheet[2].push([[shadow[2]]]);
-    // this.sprite.ball.animation.shadow.sprite.sheet.push(tileset);
   }
 
   this.script = [
