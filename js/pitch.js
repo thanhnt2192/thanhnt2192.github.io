@@ -1,8 +1,22 @@
 window.game.sprite = {};
 
 window.game.initializePitch = function () {
-  const { pitch } = this.tileset;
+  const { unicode, pitch } = this.tileset;
   const { light: { plain: lightPlain } } = pitch;
+
+  this.timer = {
+    tilemap: [
+      [unicode['0'], unicode['0'], unicode[':'], unicode['0'], unicode['0']]
+    ],
+    position: {
+      x: 0,
+      y: 0,
+      absolute: true
+    },
+    minute: 0,
+    second: 0,
+    timestamp: this.timestamp
+  };
 
   this.sprite.pitch = {
     tilemap: [],
@@ -65,7 +79,8 @@ window.game.initializePitch = function () {
         period: 50,
         timestamp: this.timestamp
       },
-      period: 50
+      period: 50,
+      timestamp: this.timestamp
     },
     horizontal: {
       vector: 0,
@@ -103,16 +118,22 @@ window.game.initializePitch = function () {
 };
 
 window.game.tic = function () {
-  if (this.timestamp > this.timer.timestamp + 200) {
+  if (this.timestamp > this.timer.timestamp + 100) {
     this.timer.second++;
     if (this.timer.second > 59) {
-      this.minute++;
-      this.second = 0;
+      this.timer.minute++;
+      this.timer.second = 0;
     }
+    this.timer.timestamp = this.timer.timestamp + 100;
   }
+  this.timer.tilemap[0][0] = this.tileset.unicode[((this.timer.minute - (this.timer.minute % 10)) / 10) + ""];
+  this.timer.tilemap[0][1] = this.tileset.unicode[(this.timer.minute % 10) + ""];
+  this.timer.tilemap[0][3] = this.tileset.unicode[((this.timer.second - (this.timer.second % 10)) / 10) + ""];
+  this.timer.tilemap[0][4] = this.tileset.unicode[(this.timer.second % 10) + ""];
 };
 
 window.game.renderPitch = function () {
+  this.tic();
   const { pitch, player, ball } = this.sprite;
 
   player.delay = player.delay + 1;
@@ -129,15 +150,15 @@ window.game.renderPitch = function () {
   this.draw(pitch);
   this.draw(player);
 
-  if (!ball.animation.sprite.timestamp) {
-    ball.animation.sprite.timestamp = this.timestamp;
-  }
-  if (!ball.animation.vertical.timestamp) {
-    ball.animation.vertical.timestamp = this.timestamp;
-  }
-  if (!ball.animation.shadow.timestamp) {
-    ball.animation.shadow.timestamp = this.timestamp;
-  }
+  // if (!ball.animation.sprite.timestamp) {
+  //   ball.animation.sprite.timestamp = this.timestamp;
+  // }
+  // if (!ball.animation.vertical.timestamp) {
+  //   ball.animation.vertical.timestamp = this.timestamp;
+  // }
+  // if (!ball.animation.shadow.timestamp) {
+  //   ball.animation.shadow.timestamp = this.timestamp;
+  // }
   this.animate(ball);
   // ball.tilemap = [[ball.shadows[9][0]]];
   // ball.position.y = ball.position.y - 20;
@@ -158,4 +179,5 @@ window.game.renderPitch = function () {
   // this.draw(ball);
   // ball.position.y = ball.position.y + 1;
   // this.draw(ball);
+  this.draw(this.timer);
 };

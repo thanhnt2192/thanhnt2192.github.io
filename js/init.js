@@ -1,4 +1,4 @@
-window.game.initialize = function () {
+window.game.render = function () {
   this.scx = 0;
   this.scy = 0;
 
