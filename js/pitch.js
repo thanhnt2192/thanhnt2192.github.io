@@ -102,6 +102,16 @@ window.game.initializePitch = function () {
   ];
 };
 
+window.game.tic = function () {
+  if (this.timestamp > this.timer.timestamp + 200) {
+    this.timer.second++;
+    if (this.timer.second > 59) {
+      this.minute++;
+      this.second = 0;
+    }
+  }
+};
+
 window.game.renderPitch = function () {
   const { pitch, player, ball } = this.sprite;
 
