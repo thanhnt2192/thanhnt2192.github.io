@@ -66,6 +66,7 @@ window.game = {
       "attributes": [
         { "en": "Short passing", "vi": "Chuyền ngắn" },
         { "en": "Long passing", "vi": "Chuyền dài" },
+        { "en": "Interceptions", "vi": "Cắt bóng" },
         { "en": "Long shots", "vi": "Sút xa" },
         { "en": "Dribbling", "vi": "Rê bóng" },
       ]
@@ -93,6 +94,7 @@ window.game = {
         { "en": "Passing", "vi": "Chuyền bóng" },
         { "en": "Long shots", "vi": "Sút xa" },
         { "en": "Dribbling", "vi": "Rê bóng" },
+        { "en": "Interceptions", "vi": "Cắt bóng" },
         { "en": "Finishing", "vi": "Dứt điểm" },
       ]
     },
@@ -122,23 +124,24 @@ window.game = {
         { "en": "Stamina", "vi": "Sức bền" },
         { "en": "Sprint", "vi": "Tốc độ" },
         { "en": "Crossing", "vi": "Tạt bóng" },
+        { "en": "Slide Tackling", "vi": "Xoạc bóng" },
         { "en": "Passing", "vi": "Chuyền bóng" },
-        { "en": "Slide Tackling", "vi": "Xoạc bóng" }
       ]
     },
     {
       "role": "playmaker",
       "title": {
         "en": "Inverted Wing Back",
-        "vi": "Hậu vệ cánh ngược"
+        "vi": "Hậu vệ cánh ảo"
       },
       "attributes": [
         { "en": "Tackling", "vi": "Cản phá" },
-        { "en": "Stamina", "vi": "Sức bền" },
+        { "en": "Long passing", "vi": "Chuyền dài" },
         { "en": "Passing", "vi": "Chuyền bóng" },
-        { "en": "Dribbling", "vi": "Rê bóng" },
-        { "en": "Sprint", "vi": "Tốc độ" },
         { "en": "Slide Tackling", "vi": "Xoạc bóng" },
+        { "en": "Dribbling", "vi": "Rê bóng" },
+        { "en": "Stamina", "vi": "Sức bền" },
+        { "en": "Sprint", "vi": "Tốc độ" },
       ]
     },
     {

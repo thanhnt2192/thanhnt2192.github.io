@@ -13,6 +13,7 @@ window.game.initializePitch = function () {
       y: 0,
       absolute: true
     },
+    seconds: 0,
     minute: 0,
     second: 0,
     timestamp: this.timestamp
@@ -111,7 +112,21 @@ window.game.initializePitch = function () {
 
   this.script = [
     {
-      start: {},
+      seconds: 0,
+      key: "home10",
+      sprite: {
+        sheet: [
+        ],
+        frame: 0,
+        period: 10000,
+        timestamp: this.timestamp
+      },
+    },
+    {
+      start: {
+        x: 296 - 4,
+        y: 460 - 4
+      },
       end: {}
     }
   ];
@@ -119,6 +134,7 @@ window.game.initializePitch = function () {
 
 window.game.tic = function () {
   if (this.timestamp > this.timer.timestamp + 100) {
+    this.timer.seconds++;
     this.timer.second++;
     if (this.timer.second > 59) {
       this.timer.minute++;
