@@ -113,21 +113,51 @@ window.game.initializePitch = function () {
   this.script = [
     {
       seconds: 0,
-      key: "home10",
-      sprite: {
-        sheet: [
-        ],
-        frame: 0,
-        period: 10000,
-        timestamp: this.timestamp
-      },
+      objects: {
+        "0": {
+          position: {
+            x: 272 - 4,
+            y: 352 - 4,
+            position: false
+          },
+          animation: {
+            vertical: {
+              vector: 1,
+              period: 10,
+              timestamp: this.timestamp
+            }
+          }
+        },
+        "11": {
+          tilemap: this.tileset.player.kick[0],
+          position: {
+            x: 272,
+            y: 352 - 16,
+            absolute: false
+          }
+        }
+      }
+      // sprite: {
+      //   sheet: [
+      //     this.tileset.player.kick[0]
+      //   ],
+      //   frame: 0,
+      //   period: 10000,
+      //   timestamp: this.timestamp
+      // },
     },
     {
-      start: {
-        x: 296 - 4,
-        y: 460 - 4
-      },
-      end: {}
+      seconds: 5,
+      objects: {
+        "0": {
+          tilemap: [[this.tileset.ball[0]]],
+          position: {
+            x: 272 - 4,
+            y: 352 - 4 - 50
+          },
+          animation: {}
+        }
+      }
     }
   ];
 };
