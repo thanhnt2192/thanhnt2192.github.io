@@ -20,7 +20,7 @@ window.game.initializePitch = function () {
     timestamp: this.timestamp
   };
 
-  this.sprite.pitch = {
+  this.pitch = {
     tilemap: [],
     position: {
       x: 0,
@@ -129,7 +129,7 @@ window.game.initializePitch = function () {
         }
       },
       home: {
-        "11": {
+        "9": {
           tilemap: this.tileset.player.kick[0],
           position: {
             x: 272,
@@ -184,7 +184,8 @@ window.game.tic = function () {
 
 window.game.renderPitch = function () {
   this.tic();
-  const { pitch, player, ball } = this.sprite;
+  const { pitch } = this;
+  const { player, ball } = this.sprite;
 
   player.delay = player.delay + 1;
   if (player.delay > (6 - player.speed)) {
