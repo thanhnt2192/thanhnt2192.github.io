@@ -16,6 +16,7 @@ window.game.initializePitch = function () {
     seconds: 0,
     minute: 0,
     second: 0,
+    start: this.timestamp + 5000, // start after 5000 ms
     timestamp: this.timestamp
   };
 
@@ -113,21 +114,21 @@ window.game.initializePitch = function () {
   this.script = [
     {
       seconds: 0,
-      objects: {
-        "0": {
-          position: {
-            x: 272 - 4,
-            y: 352 - 4,
-            position: false
-          },
-          animation: {
-            vertical: {
-              vector: 1,
-              period: 10,
-              timestamp: this.timestamp
-            }
-          }
+      ball: {
+        position: {
+          x: 272 - 4,
+          y: 352 - 4,
+          position: false
         },
+        animation: {
+          vertical: {
+            vector: 1,
+            period: 10,
+            timestamp: this.timestamp
+          }
+        }
+      },
+      home: {
         "11": {
           tilemap: this.tileset.player.kick[0],
           position: {
@@ -136,7 +137,7 @@ window.game.initializePitch = function () {
             absolute: false
           }
         }
-      }
+      },
       // sprite: {
       //   sheet: [
       //     this.tileset.player.kick[0]
@@ -163,6 +164,9 @@ window.game.initializePitch = function () {
 };
 
 window.game.tic = function () {
+  if (this.timestamp < this.timer.start) {
+    return;
+  }
   if (this.timestamp > this.timer.timestamp + 100) {
     this.timer.seconds++;
     this.timer.second++;
@@ -196,34 +200,10 @@ window.game.renderPitch = function () {
   this.draw(pitch);
   this.draw(player);
 
-  // if (!ball.animation.sprite.timestamp) {
-  //   ball.animation.sprite.timestamp = this.timestamp;
-  // }
-  // if (!ball.animation.vertical.timestamp) {
-  //   ball.animation.vertical.timestamp = this.timestamp;
-  // }
-  // if (!ball.animation.shadow.timestamp) {
-  //   ball.animation.shadow.timestamp = this.timestamp;
-  // }
   this.animate(ball);
-  // ball.tilemap = [[ball.shadows[9][0]]];
-  // ball.position.y = ball.position.y - 20;
-  // this.draw(ball);
-  // ball.tilemap = [[ball.shadows[6][0]]];
-  // ball.position.y = ball.position.y + 10;
-  // this.draw(ball);
-  // ball.tilemap = [[ball.shadows[3][0]]];
-  // ball.position.y = ball.position.y + 10;
-  // this.draw(ball);
-  // ball.tilemap = [[ball.shadows[0][0]]];
-  // ball.position.y = ball.position.y + 10;
   for (const i of this.sprite.ball.animation.shadow.instances) {
     this.draw(i);
   }
   this.draw(ball);
-  // ball.position.y = ball.position.y + 1;
-  // this.draw(ball);
-  // ball.position.y = ball.position.y + 1;
-  // this.draw(ball);
   this.draw(this.timer);
 };
