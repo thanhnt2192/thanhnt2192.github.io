@@ -16,8 +16,7 @@ window.game.initializePitch = function () {
     seconds: 0,
     minute: 0,
     second: 0,
-    start: this.timestamp + 5000, // start after 5000 ms
-    timestamp: this.timestamp
+    timestamp: this.timestamp + 5000 // start after 5000 ms
   };
 
   this.pitch = {
@@ -31,9 +30,9 @@ window.game.initializePitch = function () {
 
   // Pitch size: 68m (74 yards) x 105m (115 yards)
   for (let i = 0; i < 88; i++) { // inner size
-    this.sprite.pitch.tilemap.push([]);
+    this.pitch.tilemap.push([]);
     for (let j = 0; j < 68; j++) { // inner size
-      this.sprite.pitch.tilemap[i].push(lightPlain);
+      this.pitch.tilemap[i].push(lightPlain);
     }
   }
 
@@ -138,6 +137,8 @@ window.game.initializePitch = function () {
           }
         }
       },
+      away: {
+      }
       // sprite: {
       //   sheet: [
       //     this.tileset.player.kick[0]
@@ -149,22 +150,20 @@ window.game.initializePitch = function () {
     },
     {
       seconds: 5,
-      objects: {
-        "0": {
-          tilemap: [[this.tileset.ball[0]]],
-          position: {
-            x: 272 - 4,
-            y: 352 - 4 - 50
-          },
-          animation: {}
-        }
+      ball: {
+        tilemap: [[this.tileset.ball[0]]],
+        position: {
+          x: 272 - 4,
+          y: 352 - 4 - 50
+        },
+        animation: {}
       }
     }
   ];
 };
 
 window.game.tic = function () {
-  if (this.timestamp < this.timer.start) {
+  if (this.timestamp < this.timer.timestamp) {
     return;
   }
   if (this.timestamp > this.timer.timestamp + 100) {

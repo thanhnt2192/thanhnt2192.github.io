@@ -54,7 +54,7 @@
       };
 
       window.process = function (timestamp) {
-        this.game.timestamp = timestamp;
+        this.game.timestamp = parseInt(timestamp);
         if (!this.previousTimestamp) {
           this.previousTimestamp = timestamp;
         }
@@ -255,6 +255,7 @@
         // this.game.initialize();
 
         // this.previousTimestamp = this.performance.now();
+        // this.previousTimestamp = this.document.timeline.currentTime;
         this.requestAnimationFrame(this.process);
       };
     </script>

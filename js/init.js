@@ -25,16 +25,23 @@ window.game.animate = function (obj) {
   let remain = true;
   while (remain) {
     remain = false;
+    let t = this.timestamp;
     if (this.timestamp - obj.animation.sprite.period > obj.animation.sprite.timestamp) {
       obj.animation.sprite.frame = (obj.animation.sprite.frame + 1) % obj.animation.sprite.sheet.length;
       obj.tilemap = obj.animation.sprite.sheet[obj.animation.sprite.frame];
       obj.animation.sprite.timestamp += obj.animation.sprite.period;
       remain = true;
+      if (t > obj.animation.sprite.timestamp) {
+        t = obj.animation.sprite.timestamp;
+      }
     }
     if (this.timestamp - obj.animation.vertical.period > obj.animation.vertical.timestamp) {
       obj.position.y = obj.position.y + obj.animation.vertical.vector;
       obj.animation.vertical.timestamp += obj.animation.vertical.period;
       remain = true;
+      if (t > obj.animation.vertical.timestamp) {
+        t = obj.animation.vertical.timestamp;
+      }
     }
     if (obj.animation.shadow) {
       // Fade out shadow instances
@@ -50,22 +57,21 @@ window.game.animate = function (obj) {
         }
       }
       // New shadow
-      if (this.timestamp - obj.animation.shadow.period > obj.animation.shadow.timestamp) {
+      if (t - obj.animation.shadow.period > obj.animation.shadow.timestamp) {
+        obj.animation.shadow.timestamp += obj.animation.shadow.period;
         const shadow = {
           animation: {
             sprite: {
               sheet: obj.animation.shadow.sprite.sheet[obj.animation.sprite.frame],
               frame: 0,
               period: obj.animation.shadow.sprite.period,
-              // timestamp: this.timestamp
+              timestamp: obj.animation.shadow.timestamp
             }
           },
         };
         shadow.tilemap = shadow.animation.sprite.sheet[shadow.animation.sprite.frame];
         shadow.position = { ...obj.position };
         obj.animation.shadow.instances = [ shadow, ...obj.animation.shadow.instances ];
-        obj.animation.shadow.timestamp += obj.animation.shadow.period;
-        shadow.animation.sprite.timestamp = obj.animation.shadow.timestamp;
         remain = true;
       }
     }
