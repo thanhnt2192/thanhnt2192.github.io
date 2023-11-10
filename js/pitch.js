@@ -1,6 +1,8 @@
 window.game.sprite = {};
 
 window.game.initializePitch = function () {
+  this.scx = 272 - 80;
+  this.scy = 352 - 72;
   const { unicode, pitch } = this.tileset;
   const { light: { plain: lightPlain } } = pitch;
 
@@ -16,7 +18,7 @@ window.game.initializePitch = function () {
     seconds: 0,
     minute: 0,
     second: 0,
-    timestamp: this.timestamp + 5000 // start after 5000 ms
+    timestamp: this.timestamp + 1000 // start after 5000 ms
   };
 
   this.pitch = {
@@ -25,6 +27,27 @@ window.game.initializePitch = function () {
       x: 0,
       y: 0,
       absolute: false
+    }
+  };
+
+  this.ball = {
+    tilemap: [[this.tileset.ball[0]]],
+    position: {
+      x: 272 - 4,
+      y: 352 - 4,
+      absolute: false
+    },
+    animation: {}
+  };
+
+  this.home = {
+    "9": {
+      tilemap: this.tileset.player.run[0][0],
+      position: {
+        x: 272,
+        y: 352 - 16,
+        absolute: false
+      }
     }
   };
 
@@ -109,6 +132,18 @@ window.game.initializePitch = function () {
     this.sprite.ball.animation.shadow.sprite.sheet[1].push([[shadow[1]]]);
     this.sprite.ball.animation.shadow.sprite.sheet[2].push([[shadow[2]]]);
   }
+  this.sprite.ball.animation.shadow.instances = [{
+    tilemap: this.sprite.ball.tilemap,
+    position: { ...this.sprite.ball.position },
+    animation: {
+      sprite: {
+        sheet: this.sprite.ball.animation.shadow.sprite.sheet[this.sprite.ball.animation.sprite.frame],
+        frame: 0,
+        period: this.sprite.ball.animation.shadow.sprite.period,
+        timestamp: this.timestamp
+      }
+    }
+  }];
 
   this.script = [
     {
@@ -117,11 +152,11 @@ window.game.initializePitch = function () {
         position: {
           x: 272 - 4,
           y: 352 - 4,
-          position: false
+          absolute: false
         },
         animation: {
           vertical: {
-            vector: 1,
+            vector: -1,
             period: 10,
             timestamp: this.timestamp
           }
@@ -166,7 +201,7 @@ window.game.tic = function () {
   if (this.timestamp < this.timer.timestamp) {
     return;
   }
-  if (this.timestamp > this.timer.timestamp + 100) {
+  while (this.timestamp > this.timer.timestamp + 100) {
     this.timer.seconds++;
     this.timer.second++;
     if (this.timer.second > 59) {
@@ -175,6 +210,12 @@ window.game.tic = function () {
     }
     this.timer.timestamp = this.timer.timestamp + 100;
   }
+  while (this.script.length && this.script[0].seconds <= this.timer.seconds) {
+    const a = this.script.shift();
+    this.ball.position = a.ball.position;
+    this.ball.animation = a.ball.animation;
+    this.ball.animation.vertical.timestamp = this.timestamp;
+  }
   this.timer.tilemap[0][0] = this.tileset.unicode[((this.timer.minute - (this.timer.minute % 10)) / 10) + ""];
   this.timer.tilemap[0][1] = this.tileset.unicode[(this.timer.minute % 10) + ""];
   this.timer.tilemap[0][3] = this.tileset.unicode[((this.timer.second - (this.timer.second % 10)) / 10) + ""];
@@ -182,28 +223,31 @@ window.game.tic = function () {
 };
 
 window.game.renderPitch = function () {
+  const { pitch, ball, home } = this;
+  this.draw(pitch);
+  this.animate(ball);
+  this.draw(ball);
+  this.draw(home["9"]);
   this.tic();
-  const { pitch } = this;
-  const { player, ball } = this.sprite;
+  // const { player, ball } = this.sprite;
 
-  player.delay = player.delay + 1;
-  if (player.delay > (6 - player.speed)) {
-    player.delay = 0;
-    player.step = (player.step + 1) % 4;
-  }
-  player.tilemap = this.tileset.player.run[player.step];
-  player.position.x = player.position.x + player.vector.x;
-  player.position.y = player.position.y + player.vector.y;
+  // player.delay = player.delay + 1;
+  // if (player.delay > (6 - player.speed)) {
+  //   player.delay = 0;
+  //   player.step = (player.step + 1) % 4;
+  // }
+  // player.tilemap = this.tileset.player.run[player.step];
+  // player.position.x = player.position.x + player.vector.x;
+  // player.position.y = player.position.y + player.vector.y;
   // player.step = (player.step + 1) % (4 * 10);
   // player.tilemap = this.tileset.player.run[(player.step - (player.step % 10)) / 10]
 
-  this.draw(pitch);
-  this.draw(player);
+  // this.draw(player);
 
-  this.animate(ball);
-  for (const i of this.sprite.ball.animation.shadow.instances) {
-    this.draw(i);
-  }
-  this.draw(ball);
+  // this.animate(ball);
+  // for (const i of this.sprite.ball.animation.shadow.instances) {
+  //   this.draw(i);
+  // }
+  // this.draw(ball);
   this.draw(this.timer);
 };

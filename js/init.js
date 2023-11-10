@@ -26,7 +26,7 @@ window.game.animate = function (obj) {
   while (remain) {
     remain = false;
     let t = this.timestamp;
-    if (this.timestamp - obj.animation.sprite.period > obj.animation.sprite.timestamp) {
+    if (obj.animation.sprite && this.timestamp - obj.animation.sprite.period > obj.animation.sprite.timestamp) {
       obj.animation.sprite.frame = (obj.animation.sprite.frame + 1) % obj.animation.sprite.sheet.length;
       obj.tilemap = obj.animation.sprite.sheet[obj.animation.sprite.frame];
       obj.animation.sprite.timestamp += obj.animation.sprite.period;
@@ -35,7 +35,7 @@ window.game.animate = function (obj) {
         t = obj.animation.sprite.timestamp;
       }
     }
-    if (this.timestamp - obj.animation.vertical.period > obj.animation.vertical.timestamp) {
+    if (obj.animation.vertical && this.timestamp - obj.animation.vertical.period > obj.animation.vertical.timestamp) {
       obj.position.y = obj.position.y + obj.animation.vertical.vector;
       obj.animation.vertical.timestamp += obj.animation.vertical.period;
       remain = true;
@@ -74,8 +74,6 @@ window.game.animate = function (obj) {
         obj.animation.shadow.instances = [ shadow, ...obj.animation.shadow.instances ];
         remain = true;
       }
-    }
-    if (this.timestamp - obj.animation.shadow.sprite.period > obj.animation.shadow.sprite.timestamp) {
     }
   }
 };
