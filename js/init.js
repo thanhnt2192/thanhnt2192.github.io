@@ -57,7 +57,7 @@ window.game.animate = function (obj, timestamp) {
     if (obj.animation.shadow) {
       // Fade out shadow instances
       for (let i = obj.animation.shadow.instances.length - 1; i > -1; i--) {
-        if (timestamp > obj.animation.shadow.instances[i].animation.sprite.timestamp + obj.animation.shadow.instances[i].animation.sprite.period) {
+        if (t > obj.animation.shadow.instances[i].animation.sprite.timestamp + obj.animation.shadow.instances[i].animation.sprite.period) {
           obj.animation.shadow.instances[i].animation.sprite.frame++;
           obj.animation.shadow.instances[i].animation.sprite.timestamp += obj.animation.shadow.instances[i].animation.sprite.period;
           if (obj.animation.shadow.instances[i].animation.sprite.frame < obj.animation.shadow.instances[i].animation.sprite.sheet.length) {

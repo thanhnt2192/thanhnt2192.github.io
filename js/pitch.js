@@ -18,7 +18,7 @@ window.game.initializePitch = function () {
     seconds: 0,
     minute: 0,
     second: 0,
-    timestamp: this.timestamp + 1000 // start after 5000 ms
+    timestamp: this.timestamp + 1000 // start after 1000 ms
   };
 
   this.pitch = {
@@ -147,6 +147,7 @@ window.game.initializePitch = function () {
 
   this.script = [
     {
+      milliseconds: 0,
       seconds: 0,
       ball: {
         position: {
@@ -158,7 +159,7 @@ window.game.initializePitch = function () {
           vertical: {
             vector: -1,
             period: 10,
-            timestamp: this.timestamp
+            timestamp: 0
           }
         }
       },
@@ -184,6 +185,7 @@ window.game.initializePitch = function () {
       // },
     },
     {
+      milliseconds: 5000,
       seconds: 5,
       ball: {
         tilemap: [[this.tileset.ball[0]]],
@@ -201,6 +203,7 @@ window.game.tic = function () {
   if (this.timestamp < this.timer.timestamp) {
     return;
   }
+  this.timer.milliseconds = this.timestamp - this.timer.timestamp;
   while (this.timestamp > this.timer.timestamp + 100) {
     this.timer.seconds++;
     this.timer.second++;
