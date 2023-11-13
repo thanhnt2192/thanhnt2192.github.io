@@ -18,35 +18,46 @@ window.game.render = function () {
   // this.render = this.renderTitle;
 };
 
-window.game.animate = function (obj) {
+window.game.animate = function (obj, timestamp) {
   if (!obj.animation) {
     return;
+  }
+  if (timestamp === undefined) {
+    timestamp = this.timestamp;
   }
   let remain = true;
   while (remain) {
     remain = false;
-    let t = this.timestamp;
-    if (obj.animation.sprite && this.timestamp - obj.animation.sprite.period > obj.animation.sprite.timestamp) {
+    let t = timestamp;
+    if (obj.animation.sprite && t > obj.animation.sprite.timestamp + obj.animation.sprite.period) {
+      t = obj.animation.sprite.timestamp + obj.animation.sprite.period + 1;
+    }
+    if (obj.animation.vertical && t > obj.animation.vertical.timestamp + obj.animation.vertical.period) {
+      t = obj.animation.vertical.timestamp + obj.animation.vertical.period + 1;
+    }
+    if (obj.animation.horizontal && t > obj.animation.horizontal.timestamp + obj.animation.horizontal.period) {
+      t = obj.animation.horizontal.timestamp + obj.animation.horizontal.period + 1;
+    }
+    if (obj.animation.sprite && t > obj.animation.sprite.timestamp + obj.animation.sprite.period) {
       obj.animation.sprite.frame = (obj.animation.sprite.frame + 1) % obj.animation.sprite.sheet.length;
       obj.tilemap = obj.animation.sprite.sheet[obj.animation.sprite.frame];
       obj.animation.sprite.timestamp += obj.animation.sprite.period;
       remain = true;
-      if (t > obj.animation.sprite.timestamp) {
-        t = obj.animation.sprite.timestamp;
-      }
     }
-    if (obj.animation.vertical && this.timestamp - obj.animation.vertical.period > obj.animation.vertical.timestamp) {
+    if (obj.animation.vertical && t > obj.animation.vertical.timestamp + obj.animation.vertical.period) {
       obj.position.y = obj.position.y + obj.animation.vertical.vector;
       obj.animation.vertical.timestamp += obj.animation.vertical.period;
       remain = true;
-      if (t > obj.animation.vertical.timestamp) {
-        t = obj.animation.vertical.timestamp;
-      }
+    }
+    if (obj.animation.horizontal && t > obj.animation.horizontal.timestamp + obj.animation.horizontal.period) {
+      obj.position.y = obj.position.y + obj.animation.horizontal.vector;
+      obj.animation.horizontal.timestamp += obj.animation.horizontal.period;
+      remain = true;
     }
     if (obj.animation.shadow) {
       // Fade out shadow instances
       for (let i = obj.animation.shadow.instances.length - 1; i > -1; i--) {
-        if (this.timestamp > obj.animation.shadow.instances[i].animation.sprite.timestamp + obj.animation.shadow.instances[i].animation.sprite.period) {
+        if (timestamp > obj.animation.shadow.instances[i].animation.sprite.timestamp + obj.animation.shadow.instances[i].animation.sprite.period) {
           obj.animation.shadow.instances[i].animation.sprite.frame++;
           obj.animation.shadow.instances[i].animation.sprite.timestamp += obj.animation.shadow.instances[i].animation.sprite.period;
           if (obj.animation.shadow.instances[i].animation.sprite.frame < obj.animation.shadow.instances[i].animation.sprite.sheet.length) {
