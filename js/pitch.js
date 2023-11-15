@@ -18,7 +18,8 @@ window.game.initializePitch = function () {
     seconds: 0,
     minute: 0,
     second: 0,
-    timestamp: this.timestamp + 1000 // start after 1000 ms
+    timestamp: 0,
+    start: this.timestamp + 1000 // start after 1000 ms
   };
 
   this.pitch = {
@@ -227,11 +228,12 @@ window.game.tic = function () {
 
 window.game.renderPitch = function () {
   const { pitch, ball, home } = this;
+  this.tic();
   this.draw(pitch);
+  this.draw(ball); // TODO: draw shadow (ghost)
   this.animate(ball);
   this.draw(ball);
   this.draw(home["9"]);
-  this.tic();
   // const { player, ball } = this.sprite;
 
   // player.delay = player.delay + 1;
