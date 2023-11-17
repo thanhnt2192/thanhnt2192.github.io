@@ -15,11 +15,13 @@ window.game.initializePitch = function () {
       y: 0,
       absolute: true
     },
+    milliseconds: 0,
     seconds: 0,
     minute: 0,
     second: 0,
-    timestamp: 0,
-    start: this.timestamp + 1000 // start after 1000 ms
+    timestamp: 1000, // start after 1000 ms
+    half: 1,
+    start: 0 
   };
 
   this.pitch = {
@@ -204,7 +206,16 @@ window.game.tic = function () {
   if (this.timestamp < this.timer.timestamp) {
     return;
   }
-  this.timer.milliseconds = this.timestamp - this.timer.timestamp;
+  this.timer.milliseconds += this.timestamp - this.timer.timestamp;
+  this.timer.timestamp = this.timestamp;
+  if (this.timer.half > 0 && (this.timer.milliseconds - this.timer.start) < (45 * 60 * 1000)) {
+    this.timer.minute = ((this.timer.half - 1) * 45) + parseInt(this.timer.milliseconds * 10 / (60 * 1000));
+    this.timer.second = parseInt((this.timer.milliseconds * 10 % (60 * 1000)) / 1000);
+  } else {
+    this.timer.minute = this.timer.half * 45;
+    this.timer.second = 0;
+  }
+  /*
   while (this.timestamp > this.timer.timestamp + 100) {
     this.timer.seconds++;
     this.timer.second++;
@@ -214,11 +225,16 @@ window.game.tic = function () {
     }
     this.timer.timestamp = this.timer.timestamp + 100;
   }
-  while (this.script.length && this.script[0].seconds <= this.timer.seconds) {
+  */
+  while (this.script.length && this.script[0].milliseconds <= this.timer.milliseconds) {
     const a = this.script.shift();
+    if (a.half > this.timer.half) {
+      this.timer.half = a.half;
+      this.timer.start = a.milliseconds;
+    }
     this.ball.position = a.ball.position;
     this.ball.animation = a.ball.animation;
-    this.ball.animation.vertical.timestamp = this.timestamp;
+    // this.ball.animation.vertical.timestamp = this.timestamp;
   }
   this.timer.tilemap[0][0] = this.tileset.unicode[((this.timer.minute - (this.timer.minute % 10)) / 10) + ""];
   this.timer.tilemap[0][1] = this.tileset.unicode[(this.timer.minute % 10) + ""];
