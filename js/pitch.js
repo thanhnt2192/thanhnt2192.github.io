@@ -42,17 +42,6 @@ window.game.initializePitch = function () {
     animation: {}
   };
 
-  this.home = {
-    "9": {
-      tilemap: this.tileset.player.run[0][0],
-      position: {
-        x: 272,
-        y: 352 - 16,
-        absolute: false
-      }
-    }
-  };
-
   // Pitch size: 68m (74 yards) x 105m (115 yards)
   for (let i = 0; i < 88; i++) { // inner size
     this.pitch.tilemap.push([]);
@@ -171,13 +160,12 @@ window.game.initializePitch = function () {
       },
       home: {
         "9": {
-          tilemap: this.tileset.player.run[0],
+          tilemap: this.tileset.player.run[0][0],
           position: {
             x: 272,
             y: 352 - 16,
             absolute: false
-          },
-          number: 9
+          }
         }
       }
     },
@@ -223,7 +211,8 @@ window.game.initializePitch = function () {
       }
     },
     {
-      timestamp: 6000,
+      timestamp: 1500,
+      half: 1,
       ball: {
         tilemap: [[this.tileset.ball[0]]],
         position: {
@@ -231,7 +220,17 @@ window.game.initializePitch = function () {
           y: 352 - 4 - 50
         },
         animation: {}
-      }
+      },
+      home: {
+        "9": {
+          tilemap: this.tileset.player.kick[0],
+          position: {
+            x: 272,
+            y: 352 - 16,
+            absolute: false
+          }
+        }
+      },
     }
   ];
 };
@@ -258,9 +257,8 @@ window.game.tic = function () {
       this.timer.half = a.half;
       this.timer.start.timestamp = a.timestamp;
     }
-    this.ball.position = a.ball.position;
-    this.ball.animation = a.ball.animation;
-    // this.ball.animation.vertical.timestamp = this.timestamp;
+    this.ball = a.ball;
+    this.home = a.home;
   }
   this.timer.tilemap[0][0] = this.tileset.unicode[((this.timer.minute - (this.timer.minute % 10)) / 10) + ""];
   this.timer.tilemap[0][1] = this.tileset.unicode[(this.timer.minute % 10) + ""];
@@ -275,7 +273,9 @@ window.game.renderPitch = function () {
   this.draw(ball); // TODO: draw shadow (ghost)
   this.animate(ball, this.timer.current.timestamp);
   this.draw(ball);
-  this.draw(home["9"]);
+  for (const n in home) {
+    this.draw(home[n]);
+  }
   // const { player, ball } = this.sprite;
 
   // player.delay = player.delay + 1;
