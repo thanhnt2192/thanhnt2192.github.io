@@ -72,7 +72,7 @@ window.game = {
       ]
     },
     {
-      "role": "balancer",
+      "role": "balancer", // Roamer
       "title": {
         "en": "Box to Box Midfielder",
         "vi": "Tiền vệ con thoi"
