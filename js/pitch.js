@@ -149,6 +149,120 @@ window.game.initializePitch = function () {
   this.script = [
     {
       timestamp: 0,
+      ball: {
+        tilemap: [[this.tileset.ball[0]]],
+        position: {
+          x: 272 - 4,
+          y: 352 - 4,
+          absolute: false
+        },
+        animation: {
+          sprite: {
+            sheet: [
+              [[this.tileset.ball[0]]],
+              [[this.tileset.ball[1]]],
+              [[this.tileset.ball[2]]]
+            ],
+            frame: 0,
+            period: 50,
+            timestamp: 0
+          },
+          horizontal: {
+            vector: -2,
+            period: 10,
+            timestamp: 0
+          },
+          vertical: {
+            vector: 2,
+            period: 10,
+            timestamp: 0
+          }
+        }
+      },
+      home: {
+        "10": {
+          tilemap: this.tileset.player.run[3][0],
+          position: {
+            absolute: false
+          },
+          animation: {
+            sprite: {
+              sheet: this.tileset.player.run[3],
+              frame: 0,
+              period: 100,
+              timestamp: 0
+            },
+            horizontal: {
+              vector: -1,
+              period: 10,
+              timestamp: 0
+            },
+            vertical: {
+              vector: 1,
+              period: 10,
+              timestamp: 0
+            }
+          }
+        },
+        "2": {
+          tilemap: this.tileset.player.run[4][0],
+          position: {
+            absolute: false
+          },
+          animation: {
+            sprite: {
+              sheet: this.tileset.player.run[4],
+              frame: 0,
+              period: 100,
+              timestamp: 0
+            },
+            vertical: {
+              vector: 1,
+              period: 10,
+              timestamp: 0
+            }
+          }
+        }
+      }
+    },
+    {
+      timestamp: 100,
+      ball: {
+        tilemap: [[this.tileset.ball[0]]],
+        position: {
+          x: 272 - 4,
+          y: 352 - 4,
+          absolute: false
+        },
+        animation: {
+          sprite: {
+            sheet: [
+              [[this.tileset.ball[0]]],
+              [[this.tileset.ball[1]]],
+              [[this.tileset.ball[2]]]
+            ],
+            frame: 0,
+            period: 50,
+            timestamp: 100
+          },
+          horizontal: {
+            vector: -1,
+            period: 20,
+            timestamp: 100
+          },
+          vertical: {
+            vector: 1,
+            period: 20,
+            timestamp: 100
+          }
+        }
+      }
+    }
+  ];
+
+  this.script = [
+    {
+      timestamp: 0,
       half: 0,
       ball: {
         tilemap: [[this.tileset.ball[0]]],
@@ -270,7 +384,7 @@ window.game.renderPitch = function () {
   const { pitch, ball, home } = this;
   this.tic();
   this.draw(pitch);
-  this.draw(ball); // TODO: draw shadow (ghost)
+  this.draw(ball); // TODO: draw shadow (ghost, remnants)
   this.animate(ball, this.timer.current.timestamp);
   this.draw(ball);
   for (const n in home) {
