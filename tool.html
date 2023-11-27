@@ -131,7 +131,8 @@
     </div>
 
     <div>
-      <button onclick="document.getElementById('output').style.display = 'none'">Hide image</button>
+      <button id="btn-hide-image" onclick="document.getElementById('output').style.display = 'none'; document.getElementById('btn-hide-image').style.display = 'none'; document.getElementById('btn-show-image').style.display = 'block';">Hide image</button>
+      <button id="btn-show-image" style="display: none;" onclick="document.getElementById('output').style.display = 'block'; document.getElementById('btn-show-image').style.display = 'none'; document.getElementById('btn-hide-image').style.display = 'block';">Show image</button>
     </div>
 
     <div>
