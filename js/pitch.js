@@ -23,14 +23,55 @@ window.game.initializePitch = function () {
     current: { timestamp: 0 }
   };
 
+  // Pitch size: 68m (74 yards) x 105m (115 yards)
   this.pitch = {
     tilemap: [],
     position: {
       x: 0,
       y: 0,
       absolute: false
+    },
+    grass: {
+      tilemap: [],
+      position: {
+        x: 0,
+        y: 0,
+        absolute: false
+      }
+    },
+    mark: {
+      tilemap: [],
+      position: {
+        x: 8,
+        y: 8 * 4,
+        absolute: false
+      }
     }
   };
+
+  // TODO: push(pitch.plain.dark);
+  for (let i = 0; i < (5 + 88 + 5); i++) {
+    this.pitch.grass.tilemap.push([]);
+    for (let j = 0; j < (2 + 68 + 2); j++) {
+      this.pitch.grass.tilemap[i].push(pitch.plain.light);
+    }
+  }
+
+  for (let i = 0; i < (1 + 88 + 1); i++) {
+    this.pitch.mark.tilemap.push([]);
+    for (let j = 0; j < (1 + 68 + 1); j++) {
+      this.pitch.mark.tilemap[i].push(null);
+    }
+  }
+
+  for (let i = 1; i < (88 + 1); i++) {
+    this.pitch.mark.tilemap[i][0] = pitch.border.edge.right;
+    this.pitch.mark.tilemap[i][1 + 68] = pitch.border.edge.left;
+  }
+  for (let j = 1; j < (68 + 1); j++) {
+    this.pitch.mark.tilemap[0][j] = pitch.border.edge.bottom;
+    this.pitch.mark.tilemap[1 + 88][j] = pitch.border.edge.top;
+  }
 
   this.ball = {
     tilemap: [[this.tileset.ball[0]]],
@@ -42,7 +83,6 @@ window.game.initializePitch = function () {
     animation: {}
   };
 
-  // Pitch size: 68m (74 yards) x 105m (115 yards)
   for (let i = 0; i < 88; i++) { // inner size
     this.pitch.tilemap.push([]);
     for (let j = 0; j < 68; j++) { // inner size

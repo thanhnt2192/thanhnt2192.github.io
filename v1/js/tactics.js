@@ -315,8 +315,11 @@ window.game = {
     },
   },
   skills: [
+    // Wall
+    // Magician
+    // Reflection
     {
-      name: "Intuition",
+      name: "Intuition", // prediction, insigh
       description: "Short pass"
     },
     {
@@ -332,13 +335,17 @@ window.game = {
       description: "1 vs 1"
     },
     {
-      name: "Aircraft",
+      name: "Aircraft", // Aerial, "Không chiến"
       alias: "Ikarus",
       description: "Sky ruler"
     },
     {
       name: "Fighter",
       description: "Effect when losing"
+    },
+    {
+      name: "Curve", // "Sút xoáy"
+      description: "Curve ball, corner/free kick"
     },
     {
       name: "Canon",
