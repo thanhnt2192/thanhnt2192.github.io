@@ -3,6 +3,8 @@ window.game.sprite = {};
 window.game.initializePitch = function () {
   this.scx = 272 - 80;
   this.scy = 352 - 72;
+  // this.scx = 68 * 8;
+  // this.scy = 88 * 8;
   const { unicode, pitch } = this.tileset;
   const { light: { plain: lightPlain } } = pitch;
 
@@ -71,6 +73,30 @@ window.game.initializePitch = function () {
   for (let j = 1; j < (68 + 1); j++) {
     this.pitch.mark.tilemap[0][j] = pitch.border.edge.bottom;
     this.pitch.mark.tilemap[1 + 88][j] = pitch.border.edge.top;
+  }
+  this.pitch.mark.tilemap[0][0] = pitch.border.end.bottom.left;
+  this.pitch.mark.tilemap[0][68 + 1] = pitch.border.end.bottom.right;
+  this.pitch.mark.tilemap[88 + 1][0] = pitch.border.end.top.left;
+  this.pitch.mark.tilemap[88 + 1][68 + 1] = pitch.border.end.top.right;
+
+  // Corners
+  this.pitch.mark.tilemap[1][1] = pitch.corner.top.left;
+  this.pitch.mark.tilemap[1][68] = pitch.corner.top.right;
+  this.pitch.mark.tilemap[88][1] = pitch.corner.bottom.left;
+  this.pitch.mark.tilemap[88][68] = pitch.corner.bottom.right;
+
+  // Center line
+  for (let j = 1; j < 68 + 1; j++) {
+    this.pitch.mark.tilemap[1 + 43][j] = pitch.center.line[0][0];
+    this.pitch.mark.tilemap[1 + 44][j] = pitch.center.line[1][0];
+  }
+  // Center circle
+  for (let i = 0; i < pitch.center.circle.length; i++) {
+    for (let j = 0; j < pitch.center.circle[i].length; j++) {
+      const r = 1 + (88 / 2) - 1 - (pitch.center.circle.length / 2) + 1 + i;
+      const c = 1 + (68 / 2) - 1 - (pitch.center.circle[i].length / 2) + 1 + j;
+      this.pitch.mark.tilemap[r][c] = pitch.center.circle[i][j];
+    }
   }
 
   this.ball = {
@@ -192,7 +218,7 @@ window.game.initializePitch = function () {
       ball: {
         tilemap: [[this.tileset.ball[0]]],
         position: {
-          x: 272 - 4,
+          x: 272 - 4 + 16,
           y: 352 - 4,
           absolute: false
         },
@@ -307,7 +333,7 @@ window.game.initializePitch = function () {
       ball: {
         tilemap: [[this.tileset.ball[0]]],
         position: {
-          x: 272 - 4,
+          x: 272 - 4 + 16,
           y: 352 - 4,
           absolute: false
         }
@@ -329,7 +355,7 @@ window.game.initializePitch = function () {
       ball: {
         tilemap: [[this.tileset.ball[0]]],
         position: {
-          x: 272 - 4,
+          x: 272 - 4 + 16,
           y: 352 - 4,
           absolute: false
         },
@@ -370,7 +396,7 @@ window.game.initializePitch = function () {
       ball: {
         tilemap: [[this.tileset.ball[0]]],
         position: {
-          x: 272 - 4,
+          x: 272 - 4 + 16,
           y: 352 - 4 - 50
         },
         animation: {}
@@ -423,7 +449,8 @@ window.game.tic = function () {
 window.game.renderPitch = function () {
   const { pitch, ball, home } = this;
   this.tic();
-  this.draw(pitch);
+  this.draw(pitch.grass);
+  this.draw(pitch.mark);
   this.draw(ball); // TODO: draw shadow (ghost, remnants)
   this.animate(ball, this.timer.current.timestamp);
   this.draw(ball);
