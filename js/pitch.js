@@ -3,7 +3,8 @@ window.game.sprite = {};
 window.game.initializePitch = function () {
   this.scx = 272 - 80;
   this.scy = 352 - 72;
-  // this.scx = 68 * 8;
+  this.scy = 0;
+  this.scx = 68 * 8 / 2 - 8 * 11;
   // this.scy = 88 * 8;
   const { unicode, pitch } = this.tileset;
   const { light: { plain: lightPlain } } = pitch;
@@ -84,6 +85,21 @@ window.game.initializePitch = function () {
   this.pitch.mark.tilemap[1][68] = pitch.corner.top.right;
   this.pitch.mark.tilemap[88][1] = pitch.corner.bottom.left;
   this.pitch.mark.tilemap[88][68] = pitch.corner.bottom.right;
+
+  // Penalty
+  for (let i = 1; i < 12; i++) {
+    this.pitch.mark.tilemap[i][(1 + 68 + 1) / 2 - (26 / 2) + 0] = pitch.border.edge.left;
+    this.pitch.mark.tilemap[i][(1 + 68 + 1) / 2 + (26 / 2) - 1] = pitch.border.edge.right;
+  }
+  this.pitch.mark.tilemap[12][(1 + 68 + 1) / 2 - (26 / 2) + 0] = pitch.border.corner.bottom.left;
+  this.pitch.mark.tilemap[12][(1 + 68 + 1) / 2 + (26 / 2) - 1] = pitch.border.corner.bottom.right;
+  for (let j = 1; j < (26 - 1); j++) {
+    this.pitch.mark.tilemap[12][(1 + 68 + 1) / 2 - (26 / 2) + j] = pitch.border.edge.bottom;
+  }
+  for (let i = 1; i < 14; i++) {
+    this.pitch.mark.tilemap[i][(1 + 68 + 1) / 2 - (32 / 2) + 0] = pitch.border.edge.left;
+    this.pitch.mark.tilemap[i][(1 + 68 + 1) / 2 + (32 / 2) - 1] = pitch.border.edge.right;
+  }
 
   // Center line
   for (let j = 1; j < 68 + 1; j++) {
