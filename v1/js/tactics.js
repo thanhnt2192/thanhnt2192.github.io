@@ -177,16 +177,16 @@ window.game = {
     {
       "role": "striker",
       "title": {
-        "en": "Inside Forward",
+        "en": "Inside Forward", // Wide Forward
         "vi": "Tiền đạo cánh"
       },
       "attributes": [
         { "en": "Dribbling", "vi": "Rê bóng" },
         { "en": "Finishing", "vi": "Dứt điểm" },
+        { "en": "Passing", "vi": "Chuyền bóng" },
+        { "en": "Positioning", "vi": "Chạy chỗ" }, // Chọn vị trí, chạy chỗ không bóng (off the ball)
         { "en": "Acceleration", "vi": "Tăng tốc" },
         { "en": "Long shots", "vi": "Sút xa" },
-        { "en": "Passing", "vi": "Chuyền bóng" },
-        { "en": "Positioning", "vi": "Chạy chỗ" } // Chọn vị trí, chạy chỗ không bóng (off the ball)
       ]
     },
     {
