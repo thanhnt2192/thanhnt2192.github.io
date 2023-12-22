@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAA4klEQVRo3u2YQRKDMAwD4wz//7J666Uz1IQEbGf3A1iRJQKtAQAAAAAAOLAHnqFIM9kLgl6d2QILW6LFEgsc0mbFRP4VbwvEzi6dqXP14s7+HFzfROxXdN/t4nEM5jLiVrj6qIrD5i3O7VaaDDvfpdEyLW+Gj0Lm6Y7DWQpK1TNsF6PndlhVPzJ6e+avR5gNybbSurtpGUtLs0pgq+/hfUJcpX29Ord3uKLL5ikYLTpMz6Vm6Qz9oaaNsr2nGbZqYq+IUnahoy4qq9AZa6ssIlflVBEFvlFMCjgTAAAAAADAOR+TyyNDEQe2VgAAAABJRU5ErkJggg==">
+    <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEwAAABMCAYAAADHl1ErAAABWElEQVR42u3b2w7DIAiA4Wl4/1d2t43JVlHwgD/Xy4qfiHbtUimlfIjmyBAABhhggAFGAAYYYIABRgAGGGCAAQYYARhggB0RsjqBlJLq86uf2chuIKPf5w0qu8JY52EFKacD9ebbCyiRkVrHosGT2VjWPcYir5RSc175tsoaHWMGSzdWDq4rjhX1+t+xKp85juR3RYXVEzqy8bAkAduwh72V9G49rT5njeQjt1SG1aSFA7OqpCt6mOVuaFphb3f+ke8OsnbWbjqvhV+SdWV7VHq4pu/dDqS1VP8lEqFnmf4eRjyKQ/Nfo6i7n2Zjo8I8D64RjxjaMUnPBSyW5q9EWx+HeeZgviQjVFrvGPLsC56Mpd4lT989LSbZ9CHIrnCWq0G8EluN59UyZFbC3oCzeqqsnnFeqAu+23JrBBhggAEGGAEYYIABBhgBGGCAAQYYYARggAF2RnwBJhSNpBigTwoAAAAASUVORK5CYII=">
+    <title>Demo</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      canvas {
+        display: block;
+        width: 320px;
+        height: 288px;
+        margin: 0 auto;
+        box-sizing: content-box;
+        background: #000000;
+      }
+    </style>
+    <script>
+      window.game = {
+        createTile: function (tileData) {
+          const tileCanvas = this.document.createElement("canvas");
+          tileCanvas.width = 8;
+          tileCanvas.height = 8;
+          const tileContext = tileCanvas.getContext("2d");
+          const imageData = tileContext.createImageData(8, 8);
+
+          // Iterate through every pixel
+          for (let i = 0; i < imageData.data.length; i += 4) {
+            // Modify pixel data
+            imageData.data[i + 0] = tileData[i + 0]; // R value
+            imageData.data[i + 1] = tileData[i + 1]; // G value
+            imageData.data[i + 2] = tileData[i + 2]; // B value
+            imageData.data[i + 3] = tileData[i + 3]; // A value
+          }
+
+          // Draw image data to the canvas
+          tileContext.putImageData(imageData, 0, 0);
+
+          return tileCanvas;
+        }.bind(this)
+      };
+
+      window.keymap = {
+        "87": "up", // W
+        "83": "down", // S
+        "65": "left", // A
+        "68": "right", // D
+        "76": "a", // L
+        "80": "b" // P
+      };
+
+      window.process = function (timestamp) {
+        this.game.timestamp = parseInt(timestamp);
+        if (!this.previousTimestamp) {
+          this.previousTimestamp = timestamp;
+        }
+        const elapsed = timestamp - this.previousTimestamp;
+        if (elapsed > this.fpsInterval) {
+          // Get ready for next frame by setting previousTimestamp=timestamp, but...
+          // Also, adjust for fpsInterval not being multiple of 16.67
+          this.previousTimestamp = timestamp - (elapsed % this.fpsInterval);
+
+          // clear canvas
+          this.sceneContext.clearRect(0, 0, this.sceneWidth, this.sceneHeight);
+          this.windowContext.clearRect(0, 0, this.screenWidth, this.screenHeight);
+
+          // clear image data
+          this.imageData.fill(0);
+
+          // draw stuff here
+          this.game.render();
+
+          // draw screen after finish rendering virtual canvas
+          this.screenContext.clearRect(0, 0, this.screenWidth * this.screenScale, this.screenHeight * this.screenScale);
+          this.screenContext.drawImage(this.sceneCanvas, this.scx, this.scy, this.screenWidth, this.screenHeight,
+            0, 0, this.screenWidth * this.screenScale, this.screenHeight * this.screenScale);
+          this.screenContext.drawImage(this.windowCanvas, 0, 0, this.screenWidth, this.screenHeight,
+            0, 0, this.screenWidth * this.screenScale, this.screenHeight * this.screenScale);
+
+          // draw screen after finish rendering
+          for (let i = 0; i < this.screenHeight; i++) {
+            for (let si = 0; si < this.screenScale; si++) {
+              for (let j = 0; j < this.screenWidth; j++) {
+                for (let sj = 0; sj < this.screenScale; sj++) {
+                  const screenDataIndex = (i * this.screenScale + si) * 4 * this.screenWidth * this.screenScale + (j * this.screenScale + sj) * 4;
+                  const imageDataIndex = i * 4 * this.screenWidth + j * 4;
+                  this.screenData.data[screenDataIndex] = this.imageData[imageDataIndex];
+                  this.screenData.data[screenDataIndex + 1] = this.imageData[imageDataIndex + 1];
+                  this.screenData.data[screenDataIndex + 2] = this.imageData[imageDataIndex + 2];
+                  this.screenData.data[screenDataIndex + 3] = this.imageData[imageDataIndex + 3];
+                }
+              }
+            }
+          }
+          this.screenContext.putImageData(this.screenData, 0, 0);
+
+          // refresh button state
+          for (const prop in this.game.button) {
+            const button = this.game.button[prop];
+            button.press = false;
+            button.release = false;
+          }
+        }
+
+        this.requestAnimationFrame(this.process);
+      };
+
+      window.launch = function () {
+        this.fpsInterval = 1000 / 60;
+        this.screenWidth = 160;
+        this.screenHeight = 144;
+        this.screenScale = 4;
+        this.sceneWidth = 256;
+        this.sceneHeight = 256;
+
+        this.screenCanvas = this.document.getElementById('screen');
+        this.screenCanvas.imageSmoothingEnabled = false;
+        this.screenContext = this.screenCanvas.getContext('2d');
+        this.screenData = this.screenContext.getImageData(0, 0, this.screenWidth * this.screenScale, this.screenHeight * this.screenScale);
+        this.imageData = [];
+        this.imageData.length = this.screenWidth * this.screenHeight * 4;
+        this.imageData.fill(0);
+
+        this.sceneCanvas = this.document.createElement('canvas');
+        this.sceneCanvas.width = this.sceneWidth;
+        this.sceneCanvas.height = this.sceneHeight;
+        this.sceneContext = this.sceneCanvas.getContext('2d');
+
+        this.windowCanvas = this.document.createElement('canvas');
+        this.windowCanvas.width = this.screenWidth;
+        this.windowCanvas.height = this.screenHeight;
+        this.windowContext = this.sceneCanvas.getContext('2d');
+
+        const draw = function ({ tilemap, x, y }) {
+          for (let i = 0; i < tilemap.length; i++) {
+            for (let j = 0; j < tilemap[i].length; j++) {
+              const tile = tilemap[i][j];
+              if (tile) {
+                this.drawImage(tile, 0, 0, 8, 8, j * 8 + x, i * 8 + y, 8, 8);
+              }
+            }
+          }
+        };
+
+        this.game.drawScene = draw.bind(this.sceneContext);
+        this.game.drawWindow = draw.bind(this.windowContext);
+        this.game.draw = function ({ tilemap, position }) {
+          for (let row = 0; row < tilemap.length; row++) {
+            const dy = position.absolute
+              ? row * 8 + position.y
+              : row * 8 + position.y - this.game.scy;
+            if (dy + 8 <= 0 || dy >= this.screenHeight) {
+              // TODO: remove if not necessary
+              // continue;
+            }
+            for (let column = 0; column < tilemap[row].length; column++) {
+              const dx = position.absolute
+                ? column * 8 + position.x
+                : column * 8 + position.x - this.game.scx;
+              if (dx + 8 <= 0 || dx >= this.screenWidth) {
+                // TODO: remove if not necessary
+                // continue;
+              }
+              const tile = tilemap[row][column];
+              if (tile) {
+                let iStart = 0;
+                if (dy < 0) {
+                  iStart = 0 - dy;
+                }
+                let iEnd = 8;
+                if (this.screenHeight - dy < 8) {
+                  iEnd = this.screenHeight - dy;
+                }
+                for (let i = iStart; i < iEnd; i++) {
+                  let jStart = 0;
+                  if (dx < 0) {
+                    jStart = 0 - dx;
+                  }
+                  let jEnd = 8;
+                  if (this.screenWidth - dx < 8) {
+                    jEnd = this.screenWidth - dx;
+                  }
+                  for (let j = jStart; j < jEnd; j++) {
+                    const imageDataIndex = (dy + i) * 4 * this.screenWidth + (dx + j) * 4;
+                    const tileDataIndex = i * 4 * 8 + j * 4;
+                    // The formula for combining C1 = (R1,G1,B1) and C2 = (R2,G2,B2) into a new color C3, where C2 is overlayed on top of C1 with opacity p is usually ( (1-p)R1 + p*R2, (1-p)*G1 + p*G2, (1-p)*B1 + p*B2 ).
+                    // https://en.wikipedia.org/wiki/Transparency_%28graphic%29
+                    // Alpha Compositing: https://en.wikipedia.org/wiki/Alpha_compositing
+                    // R = (R1 * a1 / 255) + (R2 * a2 * (255 - a1) / (255^2))
+                    // G = (G1 * a1 / 255) + (G2 * a2 * (255 - a1) / (255^2))
+                    // B = (B1 * a1 / 255) + (B2 * a2 * (255 - a1) / (255^2))
+                    // Alpha = a1 + (a2 * (255 - a1) / 255)
+                    this.imageData[imageDataIndex] = this.Math.floor(
+                      (tile[tileDataIndex] * tile[tileDataIndex + 3] / 255) +
+                      (this.imageData[imageDataIndex] * this.imageData[imageDataIndex + 3] * (255 - tile[tileDataIndex + 3]) / (255 * 255))
+                    );
+                    this.imageData[imageDataIndex + 1] = this.Math.floor(
+                      (tile[tileDataIndex + 1] * tile[tileDataIndex + 3] / 255) +
+                      (this.imageData[imageDataIndex + 1] * this.imageData[imageDataIndex + 3] * (255 - tile[tileDataIndex + 3]) / (255 * 255))
+                    );
+                    this.imageData[imageDataIndex + 2] = this.Math.floor(
+                      (tile[tileDataIndex + 2] * tile[tileDataIndex + 3] / 255) +
+                      (this.imageData[imageDataIndex + 2] * this.imageData[imageDataIndex + 3] * (255 - tile[tileDataIndex + 3]) / (255 * 255))
+                    );
+                    this.imageData[imageDataIndex + 3] = this.Math.floor(
+                      tile[tileDataIndex + 3] + (this.imageData[imageDataIndex + 3] * (255 - tile[tileDataIndex + 3]) / 255)
+                    );
+                    /*
+                    // Not clear background with transparent pixels
+                    if (tile[tileDataIndex + 3] === 0) continue;
+                    this.imageData[imageDataIndex] = tile[tileDataIndex];
+                    this.imageData[imageDataIndex + 1] = tile[tileDataIndex + 1];
+                    this.imageData[imageDataIndex + 2] = tile[tileDataIndex + 2];
+                    this.imageData[imageDataIndex + 3] = tile[tileDataIndex + 3];
+                    */
+                  }
+                }
+              }
+            }
+          }
+        }.bind(this);
+
+        this.game.button = {};
+        for (const prop in this.keymap) {
+          const key = this.keymap[prop];
+          this.game.button[key] = {
+            press: false,
+            release: false,
+            hold: false
+          };
+        }
+
+        this.document.addEventListener('keydown', function (event) {
+          const key = this.keymap[event.keyCode.toString()];
+          const button = this.game.button[key];
+          if (button) {
+            button.press = true;
+            button.hold = true;
+          }
+        }.bind(this));
+
+        this.document.addEventListener('keyup', function (event) {
+          const key = this.keymap[event.keyCode.toString()];
+          const button = this.game.button[key];
+          if (button) {
+            button.release = true;
+            button.hold = false;
+          }
+        }.bind(this));
+
+        // this.game.initialize();
+
+        // this.previousTimestamp = this.performance.now();
+        // this.previousTimestamp = this.document.timeline.currentTime;
+        this.requestAnimationFrame(this.process);
+      };
+    </script>
+    <script src="./js/tile.js"></script>
+    <script src="./js/init.js"></script>
+    <script src="./js/title.js"></script>
+    <script src="./js/pitch.js"></script>
+  </head>
+  <body onload="window.launch()">
+    <canvas id="screen" width="640" height="576"></canvas>
+  </body>
+</html>
