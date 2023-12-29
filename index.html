@@ -55,62 +55,41 @@
 
       window.process = function (timestamp) {
         this.game.timestamp = parseInt(timestamp);
-        if (!this.previousTimestamp) {
-          this.previousTimestamp = timestamp;
-        }
-        const elapsed = timestamp - this.previousTimestamp;
-        if (elapsed > this.fpsInterval) {
-          // Get ready for next frame by setting previousTimestamp=timestamp, but...
-          // Also, adjust for fpsInterval not being multiple of 16.67
-          this.previousTimestamp = timestamp - (elapsed % this.fpsInterval);
 
-          // clear canvas
-          this.sceneContext.clearRect(0, 0, this.sceneWidth, this.sceneHeight);
-          this.windowContext.clearRect(0, 0, this.screenWidth, this.screenHeight);
+        // clear image data
+        this.imageData.fill(0);
 
-          // clear image data
-          this.imageData.fill(0);
+        // draw stuff here
+        this.game.render();
 
-          // draw stuff here
-          this.game.render();
-
-          // draw screen after finish rendering virtual canvas
-          this.screenContext.clearRect(0, 0, this.screenWidth * this.screenScale, this.screenHeight * this.screenScale);
-          this.screenContext.drawImage(this.sceneCanvas, this.scx, this.scy, this.screenWidth, this.screenHeight,
-            0, 0, this.screenWidth * this.screenScale, this.screenHeight * this.screenScale);
-          this.screenContext.drawImage(this.windowCanvas, 0, 0, this.screenWidth, this.screenHeight,
-            0, 0, this.screenWidth * this.screenScale, this.screenHeight * this.screenScale);
-
-          // draw screen after finish rendering
-          for (let i = 0; i < this.screenHeight; i++) {
-            for (let si = 0; si < this.screenScale; si++) {
-              for (let j = 0; j < this.screenWidth; j++) {
-                for (let sj = 0; sj < this.screenScale; sj++) {
-                  const screenDataIndex = (i * this.screenScale + si) * 4 * this.screenWidth * this.screenScale + (j * this.screenScale + sj) * 4;
-                  const imageDataIndex = i * 4 * this.screenWidth + j * 4;
-                  this.screenData.data[screenDataIndex] = this.imageData[imageDataIndex];
-                  this.screenData.data[screenDataIndex + 1] = this.imageData[imageDataIndex + 1];
-                  this.screenData.data[screenDataIndex + 2] = this.imageData[imageDataIndex + 2];
-                  this.screenData.data[screenDataIndex + 3] = this.imageData[imageDataIndex + 3];
-                }
+        // draw screen after finish rendering
+        for (let i = 0; i < this.screenHeight; i++) {
+          for (let si = 0; si < this.screenScale; si++) {
+            for (let j = 0; j < this.screenWidth; j++) {
+              for (let sj = 0; sj < this.screenScale; sj++) {
+                const screenDataIndex = (i * this.screenScale + si) * 4 * this.screenWidth * this.screenScale + (j * this.screenScale + sj) * 4;
+                const imageDataIndex = i * 4 * this.screenWidth + j * 4;
+                this.screenData.data[screenDataIndex] = this.imageData[imageDataIndex];
+                this.screenData.data[screenDataIndex + 1] = this.imageData[imageDataIndex + 1];
+                this.screenData.data[screenDataIndex + 2] = this.imageData[imageDataIndex + 2];
+                this.screenData.data[screenDataIndex + 3] = this.imageData[imageDataIndex + 3];
               }
             }
           }
-          this.screenContext.putImageData(this.screenData, 0, 0);
+        }
+        this.screenContext.putImageData(this.screenData, 0, 0);
 
-          // refresh button state
-          for (const prop in this.game.button) {
-            const button = this.game.button[prop];
-            button.press = false;
-            button.release = false;
-          }
+        // refresh button state
+        for (const prop in this.game.button) {
+          const button = this.game.button[prop];
+          button.press = false;
+          button.release = false;
         }
 
         this.requestAnimationFrame(this.process);
       };
 
       window.launch = function () {
-        this.fpsInterval = 1000 / 60;
         this.screenWidth = 160;
         this.screenHeight = 144;
         this.screenScale = 4;
@@ -125,46 +104,15 @@
         this.imageData.length = this.screenWidth * this.screenHeight * 4;
         this.imageData.fill(0);
 
-        this.sceneCanvas = this.document.createElement('canvas');
-        this.sceneCanvas.width = this.sceneWidth;
-        this.sceneCanvas.height = this.sceneHeight;
-        this.sceneContext = this.sceneCanvas.getContext('2d');
-
-        this.windowCanvas = this.document.createElement('canvas');
-        this.windowCanvas.width = this.screenWidth;
-        this.windowCanvas.height = this.screenHeight;
-        this.windowContext = this.sceneCanvas.getContext('2d');
-
-        const draw = function ({ tilemap, x, y }) {
-          for (let i = 0; i < tilemap.length; i++) {
-            for (let j = 0; j < tilemap[i].length; j++) {
-              const tile = tilemap[i][j];
-              if (tile) {
-                this.drawImage(tile, 0, 0, 8, 8, j * 8 + x, i * 8 + y, 8, 8);
-              }
-            }
-          }
-        };
-
-        this.game.drawScene = draw.bind(this.sceneContext);
-        this.game.drawWindow = draw.bind(this.windowContext);
         this.game.draw = function ({ tilemap, position }) {
           for (let row = 0; row < tilemap.length; row++) {
             const dy = position.absolute
               ? row * 8 + position.y
               : row * 8 + position.y - this.game.scy;
-            if (dy + 8 <= 0 || dy >= this.screenHeight) {
-              // TODO: remove if not necessary
-              // continue;
-            }
             for (let column = 0; column < tilemap[row].length; column++) {
               const dx = position.absolute
                 ? column * 8 + position.x
                 : column * 8 + position.x - this.game.scx;
-              if (dx + 8 <= 0 || dx >= this.screenWidth) {
-                // TODO: remove if not necessary
-                // continue;
-              }
               const tile = tilemap[row][column];
               if (tile) {
                 let iStart = 0;
@@ -209,14 +157,6 @@
                     this.imageData[imageDataIndex + 3] = this.Math.floor(
                       tile[tileDataIndex + 3] + (this.imageData[imageDataIndex + 3] * (255 - tile[tileDataIndex + 3]) / 255)
                     );
-                    /*
-                    // Not clear background with transparent pixels
-                    if (tile[tileDataIndex + 3] === 0) continue;
-                    this.imageData[imageDataIndex] = tile[tileDataIndex];
-                    this.imageData[imageDataIndex + 1] = tile[tileDataIndex + 1];
-                    this.imageData[imageDataIndex + 2] = tile[tileDataIndex + 2];
-                    this.imageData[imageDataIndex + 3] = tile[tileDataIndex + 3];
-                    */
                   }
                 }
               }
@@ -254,8 +194,7 @@
 
         // this.game.initialize();
 
-        // this.previousTimestamp = this.performance.now();
-        // this.previousTimestamp = this.document.timeline.currentTime;
+        this.previousTimestamp = this.document.timeline.currentTime;
         this.requestAnimationFrame(this.process);
       };
     </script>
