@@ -41,7 +41,13 @@
           tileContext.putImageData(imageData, 0, 0);
 
           return tileCanvas;
-        }.bind(this)
+        }.bind(this),
+        scroll: {
+          x: 0,
+          y: 0
+        },
+        tileset: {},
+        data: {}
       };
 
       window.keymap = {
@@ -108,11 +114,11 @@
           for (let row = 0; row < tilemap.length; row++) {
             const dy = position.absolute
               ? row * 8 + position.y
-              : row * 8 + position.y - this.game.scy;
+              : row * 8 + position.y - this.game.scroll.y;
             for (let column = 0; column < tilemap[row].length; column++) {
               const dx = position.absolute
                 ? column * 8 + position.x
-                : column * 8 + position.x - this.game.scx;
+                : column * 8 + position.x - this.game.scroll.x;
               const tile = tilemap[row][column];
               if (tile) {
                 let iStart = 0;
