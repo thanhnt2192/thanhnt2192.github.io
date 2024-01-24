@@ -13,6 +13,6 @@ window.game.render = function () {
   };
 
   const { ["conversation"]: conversation } = this.data;
-  conversation["initialize"].call(this);
-  this.render = conversation["render"].bind(this);
+  this.call(conversation["initialize"]);
+  this.render = this.bind(conversation["render"]);
 };

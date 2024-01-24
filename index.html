@@ -180,6 +180,14 @@
           };
         }
 
+        this.game.call = function (f, ...args) {
+          return f.call(this, ...args);
+        };
+
+        this.game.bind = function (f, ...args) {
+          return f.bind(this, ...args);
+        };
+
         this.document.addEventListener('keydown', function (event) {
           const key = this.keymap[event.keyCode.toString()];
           const button = this.game.button[key];
