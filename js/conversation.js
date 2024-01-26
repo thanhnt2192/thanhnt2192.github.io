@@ -13,7 +13,7 @@ window.game.data["conversation"] = {
     this.scroll["x"] = 0;
     this.scroll["y"] = 0;
   },
-  "render": function () {
+  "render": () => {
     const { input, tileset, data } = this;
     const unicode = tileset["unicode"];
     const conversation = data["conversation"];
