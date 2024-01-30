@@ -22,7 +22,7 @@ window.game.data["conversation"] = {
       dialog["cursor"]++;
       let line = dialog["script"][dialog["cursor"]][0];
       let i = 0;
-      while (i < line.length) {
+      while (i < line["length"]) {
         dialog["tilemap"][1][1 + i] = unicode[line[i]];
         i++;
       }

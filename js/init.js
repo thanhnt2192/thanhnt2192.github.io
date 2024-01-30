@@ -1,4 +1,6 @@
-window.game.render = function () {
+window.game["scroll"] = { "x": 0, "y": 0 };
+
+window.game["render"] = function ({ draw, scroll, call, bind, input }) {
   this.scx = 0;
   this.scy = 0;
 
