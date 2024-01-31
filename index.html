@@ -12,7 +12,7 @@
       }
       canvas {
         display: block;
-        width: 320px;
+        width: 288px;
         height: 288px;
         margin: 0 auto;
         box-sizing: content-box;
@@ -20,74 +20,66 @@
       }
     </style>
     <script>
-      window.game = {
-        createTile: function (tileData) {
-          const tileCanvas = this.document.createElement("canvas");
-          tileCanvas.width = 8;
-          tileCanvas.height = 8;
-          const tileContext = tileCanvas.getContext("2d");
-          const imageData = tileContext.createImageData(8, 8);
-
-          // Iterate through every pixel
-          for (let i = 0; i < imageData.data.length; i += 4) {
-            // Modify pixel data
-            imageData.data[i + 0] = tileData[i + 0]; // R value
-            imageData.data[i + 1] = tileData[i + 1]; // G value
-            imageData.data[i + 2] = tileData[i + 2]; // B value
-            imageData.data[i + 3] = tileData[i + 3]; // A value
-          }
-
-          // Draw image data to the canvas
-          tileContext.putImageData(imageData, 0, 0);
-
-          return tileCanvas;
-        }.bind(this),
-        scroll: {
-          x: 0,
-          y: 0
+      window.nodmg = {
+        keymap: {
+          "87": "up", // W
+          "83": "down", // S
+          "65": "left", // A
+          "68": "right", // D
+          "76": "a", // L
+          "80": "b" // P
         },
-        tileset: {},
-        data: {}
+        button: {},
+        screenWidth: 144,
+        screenHeight: 144,
+        screenScale: 4,
+        scx: 0,
+        scy: 0
       };
-
-      window.keymap = {
-        "87": "up", // W
-        "83": "down", // S
-        "65": "left", // A
-        "68": "right", // D
-        "76": "a", // L
-        "80": "b" // P
+      window.game = {
+        render: function () {}
       };
 
       window.process = function (timestamp) {
-        this.game.timestamp = parseInt(timestamp);
-
         // clear image data
-        this.imageData.fill(0);
+        this.nodmg.imageData.fill(0);
 
         // draw stuff here
-        this.game.render();
+        this.game.render.call(this.game, {
+          timestamp: parseInt(timestamp),
+          screen: {
+            draw: this.nodmg.draw,
+            scroll: this.nodmg.scroll
+          },
+          sound: {
+            play: null,
+            stop: null
+          },
+          control: this.nodmg.button
+        });
 
         // draw screen after finish rendering
-        for (let i = 0; i < this.screenHeight; i++) {
-          for (let si = 0; si < this.screenScale; si++) {
-            for (let j = 0; j < this.screenWidth; j++) {
-              for (let sj = 0; sj < this.screenScale; sj++) {
-                const screenDataIndex = (i * this.screenScale + si) * 4 * this.screenWidth * this.screenScale + (j * this.screenScale + sj) * 4;
-                const imageDataIndex = i * 4 * this.screenWidth + j * 4;
-                this.screenData.data[screenDataIndex] = this.imageData[imageDataIndex];
-                this.screenData.data[screenDataIndex + 1] = this.imageData[imageDataIndex + 1];
-                this.screenData.data[screenDataIndex + 2] = this.imageData[imageDataIndex + 2];
-                this.screenData.data[screenDataIndex + 3] = this.imageData[imageDataIndex + 3];
+        for (let i = 0; i < this.nodmg.screenHeight; i++) {
+          for (let si = 0; si < this.nodmg.screenScale; si++) {
+            for (let j = 0; j < this.nodmg.screenWidth; j++) {
+              for (let sj = 0; sj < this.nodmg.screenScale; sj++) {
+                const screenDataIndex = (i * this.nodmg.screenScale + si) * 4 * this.nodmg.screenWidth * this.nodmg.screenScale + (j * this.nodmg.screenScale + sj) * 4;
+                const imageDataIndex = i * 4 * this.nodmg.screenWidth + j * 4;
+                // Modify pixel data
+                this.nodmg.screenData.data[screenDataIndex + 0] = this.nodmg.imageData[imageDataIndex + 0]; // R value
+                this.nodmg.screenData.data[screenDataIndex + 1] = this.nodmg.imageData[imageDataIndex + 1]; // G value
+                this.nodmg.screenData.data[screenDataIndex + 2] = this.nodmg.imageData[imageDataIndex + 2]; // B value
+                this.nodmg.screenData.data[screenDataIndex + 3] = this.nodmg.imageData[imageDataIndex + 3]; // A value
               }
             }
           }
         }
-        this.screenContext.putImageData(this.screenData, 0, 0);
+        // Draw image data to the canvas
+        this.nodmg.screenContext.putImageData(this.nodmg.screenData, 0, 0);
 
         // refresh button state
-        for (const prop in this.game.button) {
-          const button = this.game.button[prop];
+        for (const prop in this.nodmg.button) {
+          const button = this.nodmg.button[prop];
           button.press = false;
           button.release = false;
         }
@@ -96,29 +88,23 @@
       };
 
       window.launch = function () {
-        this.screenWidth = 160;
-        this.screenHeight = 144;
-        this.screenScale = 4;
-        this.sceneWidth = 256;
-        this.sceneHeight = 256;
+        this.nodmg.screenCanvas = this.document.getElementById('screen');
+        this.nodmg.screenCanvas.imageSmoothingEnabled = false;
+        this.nodmg.screenContext = this.nodmg.screenCanvas.getContext('2d');
+        this.nodmg.screenData = this.nodmg.screenContext.getImageData(0, 0, this.nodmg.screenWidth * this.nodmg.screenScale, this.nodmg.screenHeight * this.nodmg.screenScale);
+        this.nodmg.imageData = [];
+        this.nodmg.imageData.length = this.nodmg.screenWidth * this.nodmg.screenHeight * 4;
+        this.nodmg.imageData.fill(0);
 
-        this.screenCanvas = this.document.getElementById('screen');
-        this.screenCanvas.imageSmoothingEnabled = false;
-        this.screenContext = this.screenCanvas.getContext('2d');
-        this.screenData = this.screenContext.getImageData(0, 0, this.screenWidth * this.screenScale, this.screenHeight * this.screenScale);
-        this.imageData = [];
-        this.imageData.length = this.screenWidth * this.screenHeight * 4;
-        this.imageData.fill(0);
-
-        this.game.draw = function ({ tilemap, position }) {
+        this.nodmg.draw = function ({ tilemap, position }) {
           for (let row = 0; row < tilemap.length; row++) {
             const dy = position.absolute
               ? row * 8 + position.y
-              : row * 8 + position.y - this.game.scroll.y;
+              : row * 8 + position.y - this.nodmg.scy;
             for (let column = 0; column < tilemap[row].length; column++) {
               const dx = position.absolute
                 ? column * 8 + position.x
-                : column * 8 + position.x - this.game.scroll.x;
+                : column * 8 + position.x - this.nodmg.scx;
               const tile = tilemap[row][column];
               if (tile) {
                 let iStart = 0;
@@ -126,8 +112,8 @@
                   iStart = 0 - dy;
                 }
                 let iEnd = 8;
-                if (this.screenHeight - dy < 8) {
-                  iEnd = this.screenHeight - dy;
+                if (this.nodmg.screenHeight - dy < 8) {
+                  iEnd = this.nodmg.screenHeight - dy;
                 }
                 for (let i = iStart; i < iEnd; i++) {
                   let jStart = 0;
@@ -135,11 +121,11 @@
                     jStart = 0 - dx;
                   }
                   let jEnd = 8;
-                  if (this.screenWidth - dx < 8) {
-                    jEnd = this.screenWidth - dx;
+                  if (this.nodmg.screenWidth - dx < 8) {
+                    jEnd = this.nodmg.screenWidth - dx;
                   }
                   for (let j = jStart; j < jEnd; j++) {
-                    const imageDataIndex = (dy + i) * 4 * this.screenWidth + (dx + j) * 4;
+                    const imageDataIndex = (dy + i) * 4 * this.nodmg.screenWidth + (dx + j) * 4;
                     const tileDataIndex = i * 4 * 8 + j * 4;
                     // The formula for combining C1 = (R1,G1,B1) and C2 = (R2,G2,B2) into a new color C3, where C2 is overlayed on top of C1 with opacity p is usually ( (1-p)R1 + p*R2, (1-p)*G1 + p*G2, (1-p)*B1 + p*B2 ).
                     // https://en.wikipedia.org/wiki/Transparency_%28graphic%29
@@ -148,20 +134,20 @@
                     // G = (G1 * a1 / 255) + (G2 * a2 * (255 - a1) / (255^2))
                     // B = (B1 * a1 / 255) + (B2 * a2 * (255 - a1) / (255^2))
                     // Alpha = a1 + (a2 * (255 - a1) / 255)
-                    this.imageData[imageDataIndex] = this.Math.floor(
+                    this.nodmg.imageData[imageDataIndex] = this.Math.floor(
                       (tile[tileDataIndex] * tile[tileDataIndex + 3] / 255) +
-                      (this.imageData[imageDataIndex] * this.imageData[imageDataIndex + 3] * (255 - tile[tileDataIndex + 3]) / (255 * 255))
+                      (this.nodmg.imageData[imageDataIndex] * this.nodmg.imageData[imageDataIndex + 3] * (255 - tile[tileDataIndex + 3]) / (255 * 255))
                     );
-                    this.imageData[imageDataIndex + 1] = this.Math.floor(
+                    this.nodmg.imageData[imageDataIndex + 1] = this.Math.floor(
                       (tile[tileDataIndex + 1] * tile[tileDataIndex + 3] / 255) +
-                      (this.imageData[imageDataIndex + 1] * this.imageData[imageDataIndex + 3] * (255 - tile[tileDataIndex + 3]) / (255 * 255))
+                      (this.nodmg.imageData[imageDataIndex + 1] * this.nodmg.imageData[imageDataIndex + 3] * (255 - tile[tileDataIndex + 3]) / (255 * 255))
                     );
-                    this.imageData[imageDataIndex + 2] = this.Math.floor(
+                    this.nodmg.imageData[imageDataIndex + 2] = this.Math.floor(
                       (tile[tileDataIndex + 2] * tile[tileDataIndex + 3] / 255) +
-                      (this.imageData[imageDataIndex + 2] * this.imageData[imageDataIndex + 3] * (255 - tile[tileDataIndex + 3]) / (255 * 255))
+                      (this.nodmg.imageData[imageDataIndex + 2] * this.nodmg.imageData[imageDataIndex + 3] * (255 - tile[tileDataIndex + 3]) / (255 * 255))
                     );
-                    this.imageData[imageDataIndex + 3] = this.Math.floor(
-                      tile[tileDataIndex + 3] + (this.imageData[imageDataIndex + 3] * (255 - tile[tileDataIndex + 3]) / 255)
+                    this.nodmg.imageData[imageDataIndex + 3] = this.Math.floor(
+                      tile[tileDataIndex + 3] + (this.nodmg.imageData[imageDataIndex + 3] * (255 - tile[tileDataIndex + 3]) / 255)
                     );
                   }
                 }
@@ -170,27 +156,23 @@
           }
         }.bind(this);
 
-        this.game.button = {};
-        for (const prop in this.keymap) {
-          const key = this.keymap[prop];
-          this.game.button[key] = {
+        this.nodmg.scroll = function (x, y) {
+          this.nodmg.scx = x;
+          this.nodmg.scy = y;
+        }.bind(this);
+
+        for (const prop in this.nodmg.keymap) {
+          const key = this.nodmg.keymap[prop];
+          this.nodmg.button[key] = {
             press: false,
             release: false,
             hold: false
           };
         }
 
-        this.game.call = function (f, ...args) {
-          return f.call(this, ...args);
-        };
-
-        this.game.bind = function (f, ...args) {
-          return f.bind(this, ...args);
-        };
-
         this.document.addEventListener('keydown', function (event) {
-          const key = this.keymap[event.keyCode.toString()];
-          const button = this.game.button[key];
+          const key = this.nodmg.keymap[event.keyCode.toString()];
+          const button = this.nodmg.button[key];
           if (button) {
             button.press = true;
             button.hold = true;
@@ -198,17 +180,14 @@
         }.bind(this));
 
         this.document.addEventListener('keyup', function (event) {
-          const key = this.keymap[event.keyCode.toString()];
-          const button = this.game.button[key];
+          const key = this.nodmg[event.keyCode.toString()];
+          const button = this.nodmg.button[key];
           if (button) {
             button.release = true;
             button.hold = false;
           }
         }.bind(this));
 
-        // this.game.initialize();
-
-        this.previousTimestamp = this.document.timeline.currentTime;
         this.requestAnimationFrame(this.process);
       };
     </script>
@@ -218,6 +197,6 @@
     <script src="./js/pitch.js"></script>
   </head>
   <body onload="window.launch()">
-    <canvas id="screen" width="640" height="576"></canvas>
+    <canvas id="screen" width="576" height="576"></canvas>
   </body>
 </html>
