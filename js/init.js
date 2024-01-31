@@ -1,6 +1,6 @@
 window.game["render"] = function (core) {
-  const unicode = this.tileset["unicode"];
-  this.logo = {
+  const unicode = this["tileset"]["unicode"];
+  this["logo"] = {
     tilemap: [[unicode["N"], unicode["o"], unicode["D"], unicode["M"], unicode["G"], unicode["."], unicode["C"], unicode["O"], unicode["M"]]],
     position: {
       x: 20,
@@ -9,5 +9,8 @@ window.game["render"] = function (core) {
     }
   };
 
-  core.screen.draw(this.logo);
+  core.screen.draw(this["logo"]);
+
+  core.call(this["conversation"]["initialize"], [core]);
+  this.render = this["conversation"]["render"];
 };

@@ -1,25 +1,38 @@
-window.game.data["conversation"] = {
+window.game["conversation"] = {
   "dialog": {
-    "tilemap": [],
+    "tilemap": [[], [], [], []],
     "position": {
       "x": 0,
       "y": 0,
       "absolute": false
     },
-    "script": [],
+    "script": [
+      ["Hello, I am Main", ""],
+      ["Hello, I am Main", ""]
+    ],
     "cursor": 0
   },
-  "initallize": function () {
-    this.scroll["x"] = 0;
-    this.scroll["y"] = 0;
+  "load": function () {
+    const dialog = this.conversation["dialog"];
+    let line = dialog["script"][dialog["cursor"]][0];
+    let i = 0;
+    while (i < line["length"]) {
+      dialog["tilemap"][1][1 + i] = unicode[line[i]];
+      i++;
+    }
   },
-  "render": () => {
-    const { input, tileset, data } = this;
+  "initialize": function (core) {
+    core.screen.scroll(0, 0);
+    core.call(this["conversation"]["load"], []);
+  },
+  "render": function (core) {
+    const tileset = this["tileset"];
     const unicode = tileset["unicode"];
-    const conversation = data["conversation"];
-    const dialog = conversation["dialog"];
-    if (input["a"]["press"]) {
+    const dialog = this.conversation["dialog"];
+    if (core.control.a.press) {
       dialog["cursor"]++;
+      console.log(dialog["cursor"]);
+      console.log(dialog["script"][dialog["cursor"]]);
       let line = dialog["script"][dialog["cursor"]][0];
       let i = 0;
       while (i < line["length"]) {

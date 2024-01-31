@@ -47,6 +47,7 @@
         // draw stuff here
         this.game.render.call(this.game, {
           timestamp: parseInt(timestamp),
+          call: this.nodmg.call,
           screen: {
             draw: this.nodmg.draw,
             scroll: this.nodmg.scroll
@@ -95,6 +96,10 @@
         this.nodmg.imageData = [];
         this.nodmg.imageData.length = this.nodmg.screenWidth * this.nodmg.screenHeight * 4;
         this.nodmg.imageData.fill(0);
+
+        this.nodmg.call = function (f, args) {
+          return f.call(this.game, ...args);
+        }.bind(this);
 
         this.nodmg.draw = function ({ tilemap, position }) {
           for (let row = 0; row < tilemap.length; row++) {
@@ -194,7 +199,7 @@
     <script src="./js/tile.js"></script>
     <script src="./js/init.js"></script>
     <script src="./js/title.js"></script>
-    <script src="./js/pitch.js"></script>
+    <script src="./js/conversation.js"></script>
   </head>
   <body onload="window.launch()">
     <canvas id="screen" width="576" height="576"></canvas>
