@@ -13,6 +13,7 @@ window.game["conversation"] = {
     "cursor": 0
   },
   "load": function () {
+    const unicode = this["tileset"]["unicode"];
     const dialog = this.conversation["dialog"];
     let line = dialog["script"][dialog["cursor"]][0];
     let i = 0;
@@ -40,5 +41,7 @@ window.game["conversation"] = {
         i++;
       }
     }
+
+    core.screen.draw(dialog);
   }
 };
