@@ -3,7 +3,6 @@ label.SCRIPT_CONVERSATION = 1;
 label.MEMORY_CONVERSATION = 10;
 
 script[label.SCRIPT_MAIN] = function () {
-  
 };
 
 script[label.SCRIPT_CONVERSATION] = function () {
