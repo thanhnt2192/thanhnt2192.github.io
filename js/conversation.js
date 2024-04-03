@@ -1,18 +1,14 @@
-window.game.label.SCRIPT_MAIN = 0;
-window.game.label.SCRIPT_CONVERSATION = 1;
-window.game.label.MEMORY_CONVERSATION = 1;
+label.SCRIPT_MAIN = 0;
+label.SCRIPT_CONVERSATION = 1;
+label.MEMORY_CONVERSATION = 10;
 
+script[label.SCRIPT_MAIN] = function () {
+  
+};
 
-
-
-
-
-
-
-
-
-window.sd.script[window.game.label.SCRIPT_CONVERSATION] = function () {
-  this.memory[10] = 1;
+script[label.SCRIPT_CONVERSATION] = function () {
+  memory[label.MEMORY_CONVERSATION] = 1; // A
+  memory[label.MEMORY_CONVERSATION + 1] = 2; // B
 };
 
 window.sd["conversation"] = {
