@@ -1,3 +1,8 @@
+script = [
+  { command: write(0), label: "MAIN" },
+  { command: jumpcond("MAIN") },
+];
+
 label.SCRIPT_MAIN = 0;
 label.SCRIPT_CONVERSATION = 1;
 label.MEMORY_CONVERSATION = 10;
