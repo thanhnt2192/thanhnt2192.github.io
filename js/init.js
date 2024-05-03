@@ -1,4 +1,4 @@
-window.game["render"] = function (core) {
+window.app["render"] = function (core) {
   const unicode = this["tileset"]["unicode"];
   this["logo"] = {
     tilemap: [[unicode["N"], unicode["o"], unicode["D"], unicode["M"], unicode["G"], unicode["."], unicode["C"], unicode["O"], unicode["M"]]],

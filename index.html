@@ -12,7 +12,7 @@
       }
       canvas {
         display: block;
-        width: 288px;
+        width: 352px;
         height: 288px;
         margin: 0 auto;
         box-sizing: content-box;
@@ -30,13 +30,13 @@
           "80": "b" // P
         },
         button: {},
-        screenWidth: 144,
+        screenWidth: 176,
         screenHeight: 144,
         screenScale: 4,
         scx: 0,
         scy: 0
       };
-      window.game = {
+      window.app = {
         render: function () {}
       };
 
@@ -45,7 +45,7 @@
         this.nodmg.imageData.fill(0);
 
         // draw stuff here
-        this.game.render.call(this.game, {
+        this.app.render.call(this.app, {
           timestamp: parseInt(timestamp),
           call: this.nodmg.call,
           screen: {
@@ -98,7 +98,7 @@
         this.nodmg.imageData.fill(0);
 
         this.nodmg.call = function (f, args) {
-          return f.call(this.game, ...args);
+          return f.call(this.app, ...args);
         }.bind(this);
 
         this.nodmg.draw = function ({ tilemap, position }) {
@@ -202,6 +202,6 @@
     <script src="./js/conversation.js"></script>
   </head>
   <body onload="window.launch()">
-    <canvas id="screen" width="576" height="576"></canvas>
+    <canvas id="screen" width="704" height="576"></canvas>
   </body>
 </html>

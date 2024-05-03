@@ -1,21 +1,4 @@
-script = [
-  { command: write(0), label: "MAIN" },
-  { command: jumpcond("MAIN") },
-];
-
-label.SCRIPT_MAIN = 0;
-label.SCRIPT_CONVERSATION = 1;
-label.MEMORY_CONVERSATION = 10;
-
-script[label.SCRIPT_MAIN] = function () {
-};
-
-script[label.SCRIPT_CONVERSATION] = function () {
-  memory[label.MEMORY_CONVERSATION] = 1; // A
-  memory[label.MEMORY_CONVERSATION + 1] = 2; // B
-};
-
-window.sd["conversation"] = {
+window.app["conversation"] = {
   "script": [
     ["Hello, I am Main", ""],
     ["Hello, I am Main", ""]
