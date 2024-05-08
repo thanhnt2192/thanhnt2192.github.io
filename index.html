@@ -185,7 +185,7 @@
         }.bind(this));
 
         this.document.addEventListener('keyup', function (event) {
-          const key = this.nodmg[event.keyCode.toString()];
+          const key = this.nodmg.keymap[event.keyCode.toString()];
           const button = this.nodmg.button[key];
           if (button) {
             button.release = true;

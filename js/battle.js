@@ -12,18 +12,34 @@ window.app["battle"] = {
       }
     };
 
-    const line = this["tileset"]["line"]["red"];
     this["battle"]["atb"] = {
-      "tilemap": [[line, line, line, line, line, line, line, line]],
       "position": {
-        "x": 0,
+        "x": 0 - 8 * 8,
         "y": 112,
         "absolute": true
+      },
+      color: {
+        list: [this["tileset"]["line"]["red"], this["tileset"]["line"]["yellow"]],
+        index: 0
       }
     };
+    this["battle"]["atb"]["line"] = this["battle"]["atb"]["color"]["list"][this["battle"]["atb"]["color"]["index"]];
+    const line = this["battle"]["atb"]["line"];
+    this["battle"]["atb"]["tilemap"] = [[line, line, line, line, line, line, line, line]];
   },
   "render": function (core) {
     const atb = this["battle"]["atb"];
+    if (core.control.down.hold) {
+      if (atb["position"]["x"] < 0) {
+        atb["position"]["x"] = atb["position"]["x"] + 1;
+      }
+      if (atb["position"]["x"] == 0) {
+        atb["color"]["index"] = (atb["color"]["index"] + 1) % 2;
+      }
+    }
+    if (core.control.down.release) {
+      atb["position"]["x"] = 0 - 8 * 8;
+    }
     core.screen.draw(this.logo);
     core.screen.draw(atb);
   }
