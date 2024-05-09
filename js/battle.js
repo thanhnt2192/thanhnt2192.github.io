@@ -19,12 +19,27 @@ window.app["battle"] = {
         "absolute": true
       },
       color: {
-        list: [this["tileset"]["line"]["red"], this["tileset"]["line"]["yellow"]],
-        index: 0
+        list: [
+          this["tileset"]["line"]["red"],
+          this["tileset"]["line"]["red"],
+          this["tileset"]["line"]["red"],
+          this["tileset"]["line"]["yellow"],
+          this["tileset"]["line"]["yellow"],
+          this["tileset"]["line"]["yellow"],
+          this["tileset"]["line"]["white"],
+          this["tileset"]["line"]["white"],
+          this["tileset"]["line"]["white"]
+        ],
+        index: 0,
+        change: function () {
+          const atb = this["battle"]["atb"];
+          for (let i = 0; i < atb["tilemap"][0].length; i++) {
+            atb["tilemap"][0][i] = atb["color"]["list"][atb["color"]["index"]];
+          }
+        }
       }
     };
-    this["battle"]["atb"]["line"] = this["battle"]["atb"]["color"]["list"][this["battle"]["atb"]["color"]["index"]];
-    const line = this["battle"]["atb"]["line"];
+    const line = this["battle"]["atb"]["color"]["list"][this["battle"]["atb"]["color"]["index"]];
     this["battle"]["atb"]["tilemap"] = [[line, line, line, line, line, line, line, line]];
   },
   "render": function (core) {
@@ -34,10 +49,13 @@ window.app["battle"] = {
         atb["position"]["x"] = atb["position"]["x"] + 1;
       }
       if (atb["position"]["x"] == 0) {
-        atb["color"]["index"] = (atb["color"]["index"] + 1) % 2;
+        atb["color"]["index"] = (atb["color"]["index"] + 1) % 9;
+        core.call(this["battle"]["atb"]["color"]["change"], []);
       }
     }
     if (core.control.down.release) {
+      atb["color"]["index"] = 0;
+      core.call(this["battle"]["atb"]["color"]["change"], []);
       atb["position"]["x"] = 0 - 8 * 8;
     }
     core.screen.draw(this.logo);
