@@ -34,7 +34,8 @@
         screenHeight: 144,
         screenScale: 4,
         scx: 0,
-        scy: 0
+        scy: 0,
+        timestamp: 0
       };
       window.app = {
         render: function () {}
@@ -45,8 +46,10 @@
         this.nodmg.imageData.fill(0);
 
         // draw stuff here
+        const timestampInt = parseInt(timestamp);
         this.app.render.call(this.app, {
-          timestamp: parseInt(timestamp),
+          timestamp: timestampInt,
+          timestep: timestampInt - this.nodmg.timestamp,
           call: this.nodmg.call,
           screen: {
             draw: this.nodmg.draw,
@@ -58,6 +61,7 @@
           },
           control: this.nodmg.button
         });
+        this.nodmg.timestamp = timestampInt;
 
         // draw screen after finish rendering
         for (let i = 0; i < this.nodmg.screenHeight; i++) {
