@@ -1,7 +1,5 @@
 window.app["battle"] = {
   "initialize": function (core) {
-    core.screen.scroll(0, 0);
-
     this["battle"]["ally"] = {
       "soldier": {
         "attack": 1, // attack
@@ -25,6 +23,14 @@ window.app["battle"] = {
       },
       "count": 6,
       "damage": 0
+    };
+
+    core.screen.scroll(0, 0);
+
+    this["battle"]["status"] = 1; // TODO: set to 0 at battle begin to show begin animation
+
+    this["battle"]["animation"] = {
+      "frame": 0
     };
 
     const unicode = this["tileset"]["unicode"];
@@ -67,7 +73,7 @@ window.app["battle"] = {
     const line = this["battle"]["atb"]["color"]["list"][this["battle"]["atb"]["color"]["index"]];
     this["battle"]["atb"]["tilemap"] = [[line, line, line, line, line, line, line, line]];
   },
-  "render": function (core) {
+  "calculate": function (core) {
     const ally = this["battle"]["ally"];
     const enemy = this["battle"]["enemy"];
     if (ally["count"] > 0 && enemy["count"] > 0) {
@@ -81,33 +87,54 @@ window.app["battle"] = {
           enemy["damage"] -= enemy["soldier"]["health"];
           enemy["count"]--;
           console.log("Enemy count: " + enemy["count"]);
+          this["battle"]["status"] = 0;
         }
       } else {
         if (enemy["damage"] >= enemy["commander"]["health"]) {
           enemy["damage"] -= enemy["commander"]["health"];
           enemy["count"]--;
           console.log("Win");
+          this["battle"]["status"] = 0;
         }
       }
       // Enemy attack
-      let attackEnemy = 0;
-      attackEnemy += enemy["commander"]["attack"];
-      attackEnemy += enemy["soldier"]["attack"];
-      ally["damage"] += attackEnemy * core.timestep;
-      if (ally["count"] > 1) {
-        if (ally["damage"] >= ally["soldier"]["health"]) {
-          ally["damage"] -= ally["soldier"]["health"];
-          ally["count"]--;
-          console.log("Ally count: " + ally["count"]);
-        }
-      } else if (enemy["count"] > 0) {
-        if (ally["damage"] >= ally["commander"]["health"]) {
-          ally["damage"] -= ally["commander"]["health"];
-          ally["count"]--;
-          console.log("Lose");
+      // if (enemy["count"] > 0) {
+      if (this["battle"]["status"] === 1) {
+        let attackEnemy = 0;
+        attackEnemy += enemy["commander"]["attack"];
+        attackEnemy += enemy["soldier"]["attack"];
+        ally["damage"] += attackEnemy * core.timestep;
+        if (ally["count"] > 1) {
+          if (ally["damage"] >= ally["soldier"]["health"]) {
+            ally["damage"] -= ally["soldier"]["health"];
+            ally["count"]--;
+            console.log("Ally count: " + ally["count"]);
+            this["battle"]["status"] = 0;
+          }
+        } else {
+          if (ally["damage"] >= ally["commander"]["health"]) {
+            ally["damage"] -= ally["commander"]["health"];
+            ally["count"]--;
+            console.log("Lose");
+            this["battle"]["status"] = 0;
+          }
         }
       }
     }
+  },
+  "render": function (core) {
+    if (this["battle"]["status"] === 1) {
+      core.call(this["battle"]["calculate"], [core]);
+    } else {
+      if (this["battle"]["animation"]["frame"] < 600) {
+        this["battle"]["animation"]["frame"]++;
+      } else {
+        this["battle"]["animation"]["frame"] = 0;
+        this["battle"]["status"] = 1;
+        console.log("battle active");
+      }
+    }
+
     const atb = this["battle"]["atb"];
     if (core.control.down.hold) {
       if (atb["position"]["x"] < 0) {
