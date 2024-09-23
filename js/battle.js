@@ -14,6 +14,21 @@ window.app["battle"] = {
     };
     this["battle"]["enemy"] = {
       "soldier": {
+        "list": [
+          {
+            position: {
+              x: 20,
+              y: 10,
+              absolute: true
+            },
+            animation: {
+              out: {
+                "status": 0,
+                "frame": 0
+              }
+            }
+          }
+        ],
         "attack": 1, // attack
         "health": 10000 // defend * 10000
       },
