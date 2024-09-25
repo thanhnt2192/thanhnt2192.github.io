@@ -42,11 +42,84 @@ window.app["battle"] = {
 
     core.screen.scroll(0, 0);
 
-    this["battle"]["status"] = 1; // TODO: set to 0 at battle begin to show begin animation
+    this["battle"]["status"] = 0;
 
     this["battle"]["animation"] = {
       "frame": 0
     };
+
+    this["battle"]["background"] = {
+      "tilemap": [],
+      position: {
+        x: 0,
+        y: 0,
+        absolute: true
+      }
+    };
+    for (i = 0; i < 18; i++) {
+      this["battle"]["background"]["tilemap"][i] = [];
+      for (j = 0; j < 22; j++) {
+        this["battle"]["background"]["tilemap"][i][j] = this["tileset"]["white"];
+      }
+    }
+
+    this["battle"]["cover"] = {
+      "tilemap": [],
+      position: {
+        x: -20,
+        y: 0,
+        absolute: true
+      },
+      "animation": {
+        "out": {
+          "status": 1,
+          "frame": 0,
+          "start": -16,
+          "end": 600,
+          "speed": 8,
+          "render": function (core) {
+            const cover = this["battle"]["cover"];
+            const animation = cover["animation"]["out"];
+            if (animation["status"] === 0) {
+              return;
+            }
+            if (animation["frame"] > animation["end"]) {
+              animation["status"] = 0;
+              this["battle"]["status"] = 1;
+              return;
+            }
+            cover["position"]["x"] = animation["start"] + (animation["frame"] * animation["speed"]);
+            core.screen.draw(cover);
+            animation["frame"]++;
+          }
+        }
+      }
+    }
+
+    for (i = 0; i < 18; i++) {
+      this["battle"]["cover"]["tilemap"][i] = [];
+      for (j = 0; j < (22 + 2); j++) {
+        this["battle"]["cover"]["tilemap"][i][j] = this["tileset"]["black"];
+      }
+    }
+
+    this["battle"]["mask"] = {
+      "tilemap": [],
+      position: {
+        x: 0,
+        y: 8 * 3,
+        absolute: true
+      },
+    };
+
+    for (i = 0; i < 10; i++) {
+      this["battle"]["mask"]["tilemap"][i] = [];
+      for (j = 0; j < 22; j++) {
+        if (i < 3 || i > 7 || j < 1 || (j > 9 && j < 12) || j > 20) {
+          this["battle"]["mask"]["tilemap"][i][j] = this["tileset"]["gray"];
+        }
+      }
+    }
 
     const unicode = this["tileset"]["unicode"];
     this["logo"] = {
@@ -165,7 +238,10 @@ window.app["battle"] = {
       core.call(this["battle"]["atb"]["color"]["change"], []);
       atb["position"]["x"] = 0 - 8 * 8;
     }
+    core.screen.draw(this["battle"]["background"]);
     core.screen.draw(this.logo);
     core.screen.draw(atb);
+    core.screen.draw(this["battle"]["mask"]);
+    core.call(this["battle"]["cover"]["animation"]["out"]["render"], [core]);
   }
 };
