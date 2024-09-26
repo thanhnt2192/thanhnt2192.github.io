@@ -2,14 +2,56 @@ window.app["battle"] = {
   "initialize": function (core) {
     this["battle"]["ally"] = {
       "soldier": {
+        "list": [
+          {
+            position: {
+              x: 30,
+              y: 30,
+              absolute: true
+            }
+          },
+          {
+            position: {
+              x: 20,
+              y: 64,
+              absolute: true
+            }
+          },
+          {
+            position: {
+              x: 10,
+              y: 40,
+              absolute: true
+            }
+          },
+          {
+            position: {
+              x: 8,
+              y: 54,
+              absolute: true
+            }
+          }
+        ],
         "attack": 1, // attack
         "health": 10000 // defend * 10000
       },
       "commander": {
+        "tilemap": [],
+        position: {
+          x: 40,
+          y: 50,
+          absolute: true
+        },
         "attack": 1, // technique
         "health": 20000 // stamina * 20000
       },
-      "count": 6,
+      "render": function (core) {
+        for (let i = 0; i < 4; i++) {
+          core.screen.draw(this["battle"]["ally"]["soldier"]["list"][i]);
+        }
+        core.screen.draw(this["battle"]["ally"]["commander"]);
+      },
+      "count": 5,
       "damage": 0
     };
     this["battle"]["enemy"] = {
@@ -36,9 +78,18 @@ window.app["battle"] = {
         "attack": 1, // technique
         "health": 20000 // stamina * 20000
       },
-      "count": 6,
+      "count": 5,
       "damage": 0
     };
+    for (i = 0; i < 6; i++) {
+      this["battle"]["ally"]["commander"]["tilemap"][i] = [];
+      for (j = 0; j < 5; j++) {
+        this["battle"]["ally"]["commander"]["tilemap"][i][j] = this["tileset"]["black"];
+      }
+    }
+    for (i = 0; i < 4; i++) {
+      this["battle"]["ally"]["soldier"]["list"][i]["tilemap"] =  this["battle"]["ally"]["commander"]["tilemap"];
+    }
 
     core.screen.scroll(0, 0);
 
@@ -77,7 +128,7 @@ window.app["battle"] = {
           "start": -16,
           "end": 600,
           "speed": 8,
-          "render": function (core) {
+          "animate": function () {
             const cover = this["battle"]["cover"];
             const animation = cover["animation"]["out"];
             if (animation["status"] === 0) {
@@ -89,10 +140,15 @@ window.app["battle"] = {
               return;
             }
             cover["position"]["x"] = animation["start"] + (animation["frame"] * animation["speed"]);
-            core.screen.draw(cover);
             animation["frame"]++;
           }
         }
+      },
+      "render": function (core) {
+        const cover = this["battle"]["cover"];
+        const animation = cover["animation"]["out"];
+        core.call(animation["animate"], []);
+        core.screen.draw(cover);
       }
     }
 
@@ -112,10 +168,10 @@ window.app["battle"] = {
       },
     };
 
-    for (i = 0; i < 10; i++) {
+    for (i = 0; i < 15; i++) {
       this["battle"]["mask"]["tilemap"][i] = [];
       for (j = 0; j < 22; j++) {
-        if (i < 3 || i > 7 || j < 1 || (j > 9 && j < 12) || j > 20) {
+        if (i < 3 || i > 10 || j < 1 || (j > 9 && j < 12) || j > 20) {
           this["battle"]["mask"]["tilemap"][i][j] = this["tileset"]["gray"];
         }
       }
@@ -242,6 +298,7 @@ window.app["battle"] = {
     core.screen.draw(this.logo);
     core.screen.draw(atb);
     core.screen.draw(this["battle"]["mask"]);
-    core.call(this["battle"]["cover"]["animation"]["out"]["render"], [core]);
+    core.call(this["battle"]["ally"]["render"], [core]);
+    core.call(this["battle"]["cover"]["render"], [core]);
   }
 };
