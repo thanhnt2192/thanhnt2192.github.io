@@ -42,14 +42,20 @@ window.app["battle"] = {
           y: 50,
           absolute: true
         },
+        "remnant": {
+          "status": 0,
+          "tilemap": []
+        },
         "attack": 1, // technique
         "health": 20000 // stamina * 20000
       },
       "render": function (core) {
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < (this["battle"]["ally"]["count"] - 1); i++) {
           core.screen.draw(this["battle"]["ally"]["soldier"]["list"][i]);
         }
-        core.screen.draw(this["battle"]["ally"]["commander"]);
+        if (this["battle"]["ally"]["count"] > 0) {
+          core.screen.draw(this["battle"]["ally"]["commander"]);
+        }
       },
       "count": 5,
       "damage": 0
@@ -89,6 +95,24 @@ window.app["battle"] = {
     }
     for (i = 0; i < 4; i++) {
       this["battle"]["ally"]["soldier"]["list"][i]["tilemap"] =  this["battle"]["ally"]["commander"]["tilemap"];
+    }
+    for (let i = 0; i < 6; i++) {
+      this["battle"]["ally"]["commander"]["remnant"]["tilemap"][i] = [];
+      for (j = 0; j < 5; j++) {
+        this["battle"]["ally"]["commander"]["remnant"]["tilemap"][i][j] = [];
+        for (k = 0; k < 64; k = k + 4) {
+          if (this["battle"]["ally"]["commander"]["tilemap"][i][j][k + 3] > 0) {
+            this["battle"]["ally"]["commander"]["remnant"]["tilemap"][i][j][k + 0] = 0xFF;
+            this["battle"]["ally"]["commander"]["remnant"]["tilemap"][i][j][k + 1] = 0xFF;
+            this["battle"]["ally"]["commander"]["remnant"]["tilemap"][i][j][k + 2] = 0xFF;
+            this["battle"]["ally"]["commander"]["remnant"]["tilemap"][i][j][k + 3] = 0x00;
+          } else {
+            this["battle"]["ally"]["commander"]["remnant"]["tilemap"][i][j][k + 0] = 0x00;
+            this["battle"]["ally"]["commander"]["remnant"]["tilemap"][i][j][k + 1] = 0x00;
+            this["battle"]["ally"]["commander"]["remnant"]["tilemap"][i][j][k + 2] = 0x00;
+          }
+        }
+      }
     }
 
     core.screen.scroll(0, 0);
