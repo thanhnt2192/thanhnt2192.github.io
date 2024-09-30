@@ -50,11 +50,27 @@ window.app["battle"] = {
         "health": 20000 // stamina * 20000
       },
       "render": function (core) {
-        for (let i = 0; i < (this["battle"]["ally"]["count"] - 1); i++) {
+        for (let i = 0; i < 4; i++) {
+          // for (let i = 0; i < (this["battle"]["ally"]["count"] - 1); i++) {
           core.screen.draw(this["battle"]["ally"]["soldier"]["list"][i]);
+          core.screen.draw(this["battle"]["ally"]["soldier"]["list"][i]["remnant"]);
         }
         if (this["battle"]["ally"]["count"] > 0) {
           core.screen.draw(this["battle"]["ally"]["commander"]);
+        }
+        let alphaChannel = this["battle"]["animation"]["frame"];
+        if (alphaChannel > 255) {
+          alphaChannel = 255;
+        }
+        const remnant = this["battle"]["ally"]["soldier"]["list"][0]["remnant"];
+        for (let i = 0; i < remnant["tilemap"]["length"]; i++) {
+          for (let j = 0; j < remnant["tilemap"][i]["length"]; j++) {
+            for (let k = 0; k < 64; k++) {
+              if (remnant["tilemap"][i][j][k * 4] > 0) {
+                remnant["tilemap"][i][j][k * 4 + 3] = alphaChannel;
+              }
+            }
+          }
         }
       },
       "count": 5,
@@ -100,19 +116,24 @@ window.app["battle"] = {
       this["battle"]["ally"]["commander"]["remnant"]["tilemap"][i] = [];
       for (j = 0; j < 5; j++) {
         this["battle"]["ally"]["commander"]["remnant"]["tilemap"][i][j] = [];
-        for (k = 0; k < 64; k = k + 4) {
-          if (this["battle"]["ally"]["commander"]["tilemap"][i][j][k + 3] > 0) {
-            this["battle"]["ally"]["commander"]["remnant"]["tilemap"][i][j][k + 0] = 0xFF;
-            this["battle"]["ally"]["commander"]["remnant"]["tilemap"][i][j][k + 1] = 0xFF;
-            this["battle"]["ally"]["commander"]["remnant"]["tilemap"][i][j][k + 2] = 0xFF;
-            this["battle"]["ally"]["commander"]["remnant"]["tilemap"][i][j][k + 3] = 0x00;
+        for (k = 0; k < 64; k++) {
+          if (this["battle"]["ally"]["commander"]["tilemap"][i][j][k * 4 + 3] > 0) {
+            this["battle"]["ally"]["commander"]["remnant"]["tilemap"][i][j][k * 4 + 0] = 0xFF;
+            this["battle"]["ally"]["commander"]["remnant"]["tilemap"][i][j][k * 4 + 1] = 0xFF;
+            this["battle"]["ally"]["commander"]["remnant"]["tilemap"][i][j][k * 4 + 2] = 0xFF;
+            this["battle"]["ally"]["commander"]["remnant"]["tilemap"][i][j][k * 4 + 3] = 0x00;
           } else {
-            this["battle"]["ally"]["commander"]["remnant"]["tilemap"][i][j][k + 0] = 0x00;
-            this["battle"]["ally"]["commander"]["remnant"]["tilemap"][i][j][k + 1] = 0x00;
-            this["battle"]["ally"]["commander"]["remnant"]["tilemap"][i][j][k + 2] = 0x00;
+            this["battle"]["ally"]["commander"]["remnant"]["tilemap"][i][j][k * 4 + 0] = 0x00;
+            this["battle"]["ally"]["commander"]["remnant"]["tilemap"][i][j][k * 4 + 1] = 0x00;
+            this["battle"]["ally"]["commander"]["remnant"]["tilemap"][i][j][k * 4 + 2] = 0x00;
           }
         }
       }
+    }
+    for (i = 0; i < 4; i++) {
+      this["battle"]["ally"]["soldier"]["list"][i]["remnant"] = {};
+      this["battle"]["ally"]["soldier"]["list"][i]["remnant"]["position"] = this["battle"]["ally"]["soldier"]["list"][i]["position"];
+      this["battle"]["ally"]["soldier"]["list"][i]["remnant"]["tilemap"] =  this["battle"]["ally"]["commander"]["remnant"]["tilemap"];
     }
 
     core.screen.scroll(0, 0);
