@@ -100,7 +100,41 @@ window.app["battle"] = {
         "attack": 1, // technique
         "health": 20000 // stamina * 20000
       },
+      "list": [
+        {
+          "position": {
+            "x": 80,
+            "y": 50,
+            "absolute": true
+          },
+          "position": {
+            "x": 80,
+            "y": 50,
+            "absolute": true
+          },
+          "position": {
+            "x": 80,
+            "y": 50,
+            "absolute": true
+          },
+          "position": {
+            "x": 80,
+            "y": 50,
+            "absolute": true
+          },"position": {
+            "x": 80,
+            "y": 50,
+            "absolute": true
+          }
+        }
+      ],
+      "attack": 1, // unit's damage
+      "defend": 1, // unit's health = defend * 10000
+      "technique": 1, // bonus damage for commander
+      "stamina": 1, // bonus health for commander = stamina * 10000
+      "value": 5,
       "count": 5,
+      "defeat": 0, // Commander defeated
       "damage": 0
     };
     for (i = 0; i < 6; i++) {
