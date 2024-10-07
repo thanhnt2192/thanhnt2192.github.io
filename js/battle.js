@@ -121,7 +121,8 @@ window.app["battle"] = {
             "x": 80,
             "y": 50,
             "absolute": true
-          },"position": {
+          },
+          "position": {
             "x": 80,
             "y": 50,
             "absolute": true
@@ -135,8 +136,33 @@ window.app["battle"] = {
       "value": 5,
       "count": 5,
       "defeat": 0, // Commander defeated
-      "damage": 0
+      "damage": 0,
+      "initialize": function () {
+        const commander = [];
+        for (i = 0; i < 6; i++) {
+          commander[i] = [];
+          for (j = 0; j < 5; j++) {
+            commander[i][j] = this["tileset"]["black"];
+          }
+        }
+        const soldier = [];
+        const remnant = [];
+        const tileset = {
+          "commander": commander,
+          "soldier": soldier,
+          "remnant": remnant
+        };
+        this["battle"]["enemy"]["tileset"] = tileset;
+
+        this["battle"]["enemy"]["list"][0]["tilemap"] = commander;
+        for (let i = 0; i < 5; i++) {
+          this["battle"]["enemy"]["list"][i]["tilemap"] = soldier;
+        }
+      }
     };
+
+    core.call(this["battle"]["enemy"]["initialize"], []);
+
     for (i = 0; i < 6; i++) {
       this["battle"]["ally"]["commander"]["tilemap"][i] = [];
       for (j = 0; j < 5; j++) {
