@@ -103,31 +103,39 @@ window.app["battle"] = {
       "list": [
         {
           "position": {
-            "x": 80,
-            "y": 50,
-            "absolute": true
-          },
-          "position": {
-            "x": 80,
-            "y": 50,
-            "absolute": true
-          },
-          "position": {
-            "x": 80,
-            "y": 50,
-            "absolute": true
-          },
-          "position": {
-            "x": 80,
-            "y": 50,
-            "absolute": true
-          },
-          "position": {
-            "x": 80,
+            "x": 100,
             "y": 50,
             "absolute": true
           }
-        }
+        },
+        {
+          "position": {
+            "x": 100,
+            "y": 50,
+            "absolute": true
+          }
+        },
+        {
+          "position": {
+            "x": 100,
+            "y": 50,
+            "absolute": true
+          }
+        },
+        {
+          "position": {
+            "x": 100,
+            "y": 50,
+            "absolute": true
+          }
+        },
+        {
+          "position": {
+            "x": 100,
+            "y": 50,
+            "absolute": true
+          }
+        },
       ],
       "attack": 1, // unit's damage
       "defend": 1, // unit's health = defend * 10000
@@ -138,15 +146,17 @@ window.app["battle"] = {
       "defeat": 0, // Commander defeated
       "damage": 0,
       "initialize": function () {
-        const commander = [];
+        const battler = [];
         for (i = 0; i < 6; i++) {
-          commander[i] = [];
+          battler[i] = [];
           for (j = 0; j < 5; j++) {
-            commander[i][j] = this["tileset"]["black"];
+            battler[i][j] = this["tileset"]["black"];
           }
         }
-        const soldier = [];
-        const remnant = [];
+        // TODO: clone from battler
+        const commander = battler;
+        const soldier = battler;
+        const remnant = battler;
         const tileset = {
           "commander": commander,
           "soldier": soldier,
@@ -155,8 +165,33 @@ window.app["battle"] = {
         this["battle"]["enemy"]["tileset"] = tileset;
 
         this["battle"]["enemy"]["list"][0]["tilemap"] = commander;
-        for (let i = 0; i < 5; i++) {
+        for (let i = 1; i < 5; i++) {
           this["battle"]["enemy"]["list"][i]["tilemap"] = soldier;
+        }
+      },
+      "render": function (core) {
+        const enemy = this["battle"]["enemy"];
+        for (let i = enemy["defeat"]; i < enemy["defeat"] + enemy["count"]; i++) {
+          core.screen.draw(enemy["list"][i]);
+        }
+      }
+    };
+
+    this["battle"]["animation"] = {
+      "death": {
+        "frame": 0,
+        "initialize": function () {
+          // TODO: clone tileset soldier to remnant
+        },
+        "animate": function () {
+          const enemy = this["battle"]["enemy"];
+          if (enemy["count"] > enemy["result"]) {
+            for (let i = enemy["result"] + enemy["defeat"]; i < enemy["count"]; i++) {
+              enemy["list"][i]["tilemap"] = enemy["tileset"]["remnant"];
+            }
+            // TODO: Modify tileset remnant
+            this["battle"]["animation"]["death"]["frame"]++;
+          }
         }
       }
     };
@@ -404,6 +439,7 @@ window.app["battle"] = {
     core.screen.draw(atb);
     core.screen.draw(this["battle"]["mask"]);
     core.call(this["battle"]["ally"]["render"], [core]);
+    core.call(this["battle"]["enemy"]["render"], [core]);
     core.call(this["battle"]["cover"]["render"], [core]);
   }
 };
