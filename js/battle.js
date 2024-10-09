@@ -1,4 +1,5 @@
 window.app["battle"] = {
+  "status": 0,
   "initialize": function (core) {
     this["battle"]["ally"] = {
       "soldier": {
@@ -58,6 +59,7 @@ window.app["battle"] = {
         if (this["battle"]["ally"]["count"] > 0) {
           core.screen.draw(this["battle"]["ally"]["commander"]);
         }
+        /*
         let alphaChannel = this["battle"]["animation"]["frame"];
         if (alphaChannel > 255) {
           alphaChannel = 255;
@@ -72,33 +74,19 @@ window.app["battle"] = {
             }
           }
         }
+        */
       },
       "count": 5,
       "damage": 0
     };
     this["battle"]["enemy"] = {
       "soldier": {
-        "list": [
-          {
-            position: {
-              x: 20,
-              y: 10,
-              absolute: true
-            },
-            animation: {
-              out: {
-                "status": 0,
-                "frame": 0
-              }
-            }
-          }
-        ],
         "attack": 1, // attack
         "health": 10000 // defend * 10000
       },
       "commander": {
         "attack": 1, // technique
-        "health": 20000 // stamina * 20000
+        "health": 20000 // (defend + stamina) * 10000
       },
       "list": [
         {
@@ -178,23 +166,67 @@ window.app["battle"] = {
     };
 
     this["battle"]["animation"] = {
-      "death": {
+      "start": {
+        "status": 0,
         "frame": 0,
         "initialize": function () {
-          // TODO: clone tileset soldier to remnant
+          this["battle"]["status"] = 0;
+          const animation = this["battle"]["animation"]["start"];
+          animation["frame"] = 0;
+          animation["status"] = 1;
         },
         "animate": function () {
-          const enemy = this["battle"]["enemy"];
-          if (enemy["count"] > enemy["result"]) {
-            for (let i = enemy["result"] + enemy["defeat"]; i < enemy["count"]; i++) {
-              enemy["list"][i]["tilemap"] = enemy["tileset"]["remnant"];
-            }
-            // TODO: Modify tileset remnant
-            this["battle"]["animation"]["death"]["frame"]++;
+          const animation = this["battle"]["animation"]["start"];
+          if (animation["status"] === 0) {
+            return;
+          }
+          if (animation["frame"] < 600) {
+            animation["frame"]++;
+          } else {
+            this["battle"]["status"] = 1;
+            animation["status"] = 0;
+            console.log("animation start END");
           }
         }
+      },
+      "death": {
+        "status": 0,
+        "frame": 0,
+        "initialize": function () {
+          this["battle"]["status"] = 0;
+          const animation = this["battle"]["animation"]["death"];
+          animation["frame"] = 0;
+          animation["status"] = 1;
+          // TODO: clone tileset soldier to remnant
+          const enemy = this["battle"]["enemy"];
+          for (let i = enemy["value"] + enemy["defeat"]; i < enemy["count"]; i++) {
+            enemy["list"][i]["tilemap"] = enemy["tileset"]["remnant"];
+          }
+        },
+        "animate": function () {
+          const animation = this["battle"]["animation"]["death"];
+          if (animation["status"] === 0) {
+            return;
+          }
+          const enemy = this["battle"]["enemy"];
+          if (animation["frame"] < 300) {
+            // TODO: Modify tileset remnant
+            animation["frame"]++;
+          } else {
+            enemy["count"] = enemy["value"];
+            this["battle"]["status"] = 1;
+            animation["status"] = 0;
+            console.log("animation death END");
+          }
+        }
+      },
+      "render": function (core) {
+        core.call(this["battle"]["animation"]["start"]["animate"], []);
+        core.call(this["battle"]["animation"]["death"]["animate"], []);
       }
     };
+
+    core.call(this["battle"]["animation"]["start"]["initialize"], []);
 
     core.call(this["battle"]["enemy"]["initialize"], []);
 
@@ -232,12 +264,6 @@ window.app["battle"] = {
     }
 
     core.screen.scroll(0, 0);
-
-    this["battle"]["status"] = 0;
-
-    this["battle"]["animation"] = {
-      "frame": 0
-    };
 
     this["battle"]["background"] = {
       "tilemap": [],
@@ -358,6 +384,9 @@ window.app["battle"] = {
     this["battle"]["atb"]["tilemap"] = [[line, line, line, line, line, line, line, line]];
   },
   "calculate": function (core) {
+    if (this["battle"]["status"] === 0) {
+      return;
+    }
     const ally = this["battle"]["ally"];
     const enemy = this["battle"]["enemy"];
     if (ally["count"] > 0 && enemy["count"] > 0) {
@@ -369,20 +398,21 @@ window.app["battle"] = {
       if (enemy["count"] > 1) {
         if (enemy["damage"] >= enemy["soldier"]["health"]) {
           enemy["damage"] -= enemy["soldier"]["health"];
-          enemy["count"]--;
-          console.log("Enemy count: " + enemy["count"]);
-          this["battle"]["status"] = 0;
+          enemy["value"]--;
+          console.log("Enemy value: " + enemy["value"]);
+          core.call(this["battle"]["animation"]["death"]["initialize"], []);
         }
       } else {
         if (enemy["damage"] >= enemy["commander"]["health"]) {
           enemy["damage"] -= enemy["commander"]["health"];
-          enemy["count"]--;
+          enemy["value"]--;
+          enemy["defeat"] = 1;
           console.log("Win");
-          this["battle"]["status"] = 0;
+          core.call(this["battle"]["animation"]["death"]["initialize"], []);
         }
       }
       // Enemy attack
-      // if (enemy["count"] > 0) {
+      // if (enemy["value"] > 0) {
       if (this["battle"]["status"] === 1) {
         let attackEnemy = 0;
         attackEnemy += enemy["commander"]["attack"];
@@ -393,31 +423,21 @@ window.app["battle"] = {
             ally["damage"] -= ally["soldier"]["health"];
             ally["count"]--;
             console.log("Ally count: " + ally["count"]);
-            this["battle"]["status"] = 0;
+            core.call(this["battle"]["animation"]["death"]["initialize"], []);
           }
         } else {
           if (ally["damage"] >= ally["commander"]["health"]) {
             ally["damage"] -= ally["commander"]["health"];
             ally["count"]--;
             console.log("Lose");
-            this["battle"]["status"] = 0;
+            core.call(this["battle"]["animation"]["death"]["initialize"], []);
           }
         }
       }
     }
   },
   "render": function (core) {
-    if (this["battle"]["status"] === 1) {
-      core.call(this["battle"]["calculate"], [core]);
-    } else {
-      if (this["battle"]["animation"]["frame"] < 600) {
-        this["battle"]["animation"]["frame"]++;
-      } else {
-        this["battle"]["animation"]["frame"] = 0;
-        this["battle"]["status"] = 1;
-        console.log("battle active");
-      }
-    }
+    core.call(this["battle"]["calculate"], [core]);
 
     const atb = this["battle"]["atb"];
     if (core.control.down.hold) {
@@ -438,6 +458,7 @@ window.app["battle"] = {
     core.screen.draw(this.logo);
     core.screen.draw(atb);
     core.screen.draw(this["battle"]["mask"]);
+    core.call(this["battle"]["animation"]["render"], [core]);
     core.call(this["battle"]["ally"]["render"], [core]);
     core.call(this["battle"]["enemy"]["render"], [core]);
     core.call(this["battle"]["cover"]["render"], [core]);
