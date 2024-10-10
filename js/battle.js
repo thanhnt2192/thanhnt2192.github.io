@@ -3,50 +3,10 @@ window.app["battle"] = {
   "initialize": function (core) {
     this["battle"]["ally"] = {
       "soldier": {
-        "list": [
-          {
-            position: {
-              x: 30,
-              y: 30,
-              absolute: true
-            }
-          },
-          {
-            position: {
-              x: 20,
-              y: 64,
-              absolute: true
-            }
-          },
-          {
-            position: {
-              x: 10,
-              y: 40,
-              absolute: true
-            }
-          },
-          {
-            position: {
-              x: 8,
-              y: 54,
-              absolute: true
-            }
-          }
-        ],
         "attack": 1, // attack
         "health": 10000 // defend * 10000
       },
       "commander": {
-        "tilemap": [],
-        position: {
-          x: 40,
-          y: 50,
-          absolute: true
-        },
-        "remnant": {
-          "status": 0,
-          "tilemap": []
-        },
         "attack": 1, // technique
         "health": 20000 // stamina * 20000
       },
@@ -76,8 +36,74 @@ window.app["battle"] = {
         }
         */
       },
+      "list": [
+        {
+          position: {
+            x: 40,
+            y: 50,
+            absolute: true
+          },
+          position: {
+            x: 30,
+            y: 30,
+            absolute: true
+          }
+        },
+        {
+          position: {
+            x: 20,
+            y: 64,
+            absolute: true
+          }
+        },
+        {
+          position: {
+            x: 10,
+            y: 40,
+            absolute: true
+          }
+        },
+        {
+          position: {
+            x: 8,
+            y: 54,
+            absolute: true
+          }
+        }
+      ],
+      "attack": 1, // unit's damage
+      "defend": 1, // unit's health = defend * 10000
+      "technique": 1, // bonus damage for commander
+      "stamina": 1, // bonus health for commander = stamina * 10000
+      "value": 5,
       "count": 5,
-      "damage": 0
+      "defeat": 0, // Commander defeated
+      "damage": 0,
+      "initialize": function () {
+        const battler = [];
+        for (i = 0; i < 6; i++) {
+          battler[i] = [];
+          for (j = 0; j < 5; j++) {
+            battler[i][j] = this["tileset"]["black"];
+          }
+        }
+        // TODO: clone from battler
+        const commander = battler;
+        const soldier = battler;
+        const remnant = battler;
+        const tileset = {
+          "commander": commander,
+          "soldier": soldier,
+          "remnant": remnant
+        };
+        const ally = this["battle"]["ally"];
+        ally["tileset"] = tileset;
+
+        ally["list"][0]["tilemap"] = commander;
+        for (let i = 1; i < 5; i++) {
+          ally["list"][i]["tilemap"] = soldier;
+        }
+      }
     };
     this["battle"]["enemy"] = {
       "soldier": {
