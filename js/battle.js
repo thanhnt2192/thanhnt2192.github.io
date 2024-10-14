@@ -3,11 +3,10 @@ window.app["battle"] = {
   "initialize": function (core) {
     this["battle"]["ally"] = {
       "soldier": {
-        "attack": 1, // attack
+        "power": 1, // attack
         "health": 10000 // defend * 10000
       },
       "commander": {
-        "attack": 1, // technique
         "power": 1, // technique
         "health": 20000 // (defend + stamina) * 10000
       },
@@ -92,11 +91,11 @@ window.app["battle"] = {
     // Enemy
     this["battle"]["enemy"] = {
       "soldier": {
-        "attack": 1, // attack
+        "power": 1, // attack
         "health": 10000 // defend * 10000
       },
       "commander": {
-        "attack": 1, // technique
+        "power": 1, // technique
         "health": 20000 // (defend + stamina) * 10000
       },
       "list": [
@@ -371,8 +370,8 @@ window.app["battle"] = {
     if (ally["count"] > 0 && enemy["count"] > 0) {
       // Ally attack
       let attackAlly = 0;
-      attackAlly += ally["commander"]["attack"];
-      attackAlly += ally["soldier"]["attack"];
+      attackAlly += ally["commander"]["power"];
+      attackAlly += ally["soldier"]["power"];
       enemy["damage"] += attackAlly * core.timestep;
       if (enemy["count"] > 1) {
         if (enemy["damage"] >= enemy["soldier"]["health"]) {
@@ -394,8 +393,8 @@ window.app["battle"] = {
       // if (enemy["value"] > 0) {
       if (this["battle"]["status"] === 1) {
         let attackEnemy = 0;
-        attackEnemy += enemy["commander"]["attack"];
-        attackEnemy += enemy["soldier"]["attack"];
+        attackEnemy += enemy["commander"]["power"];
+        attackEnemy += enemy["soldier"]["power"];
         ally["damage"] += attackEnemy * core.timestep;
         if (ally["count"] > 1) {
           if (ally["damage"] >= ally["soldier"]["health"]) {
