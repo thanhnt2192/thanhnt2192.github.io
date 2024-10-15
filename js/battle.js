@@ -179,6 +179,9 @@ window.app["battle"] = {
       "start": {
         "status": 0,
         "frame": 0,
+        "start": -16,
+        "end": 600,
+        "speed": 8,
         "initialize": function () {
           this["battle"]["status"] = 0;
           const animation = this["battle"]["animation"]["start"];
@@ -190,7 +193,7 @@ window.app["battle"] = {
           if (animation["status"] === 0) {
             return;
           }
-          if (animation["frame"] < 600) {
+          if (animation["frame"] < animation["end"]) {
             animation["frame"]++;
           } else {
             this["battle"]["status"] = 1;
@@ -265,33 +268,10 @@ window.app["battle"] = {
         y: 0,
         absolute: true
       },
-      "animation": {
-        "out": {
-          "status": 1,
-          "frame": 0,
-          "start": -16,
-          "end": 600,
-          "speed": 8,
-          "animate": function () {
-            const cover = this["battle"]["cover"];
-            const animation = cover["animation"]["out"];
-            if (animation["status"] === 0) {
-              return;
-            }
-            if (animation["frame"] > animation["end"]) {
-              animation["status"] = 0;
-              this["battle"]["status"] = 1;
-              return;
-            }
-            cover["position"]["x"] = animation["start"] + (animation["frame"] * animation["speed"]);
-            animation["frame"]++;
-          }
-        }
-      },
       "render": function (core) {
         const cover = this["battle"]["cover"];
-        const animation = cover["animation"]["out"];
-        core.call(animation["animate"], []);
+        const animation = this["battle"]["animation"]["start"];
+        cover["position"]["x"] = animation["start"] + (animation["frame"] * animation["speed"]);
         core.screen.draw(cover);
       }
     }
@@ -414,6 +394,7 @@ window.app["battle"] = {
       }
     }
   },
+
   "render": function (core) {
     core.call(this["battle"]["calculate"], [core]);
 
