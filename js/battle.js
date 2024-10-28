@@ -1,6 +1,8 @@
 window.app["battle"] = {
   "status": 0,
   "initialize": function (core) {
+    core.screen.scroll(0, 0);
+
     this["battle"]["ally"] = {
       "soldier": {
         "power": 1, // attack
@@ -243,8 +245,6 @@ window.app["battle"] = {
 
     core.call(this["battle"]["ally"]["initialize"], [core]);
     core.call(this["battle"]["enemy"]["initialize"], [core]);
-
-    core.screen.scroll(0, 0);
 
     this["battle"]["background"] = {
       "tilemap": [],

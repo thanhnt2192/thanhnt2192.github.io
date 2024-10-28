@@ -29,7 +29,7 @@
           "76": "a", // L
           "80": "b" // P
         },
-        palette: [
+        palette: [ // colors
           [0x00, 0x00, 0x00, 0x00], // Transparent
           [0xFF, 0x00, 0x4D, 0xFF], // Red
           [0x00, 0xE4, 0x36, 0xFF], // Green
@@ -124,8 +124,18 @@
               const dx = position.absolute
                 ? column * 8 + position.x
                 : column * 8 + position.x - this.nodmg.scx;
-              const tile = tilemap[row][column];
+              let tile = tilemap[row][column];
               if (tile) {
+                if (tile.length === 64) {
+                  const tileData = [];
+                  for (let i = 0; i < tile.length; i++) {
+                    tileData.push(this.nodmg.palette[tile[i]][0]);
+                    tileData.push(this.nodmg.palette[tile[i]][1]);
+                    tileData.push(this.nodmg.palette[tile[i]][2]);
+                    tileData.push(this.nodmg.palette[tile[i]][3]);
+                  }
+                  tile = tileData;
+                }
                 let iStart = 0;
                 if (dy < 0) {
                   iStart = 0 - dy;
@@ -213,6 +223,7 @@
     <script src="./js/tile.js"></script>
     <script src="./js/init.js"></script>
     <script src="./js/battle.js"></script>
+    <script src="./js/road.js"></script>
   </head>
   <body onload="window.launch()">
     <canvas id="screen" width="704" height="576"></canvas>
