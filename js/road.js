@@ -22,6 +22,7 @@ window.app["road"] = {
         "y": 100,
         "absolute": false
       },
+      "bullets": [],
       "animation": {
         "walk": {
           "a": 1,
@@ -61,6 +62,18 @@ window.app["road"] = {
             }
           }
           core.call(player["animation"]["walk"]["animate"], [core]);
+        }
+      },
+      "attack": {
+        "frameskip": 0,
+        "process": function (core) {
+          const player = this["road"]["player"];
+          player["attack"]["frameskip"] += core.timestep;
+          const cooldown = 2000;
+          if (player["attack"]["frameskip"] > cooldown) {
+            // TODO: add player.bullets
+            player["attack"]["frameskip"] -= cooldown;
+          }
         }
       }
     };
