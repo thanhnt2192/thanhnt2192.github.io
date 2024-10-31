@@ -52,7 +52,7 @@ window.app["road"] = {
         if (core.control.left.hold || core.control.right.hold) {
           player["interval"]["move"] += core.timestep;
           const interval = 20;
-          while (player["interval"]["move"] > interval) {
+          while (player["interval"]["move"] >= interval) {
             player["interval"]["move"] -= interval;
             if (core.control.left.hold) {
               player["position"]["x"] -= 1;
@@ -68,10 +68,37 @@ window.app["road"] = {
         "frameskip": 0,
         "process": function (core) {
           const player = this["road"]["player"];
+          for (let i = 0; i < player["bullets"].length; i++) {
+            const interval = 20;
+            player["bullets"][i]["frameskip"] += core.timestep;
+            while (player["bullets"][i]["frameskip"] >= interval) {
+              player["bullets"][i]["position"]["y"] -= 2;
+              player["bullets"][i]["frameskip"] -= interval;
+            }
+          }
+          let index = 0;
+          while (index < player["bullets"].length) {
+            if (player["bullets"][index]["position"]["y"] < -2) {
+              // Remove
+              player["bullets"].splice(index, 1);
+            } else {
+              index++;
+            }
+          }
+
           player["attack"]["frameskip"] += core.timestep;
           const cooldown = 2000;
           if (player["attack"]["frameskip"] > cooldown) {
-            // TODO: add player.bullets
+            const bullet = {
+              "tilemap": this["tileset"]["qi"],
+              "position": {
+                "x": player["position"]["x"] + 4,
+                "y": player["position"]["y"] - 10,
+                "absolute": false
+              },
+              "frameskip": 0
+            };
+            player["bullets"].push(bullet);
             player["attack"]["frameskip"] -= cooldown;
           }
         }
@@ -88,8 +115,12 @@ window.app["road"] = {
   },
   "render": function (core) {
     core.call(this["road"]["player"]["move"], [core]);
+    core.call(this["road"]["player"]["attack"]["process"], [core]);
     core.screen.draw(this["road"]["background"]);
     core.screen.draw(this["road"]["player"]);
+    for (let i = 0; i < this["road"]["player"]["bullets"].length; i++) {
+      core.screen.draw(this["road"]["player"]["bullets"][i]);
+    }
     core.screen.draw(this["road"]["qi"]);
   }
 };
