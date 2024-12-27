@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Draw Colored Cube</title>
+</head>
+<body>
+  <canvas id="cubeCanvas" width="400" height="400" style="border: 1px solid black;"></canvas>
+  <script>
+    // Get the canvas and context
+    const canvas = document.getElementById('cubeCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Define cube coordinates
+    const frontTopLeft = { x: 100, y: 100 };
+    const frontTopRight = { x: 200, y: 100 };
+    const frontBottomLeft = { x: 100, y: 200 };
+    const frontBottomRight = { x: 200, y: 200 };
+
+    const depth = 50;
+    const backTopLeft = { x: frontTopLeft.x + depth, y: frontTopLeft.y - depth };
+    const backTopRight = { x: frontTopRight.x + depth, y: frontTopRight.y - depth };
+    const backBottomLeft = { x: frontBottomLeft.x + depth, y: frontBottomLeft.y - depth };
+    const backBottomRight = { x: frontBottomRight.x + depth, y: frontBottomRight.y - depth };
+
+    // Draw top face (blue)
+    ctx.beginPath();
+    ctx.moveTo(frontTopLeft.x, frontTopLeft.y);
+    ctx.lineTo(frontTopRight.x, frontTopRight.y);
+    ctx.lineTo(backTopRight.x, backTopRight.y);
+    ctx.lineTo(backTopLeft.x, backTopLeft.y);
+    ctx.closePath();
+    ctx.fillStyle = 'blue';
+    ctx.fill();
+    ctx.stroke();
+
+    // Draw right face (yellow)
+    ctx.beginPath();
+    ctx.moveTo(frontTopRight.x, frontTopRight.y);
+    ctx.lineTo(backTopRight.x, backTopRight.y);
+    ctx.lineTo(backBottomRight.x, backBottomRight.y);
+    ctx.lineTo(frontBottomRight.x, frontBottomRight.y);
+    ctx.closePath();
+    ctx.fillStyle = 'yellow';
+    ctx.fill();
+    ctx.stroke();
+
+    // Draw front face (red)
+    ctx.beginPath();
+    ctx.moveTo(frontTopLeft.x, frontTopLeft.y);
+    ctx.lineTo(frontTopRight.x, frontTopRight.y);
+    ctx.lineTo(frontBottomRight.x, frontBottomRight.y);
+    ctx.lineTo(frontBottomLeft.x, frontBottomLeft.y);
+    ctx.closePath();
+    ctx.fillStyle = 'red';
+    ctx.fill();
+    ctx.stroke();
+  </script>
+</body>
+</html>
