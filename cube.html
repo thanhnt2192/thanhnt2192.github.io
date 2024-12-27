@@ -12,19 +12,34 @@
     canvas {
       position: fixed; height: 72px; width: 88px; border: 0px solid black;
     }
+    button {
+      display: block;
+      width: 40px;
+      height: 40px;
+    }
   </style>
 </head>
 <body>
-  <div>
-    <input type="number" value="100" id="x">
-    <input type="number" value="100" id="y">
-    <input type="button" value="move" id="move">
-    <input type="button" value="add" id="add">
+  <div style="position: fixed; bottom: 20px; right: 20px; opacity: 0.5;">
+    <!-- <input type="number" value="100" id="x"> -->
+    <!-- <input type="number" value="100" id="y"> -->
+    <!-- <input type="button" value="move" id="move"> -->
+    <button id="up" style="margin: 0 50px;">&uarr;</button>
+    <div style="display: flex; margin: 10px 0;">
+      <button id="left">&larr;</button>
+      <button id="add" style="margin: 0 10px;">+</button>
+      <button id="right">&rarr;</button>
+    </div>
+    
+    <button id="down" style="margin: 0 50px;">&darr;</button>
   </div>
-  <canvas id="cubeCanvas" width="176" height="144"></canvas>
+  <div id="dummy" style="display: none;">
+    <canvas width="176" height="144"></canvas>
+  </div>
   <script>
     // Get the canvas and context
-    const canvas = document.getElementById('cubeCanvas');
+    const canvas = document.getElementById('dummy').firstElementChild;
+    var dummyEle = canvas;
     const ctx = canvas.getContext('2d');
 
     // Define cube coordinates
@@ -73,14 +88,61 @@
     ctx.stroke();
   </script>
   <script>
+    var selectedCube;
+    var x = 200;
+    var y = 200;
+    document.getElementById("down").onclick = () => {
+      console.log("down");
+      y += 10;
+      selectedCube.style.left = x + "px";
+      selectedCube.style.top = y + "px";
+    };
+    document.getElementById("up").onclick = () => {
+      console.log("up");
+      y -= 10;
+      selectedCube.style.left = x + "px";
+      selectedCube.style.top = y + "px";
+    };
+    document.getElementById("left").onclick = () => {
+      console.log("left");
+      x -= 10;
+      selectedCube.style.left = x + "px";
+      selectedCube.style.top = y + "px";
+    };
+    document.getElementById("right").onclick = () => {
+      console.log("right");
+      x += 10;
+      selectedCube.style.left = x + "px";
+      selectedCube.style.top = y + "px";
+    };
+    /*
     document.getElementById("move").onclick = () => {
       console.log("move");
-      document.getElementById("cubeCanvas").style.left = document.getElementById("x").value + "px";
-      document.getElementById("cubeCanvas").style.top = document.getElementById("y").value + "px";
+      selectedCube.style.left = document.getElementById("x").value + "px";
+      selectedCube.style.top = document.getElementById("y").value + "px";
     };
+    */
     document.getElementById("add").onclick = () => {
-
+      selectedCube = document.getElementById("dummy").firstElementChild.cloneNode(true);
+      selectedCube.onclick = (e) => {
+        console.log("select");
+        selectedCube = e.target;
+        x = parseInt(selectedCube.style.left);
+        y = parseInt(selectedCube.style.top);
+      };
+      selectedCube.getContext("2d").drawImage(dummyEle, 0, 0);
+      y -= 100;
+      selectedCube.style.left = x + "px";
+      selectedCube.style.top = y + "px";
+      document.body.appendChild(selectedCube);
     };
+    var canvasElements = document.getElementsByTagName("canvas");
+    for (const element of canvasElements) {
+      element.addEventListener("click", e => {
+        console.log("select");
+        selectedCube = e;
+      });
+    }
   </script>
 </body>
 </html>
