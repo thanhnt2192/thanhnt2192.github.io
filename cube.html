@@ -4,21 +4,36 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Draw Colored Cube</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    canvas {
+      position: fixed; height: 72px; width: 88px; border: 0px solid black;
+    }
+  </style>
 </head>
 <body>
-  <canvas id="cubeCanvas" width="400" height="400" style="border: 1px solid black;"></canvas>
+  <div>
+    <input type="number" value="100" id="x">
+    <input type="number" value="100" id="y">
+    <input type="button" value="move" id="move">
+    <input type="button" value="add" id="add">
+  </div>
+  <canvas id="cubeCanvas" width="176" height="144"></canvas>
   <script>
     // Get the canvas and context
     const canvas = document.getElementById('cubeCanvas');
     const ctx = canvas.getContext('2d');
 
     // Define cube coordinates
-    const frontTopLeft = { x: 100, y: 100 };
-    const frontTopRight = { x: 200, y: 100 };
-    const frontBottomLeft = { x: 100, y: 200 };
-    const frontBottomRight = { x: 200, y: 200 };
+    const frontTopLeft = { x: 2, y: 42 };
+    const frontTopRight = { x: 102, y: 42 };
+    const frontBottomLeft = { x: 2, y: 142 };
+    const frontBottomRight = { x: 102, y: 142 };
 
-    const depth = 50;
+    const depth = 40;
     const backTopLeft = { x: frontTopLeft.x + depth, y: frontTopLeft.y - depth };
     const backTopRight = { x: frontTopRight.x + depth, y: frontTopRight.y - depth };
     const backBottomLeft = { x: frontBottomLeft.x + depth, y: frontBottomLeft.y - depth };
@@ -31,7 +46,7 @@
     ctx.lineTo(backTopRight.x, backTopRight.y);
     ctx.lineTo(backTopLeft.x, backTopLeft.y);
     ctx.closePath();
-    ctx.fillStyle = 'blue';
+    ctx.fillStyle = 'rgba(95, 87, 79, 1)';
     ctx.fill();
     ctx.stroke();
 
@@ -42,7 +57,7 @@
     ctx.lineTo(backBottomRight.x, backBottomRight.y);
     ctx.lineTo(frontBottomRight.x, frontBottomRight.y);
     ctx.closePath();
-    ctx.fillStyle = 'yellow';
+    ctx.fillStyle = 'rgba(95, 87, 79, 1)';
     ctx.fill();
     ctx.stroke();
 
@@ -53,9 +68,19 @@
     ctx.lineTo(frontBottomRight.x, frontBottomRight.y);
     ctx.lineTo(frontBottomLeft.x, frontBottomLeft.y);
     ctx.closePath();
-    ctx.fillStyle = 'red';
+    ctx.fillStyle = 'rgba(194, 195, 199, 1)';
     ctx.fill();
     ctx.stroke();
+  </script>
+  <script>
+    document.getElementById("move").onclick = () => {
+      console.log("move");
+      document.getElementById("cubeCanvas").style.left = document.getElementById("x").value + "px";
+      document.getElementById("cubeCanvas").style.top = document.getElementById("y").value + "px";
+    };
+    document.getElementById("add").onclick = () => {
+
+    };
   </script>
 </body>
 </html>
