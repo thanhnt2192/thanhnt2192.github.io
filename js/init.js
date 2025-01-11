@@ -1,6 +1,6 @@
 window.app["render"] = function (core) {
-  core.call(this["road"]["initialize"], [core]);
-  this.render = this["road"]["render"];
+  core.call(this["arena"]["initialize"], [core]);
+  this.render = this["arena"]["render"];
 };
 
 window.app["utils"] = {
