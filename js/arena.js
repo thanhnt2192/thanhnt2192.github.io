@@ -23,8 +23,29 @@ window.app["arena"] = {
         "absolute": true
       }
     };
+    const nin = [
+      3, 3, 3, 0, 0, 0, 0, 0,
+      3, 3, 3, 0, 0, 0, 0, 0,
+      3, 3, 3, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0
+    ];
+    this["arena"]["energy"] = {
+      "tilemap": [
+        [nin]
+      ],
+      "position": {
+        "x": 40,
+        "y": 10,
+        "absolute": true
+      }
+    };
   },
   "render": function (core) {
     core.screen.draw(this["arena"]["hp"]);
+    core.screen.draw(this["arena"]["energy"]);
   }
 };
