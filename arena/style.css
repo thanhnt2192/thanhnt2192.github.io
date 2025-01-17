@@ -1,0 +1,22 @@
+.board-container {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.character-image {
+  display: block;
+  width: 75px;
+  height: 75px;
+  box-sizing: content-box;
+  border: 1px solid #000000;
+}
+
+.character-hp {
+  width: 75px;
+  height: 20px;
+  background-color: #00E436;
+  box-sizing: content-box;
+  border: 1px solid #000000;
+  margin-top: 4px;
+}
