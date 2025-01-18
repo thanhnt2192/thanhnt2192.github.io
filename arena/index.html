@@ -226,11 +226,18 @@
   </head>
   <body onload="window.launch()">
     <canvas id="screen" width="704" height="576"></canvas>
-    <div class="board-container">
-      <div class="character-container">
-        <div class="character">
-          <img class="character-image">
-          <div class="character-hp"></div>
+    <div class="game-container">
+      <div class="game-wrapper">
+        <div class="board-container">
+          <div class="character-container">
+            <div class="character">
+              <img class="solid-frame character-image">
+              <div class="solid-frame character-hp"></div>
+            </div>
+            <div class="character-skill-container">
+              <div class="solid-frame character-skill-active"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
