@@ -29,6 +29,10 @@
   width: 100%;
 }
 
+.character-container {
+  position: relative;
+}
+
 .character-image {
   display: block;
   width: 75px;
@@ -42,13 +46,26 @@
   margin-top: 4px;
 }
 
+.character-skill-set-container {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
 .character-skill-container {
   height: 79px;
   padding-top: 11px;
   box-sizing: border-box;
 }
 
-.character-skill-background {
+.character-scroll {
+  overflow: hidden;
+}
+
+.character-scroll-background {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 381px;
   height: 79px;
   background-image: url("https://i.imgur.com/jJh0V2n.png");
