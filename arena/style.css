@@ -3,34 +3,46 @@
   border: 1px solid #000000;
 }
 
-.game-container {
+.wrapper {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  max-height: 560px;
 }
 
-.game-wrapper {
+.container {
   position: relative;
   width: 100%;
   height: 100%;
   max-width: 440px;
+  max-height: 560px;
   margin: 0 auto;
   background-image: url("https://i.imgur.com/pztYVAL.png");
   background-position: center;
 }
 
-.board-container {
+.board {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
 }
 
-.character-container {
+.field {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+.team {
+  padding: 10px 0px;
+}
+
+.character {
   position: relative;
+  margin: 50px 0px;
 }
 
 .character-image {
@@ -40,36 +52,33 @@
 }
 
 .character-hp {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
   width: 75px;
   height: 20px;
   background-color: #00E436;
-  margin-top: 4px;
 }
 
-.character-skill-set-container {
+.skill-container {
   position: absolute;
   bottom: 0;
-  right: 0;
+  right: -10px;
+  width: 79px;
+  height: 100px;
+  /* padding-top: 11px; */
+  /* box-sizing: border-box; */
 }
 
-.character-skill-container {
-  position: absolute;
-  bottom: 0;
-  right: 200px;
-  height: 79px;
-  padding-top: 11px;
-  box-sizing: border-box;
-}
-
-.character-scroll {
+.skill-scroll {
   position: absolute;
   bottom: 0;
   width: 79px;
-  height: 100px;
+  height: 100%;
   overflow: hidden;
 }
 
-.character-scroll-background {
+.skill-scroll-background {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -80,7 +89,8 @@
   translate: -151px -151px;
 }
 
-.character-skill-active {
+.skill-active {
+  position: absolute;
   width: 54px;
   height: 54px;
   background-color: #5F574F;

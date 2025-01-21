@@ -226,9 +226,31 @@
   </head>
   <body onload="window.launch()">
     <canvas id="screen" width="704" height="576"></canvas>
-    <div class="game-container">
-      <div class="game-wrapper">
-        <div class="board-container">
+    <div class="wrapper">
+      <div class="container">
+        <div class="board">
+          <div class="field">
+            <div class="team">
+              <div class="character">
+                <img class="solid-frame character-image">
+                <div class="solid-frame character-hp"></div>
+                <div class="skill-container">
+                  <div class="skill-scroll">
+                    <div class="skill-scroll-background"></div>
+                    <div class="solid-frame skill-active"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="character"></div>
+              <div class="character"></div>
+            </div>
+            <div class="team">
+              <div class="character"></div>
+              <div class="character"></div>
+              <div class="character"></div>
+            </div>
+          </div>
+
           <div class="character-container">
             <div class="character">
               <img class="solid-frame character-image">
