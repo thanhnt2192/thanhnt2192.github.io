@@ -53,19 +53,19 @@
 
 .character-hp {
   position: absolute;
-  bottom: -2px;
+  bottom: -18px;
   left: 0;
   width: 75px;
-  height: 20px;
+  height: 14px;
   background-color: #00E436;
 }
 
 .skill-container {
   position: absolute;
-  bottom: 0;
-  right: -10px;
+  bottom: -25px;
+  right: -85px;
   width: 79px;
-  height: 100px;
+  height: 95px;
   /* padding-top: 11px; */
   /* box-sizing: border-box; */
 }
@@ -89,8 +89,27 @@
   translate: -151px -151px;
 }
 
+.skill-scroll-block {
+  position:absolute;
+  top: -20px;
+  left: -4px;
+  width: 88px;
+  height: 25px;
+}
+
+.skill-scroll-block-background {
+  position: absolute;
+  width: 25px;
+  height: 88px;
+  background-image: url("https://i.imgur.com/x955DQ9.png");
+  transform: rotate(90deg);
+  translate: 31px -31px;
+}
+
 .skill-active {
   position: absolute;
+  bottom: 25px;
+  right: 11px;
   width: 54px;
   height: 54px;
   background-color: #5F574F;
