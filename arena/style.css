@@ -35,6 +35,8 @@
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-between;
+  width: 300px;
+  margin: 0 auto;
 }
 
 .team {
@@ -59,10 +61,10 @@
 
 .character-hp {
   position: absolute;
-  top: 0px;
-  left: -18px;
-  width: 14px;
-  height: 75px;
+  bottom: -18px;
+  left: 0px;
+  width: 75px;
+  height: 14px;
   background-color: #00E436;
 }
 
@@ -84,6 +86,7 @@
   bottom: 0;
   width: 100%;
   padding: 0 12px;
+  padding-bottom: 24px;
   box-sizing: border-box;
 }
 
@@ -91,6 +94,7 @@
   position: relative;
   width: 54px;
   height: 54px;
+  margin-top: 10px;
 }
 
 .skill-scroll-container {
@@ -138,6 +142,35 @@
   transform: rotate(90deg);
   translate: 31px -31px;
 }
+
+.effect-container {
+  display: flex;
+  position: absolute;
+  bottom: -18px;
+  left: 80px;
+  box-sizing: border-box;
+}
+
+.effect {
+  /* position: absolute; */
+  width: 20px;
+  height: 20px;
+  margin-right: 3px;
+}
+
+/*
+.effect:nth-last-child(1) {
+  left: 12px;
+}
+
+.effect:nth-last-child(2) {
+  left: 8px;
+}
+
+.effect:nth-last-child(3) {
+  left: 4px;
+}
+  */
 
 .btn-end-turn {
   background-image: url("https://www.animecubedgaming.com/billy/layout/scroll.gif");
