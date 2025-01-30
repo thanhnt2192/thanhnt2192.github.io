@@ -127,7 +127,7 @@
 }
 
 .skill-scroll-block {
-  position:absolute;
+  position: absolute;
   top: -20px;
   left: -4px;
   width: 88px;
@@ -143,34 +143,84 @@
   translate: 31px -31px;
 }
 
+@keyframes gather {
+  0% {
+    margin-left: 3px;
+    bottom: 73px;
+  }
+  100% {
+    margin-left: -22px;
+    bottom: 0px;
+  }
+}
+
+@keyframes gatherfirst {
+  0% {
+    margin-left: 0px;
+    bottom: 73px;
+  }
+  100% {
+    margin-left: 0px;
+    bottom: 0px;
+  }
+}
+
+@keyframes gatherlast1 {
+  0% {
+    margin-left: 3px;
+    bottom: 73px;
+  }
+  100% {
+    margin-left: -22px;
+    bottom: 1px;
+  }
+}
+
+@keyframes gatherlast2 {
+  0% {
+    margin-left: 3px;
+    bottom: 73px;
+  }
+  100% {
+    margin-left: -22px;
+    bottom: 2px;
+  }
+}
+
 .effect-container {
   display: flex;
   position: absolute;
   bottom: -18px;
   left: 80px;
   box-sizing: border-box;
+  transition: display 2s;
 }
 
 .effect {
-  /* position: absolute; */
+  position: relative;
   width: 20px;
   height: 20px;
-  margin-right: 3px;
+  margin-left: -22px;
+  animation-name: gather;
+  animation-duration: 1000ms;
+  /* animation-delay: 2000ms; */
 }
 
-/*
-.effect:nth-last-child(1) {
-  left: 12px;
+.effect:nth-last-child(2) ~ .effect:nth-last-child(1),
+.effect:nth-last-child(3) ~ .effect:nth-last-child(2) {
+  bottom: 1px;
+  animation-name: gatherlast1;
 }
 
-.effect:nth-last-child(2) {
-  left: 8px;
+.effect:nth-last-child(3) ~ .effect:nth-last-child(1) {
+  bottom: 2px;
+  animation-name: gatherlast2;
 }
 
-.effect:nth-last-child(3) {
-  left: 4px;
+.effect:first-child {
+  margin-left: 0px;
+  animation-name: gatherfirst;
 }
-  */
 
 .btn-end-turn {
   background-image: url("https://www.animecubedgaming.com/billy/layout/scroll.gif");
