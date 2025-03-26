@@ -1,0 +1,227 @@
+.solid-frame {
+  display: block;
+  box-sizing: content-box;
+  border: 1px solid #000000;
+}
+
+.wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 440px;
+  max-height: 560px;
+  margin: 0 auto;
+  background-image: url("https://i.imgur.com/pztYVAL.png");
+  background-position: center;
+}
+
+.board {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+.field {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  width: 300px;
+  margin: 0 auto;
+}
+
+.team {
+  padding: 10px 0px;
+}
+
+.character {
+  position: relative;
+  margin: 50px 0px;
+}
+
+.character.defeated {
+  background-image: url("https://i.imgur.com/zmvAVA2.png");
+}
+
+.character-image {
+  position: relative;
+  display: block;
+  width: 75px;
+  height: 75px;
+}
+
+.character-hp {
+  position: absolute;
+  bottom: -18px;
+  left: 0px;
+  width: 75px;
+  height: 14px;
+  background-color: #00E436;
+}
+
+.skill-active {
+  position: absolute;
+  top: -10px;
+  right: -68px;
+  width: 54px;
+  height: 54px;
+  background-color: #5F574F;
+  background-image: url("./Four_Symbols_Seal.svg");
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover; /* Resize the background image to cover the entire container */
+}
+
+.skill-container {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 0 12px;
+  padding-bottom: 24px;
+  box-sizing: border-box;
+}
+
+.skill {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  margin-top: 10px;
+}
+
+.skill-scroll-container {
+  position: absolute;
+  bottom: 24px;
+  right: -154px;
+  width: 79px;
+  height: 95px;
+  /* padding-top: 11px; */
+  /* box-sizing: border-box; */
+}
+
+.skill-scroll {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.skill-scroll-background {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 381px;
+  height: 79px;
+  background-image: url("https://i.imgur.com/jJh0V2n.png");
+  transform: rotate(90deg);
+  translate: -151px -151px;
+}
+
+.skill-scroll-block {
+  position: absolute;
+  top: -20px;
+  left: -4px;
+  width: 88px;
+  height: 25px;
+}
+
+.skill-scroll-block-background {
+  position: absolute;
+  width: 25px;
+  height: 88px;
+  background-image: url("https://i.imgur.com/x955DQ9.png");
+  transform: rotate(90deg);
+  translate: 31px -31px;
+}
+
+@keyframes gather {
+  0% {
+    margin-left: 3px;
+    bottom: 73px;
+  }
+  100% {
+    margin-left: -22px;
+    bottom: 0px;
+  }
+}
+
+@keyframes gatherfirst {
+  0% {
+    margin-left: 0px;
+    bottom: 73px;
+  }
+  100% {
+    margin-left: 0px;
+    bottom: 0px;
+  }
+}
+
+@keyframes gatherlast1 {
+  0% {
+    margin-left: 3px;
+    bottom: 73px;
+  }
+  100% {
+    margin-left: -22px;
+    bottom: 1px;
+  }
+}
+
+@keyframes gatherlast2 {
+  0% {
+    margin-left: 3px;
+    bottom: 73px;
+  }
+  100% {
+    margin-left: -22px;
+    bottom: 2px;
+  }
+}
+
+.effect-container {
+  display: flex;
+  position: absolute;
+  bottom: -18px;
+  left: 80px;
+  box-sizing: border-box;
+  transition: display 2s;
+}
+
+.effect {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  margin-left: -22px;
+  animation-name: gather;
+  animation-duration: 1000ms;
+  /* animation-delay: 2000ms; */
+}
+
+.effect:nth-last-child(2) ~ .effect:nth-last-child(1),
+.effect:nth-last-child(3) ~ .effect:nth-last-child(2) {
+  bottom: 1px;
+  animation-name: gatherlast1;
+}
+
+.effect:nth-last-child(3) ~ .effect:nth-last-child(1) {
+  bottom: 2px;
+  animation-name: gatherlast2;
+}
+
+.effect:first-child {
+  margin-left: 0px;
+  animation-name: gatherfirst;
+}
+
+.btn-end-turn {
+  background-image: url("https://www.animecubedgaming.com/billy/layout/scroll.gif");
+}
