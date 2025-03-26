@@ -35,7 +35,7 @@
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-between;
-  width: 300px;
+  width: 600px;
   margin: 0 auto;
 }
 
@@ -66,4 +66,32 @@
   width: 75px;
   height: 14px;
   background-color: #00E436;
+}
+
+.skill-container {
+  display: flex;
+}
+
+.skill {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  margin-top: 10px;
+}
+
+.skill-scroll {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 381px;
+  height: 79px;
+  background-image: url("https://i.imgur.com/jJh0V2n.png");
+}
+
+.skill-scroll-block {
+  position: absolute;
+  width: 25px;
+  height: 88px;
+  background-image: url("https://i.imgur.com/x955DQ9.png");
+  translate: 31px -31px;
 }
