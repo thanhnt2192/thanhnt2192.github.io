@@ -37,12 +37,44 @@ window.app["pitch"] = {
         "x": 84,
         "y": 118,
         "absolute": false
+      },
+      "animation": {
+        "index": 0,
+        "list": [
+          {
+            "timestamp": 1000,
+            "start": 1000,
+            "end": 2000,
+            "position": {
+              "x": 84,
+              "y": 118,
+              "absolute": false
+            },
+            "direction": {
+              "x": -1,
+              "y": -2,
+              "step": 20
+            }
+          }
+        ]
       }
     };
+  },
+  "animate": function (core, obj) {
+    const animation = obj["animation"]["list"][obj["animation"]["index"]];
+    if (core.timestamp > animation["end"]) {
+      // obj["animation"]["index"]++;
+    }
+    while (animation["timestamp"] < core.timestamp) {
+      animation["timestamp"] += animation["direction"]["step"];
+      obj["position"]["x"] += animation["direction"]["x"];
+      obj["position"]["y"] += animation["direction"]["y"];
+    }
   },
   "render": function (core) {
     core.screen.draw(this["pitch"]["background"]);
     core.screen.draw(this["pitch"]["shadow"]);
+    this["pitch"]["animate"](core, this["pitch"]["ball"]);
     core.screen.draw(this["pitch"]["ball"]);
     core.screen.draw(this["pitch"]["player"]);
   }
