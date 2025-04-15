@@ -117,6 +117,9 @@
         }.bind(this);
 
         this.nodmg.draw = function ({ tilemap, position }) {
+          if (tilemap === null) {
+            return;
+          }
           for (let row = 0; row < tilemap.length; row++) {
             const dy = position.absolute
               ? row * 8 + position.y

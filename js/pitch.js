@@ -51,12 +51,40 @@ window.app["pitch"] = {
               "absolute": false
             },
             "direction": {
-              "x": -1,
-              "y": -2,
-              "step": 20
+              "x": -5,
+              "y": -10,
+              "step": 100
             }
           }
         ]
+      },
+      "shadow1": {
+        "tilemap": [[this["tileset"]["ball"][0]]],
+        "position": {
+          "x": 79,
+          "y": 108,
+          "absolute": false
+        },
+        "animation": {
+          "index": 0,
+          "list": [
+            {
+              "timestamp": 1000,
+              "start": 1000,
+              "end": 2000,
+              "position": {
+                "x": 79,
+                "y": 108,
+                "absolute": false
+              },
+              "direction": {
+                "x": -5,
+                "y": -10,
+                "step": 100
+              }
+            }
+          ]
+        }
       }
     };
   },
@@ -76,6 +104,8 @@ window.app["pitch"] = {
     core.screen.draw(this["pitch"]["shadow"]);
     this["pitch"]["animate"](core, this["pitch"]["ball"]);
     core.screen.draw(this["pitch"]["ball"]);
+    this["pitch"]["animate"](core, this["pitch"]["ball"]["shadow1"]);
+    core.screen.draw(this["pitch"]["ball"]["shadow1"]);
     core.screen.draw(this["pitch"]["player"]);
   }
 };
