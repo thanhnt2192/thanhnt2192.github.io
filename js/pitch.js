@@ -88,12 +88,12 @@ window.app["pitch"] = {
       }
     };
   },
-  "animate": function (core, obj) {
+  "animate": function ({ timestamp }, obj) {
     const animation = obj["animation"]["list"][obj["animation"]["index"]];
-    if (core.timestamp > animation["end"]) {
+    if (timestamp > animation["end"]) {
       // obj["animation"]["index"]++;
     }
-    while (animation["timestamp"] < core.timestamp) {
+    while (animation["timestamp"] < timestamp) {
       animation["timestamp"] += animation["direction"]["step"];
       obj["position"]["x"] += animation["direction"]["x"];
       obj["position"]["y"] += animation["direction"]["y"];
@@ -102,9 +102,9 @@ window.app["pitch"] = {
   "render": function (core) {
     core.screen.draw(this["pitch"]["background"]);
     core.screen.draw(this["pitch"]["shadow"]);
-    this["pitch"]["animate"](core, this["pitch"]["ball"]);
+    core.call(this["pitch"]["animate"], [core, this["pitch"]["ball"]]);
     core.screen.draw(this["pitch"]["ball"]);
-    this["pitch"]["animate"](core, this["pitch"]["ball"]["shadow1"]);
+    core.call(this["pitch"]["animate"], [core, this["pitch"]["ball"]["shadow1"]]);
     core.screen.draw(this["pitch"]["ball"]["shadow1"]);
     core.screen.draw(this["pitch"]["player"]);
   }
