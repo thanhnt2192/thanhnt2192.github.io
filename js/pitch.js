@@ -23,14 +23,6 @@ window.app["pitch"] = {
         "absolute": false
       }
     };
-    this["pitch"]["shadow"] = {
-      "tilemap": [[this["tileset"]["shadow"]]],
-      "position": {
-        "x": 84,
-        "y": 120,
-        "absolute": false
-      }
-    };
     this["pitch"]["ball"] = {
       "tilemap": [[this["tileset"]["ball"][0]]],
       "count": 0,
@@ -45,11 +37,16 @@ window.app["pitch"] = {
         if (obj["timestamp"] < timestamp) {
           obj["timestamp"] += 40;
           obj["count"] = (obj["count"] + 1) % 3;
-          console.log(obj["count"]);
           obj["tilemap"] = [[this["tileset"]["ball"][obj["count"]]]];
           if (obj["timestamp"] < 2000) {
             obj["position"]["x"] += -2;
             obj["position"]["y"] += -4;
+          } else if (obj["timestamp"] < 2500) {
+            obj["position"]["x"] += -1;
+            obj["position"]["y"] += 2;
+          } else if (obj["timestamp"] < 4500) {
+            obj["position"]["x"] += 4;
+            obj["position"]["y"] += 1;
           }
         }
       },
@@ -102,6 +99,18 @@ window.app["pitch"] = {
         }
       }
     };
+    this["pitch"]["ball"]["shadow"] = {
+      "tilemap": [[this["tileset"]["shadow"]]],
+      "position": {
+        "x": 84,
+        "y": 120,
+        "absolute": false
+      },
+      "animate": function () {
+        this["pitch"]["ball"]["shadow"]["position"]["x"] = this["pitch"]["ball"]["position"]["x"];
+        this["pitch"]["ball"]["shadow"]["position"]["y"] = this["pitch"]["ball"]["position"]["y"] + 2;
+      }
+    };
   },
   "animate": function ({ timestamp }, obj) {
     const animation = obj["animation"]["list"][obj["animation"]["index"]];
@@ -116,9 +125,10 @@ window.app["pitch"] = {
   },
   "render": function (core) {
     core.screen.draw(this["pitch"]["background"]);
-    core.screen.draw(this["pitch"]["shadow"]);
     // core.call(this["pitch"]["animate"], [core, this["pitch"]["ball"]]);
     core.call(this["pitch"]["ball"]["animate"], [core]);
+    core.call(this["pitch"]["ball"]["shadow"]["animate"], [core]);
+    core.screen.draw(this["pitch"]["ball"]["shadow"]);
     core.screen.draw(this["pitch"]["ball"]);
     // core.call(this["pitch"]["animate"], [core, this["pitch"]["ball"]["shadow1"]]);
     // core.screen.draw(this["pitch"]["ball"]["shadow1"]);
