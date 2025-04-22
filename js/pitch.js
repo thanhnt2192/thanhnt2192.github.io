@@ -31,25 +31,71 @@ window.app["pitch"] = {
         "y": 118,
         "absolute": false
       },
-      "timestamp": 1000,
+      "timestamp": 5000,
       "animate": function ({ timestamp }) {
         const obj = this["pitch"]["ball"];
-        if (obj["timestamp"] < timestamp) {
-          obj["timestamp"] += 40;
+        while (obj["timestamp"] < timestamp) {
           obj["count"] = (obj["count"] + 1) % 3;
           obj["tilemap"] = [[this["tileset"]["ball"][obj["count"]]]];
-          if (obj["timestamp"] < 2000) {
+          if (obj["timestamp"] < 6000) {
             obj["position"]["x"] += -2;
             obj["position"]["y"] += -4;
-          } else if (obj["timestamp"] < 2500) {
+          } else if (obj["timestamp"] < 6500) {
             obj["position"]["x"] += -1;
             obj["position"]["y"] += 2;
-          } else if (obj["timestamp"] < 4500) {
+          } else if (obj["timestamp"] < 8500) {
             obj["position"]["x"] += 4;
             obj["position"]["y"] += 1;
           }
+          obj["timestamp"] += 40;
         }
       },
+      "remnants": [
+        {
+          "tilemap": [[this["tileset"]["ball"][0]]],
+          "position": {
+            "x": 84,
+            "y": 118,
+            "absolute": false
+          },
+          "animate": function ({ timestamp }) {
+            const obj = this["pitch"]["ball"]["remnants"][0];
+            if (timestamp > 5240) {
+              obj["tilemap"] = null;
+            }
+          }
+        },
+        {
+          "tilemap": null,
+          "position": {
+            "x": 78,
+            "y": 106,
+            "absolute": false
+          },
+          "animate": function ({ timestamp }) {
+            const obj = this["pitch"]["ball"]["remnants"][1];
+            if (timestamp > 5120 && timestamp < 5240) {
+              obj["tilemap"] = [[this["tileset"]["ball"][0]]];
+            } else {
+              obj["tilemap"] = null;
+            }
+          }
+        },
+        {
+          "tilemap": null,
+          "position": {
+            "x": 84,
+            "y": 118,
+            "absolute": false
+          },
+          "animate": function ({ timestamp }) {
+            const obj = this["pitch"]["ball"]["remnants"][0];
+            if (timestamp > 5080) {
+              obj["tilemap"] = null;
+            }
+          }
+        }
+      ],
       "animation": {
         "index": 0,
         "list": [
@@ -128,8 +174,14 @@ window.app["pitch"] = {
     // core.call(this["pitch"]["animate"], [core, this["pitch"]["ball"]]);
     core.call(this["pitch"]["ball"]["animate"], [core]);
     core.call(this["pitch"]["ball"]["shadow"]["animate"], [core]);
+    for (let i = 0; i < this["pitch"]["ball"]["remnants"].length; i++) {
+      core.call(this["pitch"]["ball"]["remnants"][i]["animate"], [core]);
+    }
     core.screen.draw(this["pitch"]["ball"]["shadow"]);
     core.screen.draw(this["pitch"]["ball"]);
+    for (let i = 0; i < this["pitch"]["ball"]["remnants"].length; i++) {
+      core.screen.draw(this["pitch"]["ball"]["remnants"][i]);
+    }
     // core.call(this["pitch"]["animate"], [core, this["pitch"]["ball"]["shadow1"]]);
     // core.screen.draw(this["pitch"]["ball"]["shadow1"]);
     core.screen.draw(this["pitch"]["player"]);
