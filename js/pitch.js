@@ -16,7 +16,7 @@ window.app["pitch"] = {
       }
     }
     this["pitch"]["player"] = {
-      "tilemap": this["tileset"]["player"]["ready"][0],
+      "tilemap": this["tileset"]["player"]["home"]["run"][7][1],
       "position": {
         "x": 88,
         "y": 110,
