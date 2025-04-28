@@ -23,6 +23,15 @@ window.app["pitch"] = {
         "absolute": false
       }
     };
+    this["pitch"]["passer"] = {
+      "tilemap": this["tileset"]["player"]["home"]["run"][5][1],
+      "count": 1,
+      "position": {
+        "x": 88,
+        "y": 110,
+        "absolute": false
+      }
+    };
     this["pitch"]["ball"] = {
       "tilemap": [[this["tileset"]["ball"][0]]],
       "count": 0,
