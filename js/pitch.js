@@ -54,7 +54,7 @@ window.app["pitch"] = {
           } else if (obj["timestamp"] < 7500) {
             obj["position"]["x"] += -1;
             obj["position"]["y"] += 2;
-          } else if (obj["timestamp"] < 8500) {
+          } else if (obj["timestamp"] < 9500) {
             obj["position"]["x"] += 4;
             obj["position"]["y"] += 1;
           }
