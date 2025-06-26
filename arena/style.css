@@ -1,11 +1,12 @@
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 .solid-frame {
   display: block;
-  box-sizing: content-box;
+  box-sizing: border-box;
   border: 1px solid #000000;
 }
 
@@ -26,22 +27,61 @@
   margin: 0 auto;
 }
 
-.character {
+.slot {
   position: relative;
+  width: 66px;
+  height: 54px;
   margin-top: 30px;
 }
 
-.character .image {
-  display: block;
-  width: 64px;
-  height: 52px;
+.slot .character {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  /* TODO: remove */
+  background-color: bisque;
 }
 
-.character .hp {
+.slot .hp {
   position: absolute;
   bottom: -16px;
   left: 0px;
-  width: 64px;
-  height: 12px;
+  width: 100%;
+  height: 14px;
   background-color: #00E436;
+}
+
+.slot .scroll {
+  position: absolute;
+  top: 12px;
+  left: 42px;
+  width: 20px;
+  height: 72px;
+  background-size: 100% 100%;
+}
+
+.slot .scroll .content {
+  position: absolute;
+  top: 6px;
+  right: -399px;
+  height: 60px;
+  width: 400px;
+  background-size: 100% 100%;
+}
+
+.slot .skill-set {
+  position: absolute;
+  top: 7px;
+  right: 30px;
+  display: flex;
+}
+
+.slot .skill {
+  width: 55px;
+  height: 45px;
+  margin: 0px 5px;
+  /* TODO: remove */
+  background-color: aquamarine;
 }
