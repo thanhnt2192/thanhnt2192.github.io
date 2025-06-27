@@ -23,7 +23,7 @@
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-between;
-  width: 627px;
+  width: 607px;
   margin: 0 auto;
 }
 
@@ -31,7 +31,7 @@
   position: relative;
   width: 66px;
   height: 54px;
-  margin-top: 30px;
+  margin-top: 35px;
 }
 
 .slot .character {
@@ -67,35 +67,53 @@
   top: 6px;
   left: 19px;
   height: 60px;
-  width: 400px;
+  width: 382px;
   overflow: hidden;
   background-size: 100% 100%;
+  transition: width 500ms;
+}
+
+.closed .slot .scroll .content {
+  width: 300px;
 }
 
 .slot .skill-set {
   position: absolute;
   top: 7px;
-  right: 30px;
+  right: 20px;
   display: flex;
 }
 
 .slot .skill {
   width: 55px;
   height: 45px;
-  margin: 0px 5px;
+  margin-right: 10px;
   /* TODO: remove */
   background-color: aquamarine;
+}
+
+.slot .skill.active {
+  margin-right: 30px;
 }
 
 .slot .status {
   position: absolute;
   top: 0px;
-  left: 70px;
   display: flex;
+}
+
+.player-field .slot .status {
+  left: 70px;
+  flex-direction: row;
 }
 
 .slot .effect {
   width: 22px;
   height: 18px;
-  margin-right: 4px;
+  margin-right: 3px;
+}
+
+.enemy-field .slot .status {
+  right: 67px;
+  flex-direction: row-reverse;
 }
