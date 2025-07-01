@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Extract Video Frames</title>
+  <style>
+    video,canvas {
+      max-width: 100%;
+      /* opacity: 0 */
+    }
+    video {
+      margin-top: 200px;
+    }
+  </style>
+</head>
+<body>
+  <input type="file" id="videoInput" accept="video/mp4">
+  <button>start</button>
+  <select disabled>
+  </select>
+  <canvas></canvas>
+  <video id="videoPlayer" controls></video>
+  <script>
+    const frames = [];
+    const button = document.querySelector("button");
+    const select = document.querySelector("select");
+    const canvas = document.querySelector("canvas");
+    const ctx = canvas.getContext("2d");
+    const input = document.getElementById('videoInput');
+    const video = document.getElementById('videoPlayer');
+
+    function getFrameData(frame) {
+      // Tạo một canvas với kích thước bằng bitmap
+      const canvas0 = document.createElement('canvas');
+      canvas0.width = frame.height;
+      canvas0.height = frame.width;
+
+      const ctx0 = canvas0.getContext('2d');
+
+      // Vẽ bitmap lên canvas
+      ctx0.drawImage(frame, 0, 0, canvas0.width, canvas0.height);
+
+      // Lấy ImageData từ canvas
+      const imageData0 = ctx0.getImageData(0, 0, canvas0.width, canvas0.height);
+
+      // Bạn có thể truy cập pixel data qua imageData.data (mảng Uint8ClampedArray)
+      // console.log(imageData0.data); // Mỗi pixel có 4 giá trị: R, G, B, A
+      const frameData0 = [];
+      for (let i = 0; i < imageData0.data.length; i++) {
+        frameData0[i] = imageData0.data[i];
+      }
+      return frameData0;
+    }
+
+    function compareFrames(frameData1, frameData2) {
+      // console.log(frameData1);
+      // console.log(frameData2);
+      let diffCount = 0;
+      for (let i = 0; i < frameData1.length; i++) {
+        if (frameData1[i] != frameData2[i]) {
+          diffCount++;
+          // return false;
+        }
+      }
+      console.log("diff: " + diffCount);
+      return (diffCount < 10);
+      // return true;
+    }
+
+    button.onclick = async(evt) => {
+      if (HTMLVideoElement.prototype.requestVideoFrameCallback) {
+        let stopped = false;
+        // const video = await getVideoElement();
+        await video.play();
+        const drawingLoop = async(timestamp, frame) => {
+          const bitmap = await createImageBitmap(video);
+          const index = frames.length;
+          frames.push(bitmap);
+          select.append(new Option("Frame #" + (index + 1), index));
+
+          if (!video.ended && !stopped) {
+            video.requestVideoFrameCallback(drawingLoop);
+          } else {
+            select.disabled = false;
+          }
+        };
+        // the last call to rVFC may happen before .ended is set but never resolve
+        video.onended = (evt) => select.disabled = false;
+        video.requestVideoFrameCallback(drawingLoop);
+        button.onclick = (evt) => stopped = true;
+        button.textContent = "stop";
+      } else {
+        console.error("your browser doesn't support this API yet");
+      }
+    };
+
+    select.onchange = (evt) => {
+      const frame = frames[select.value];
+      canvas.width = frame.height;
+      canvas.height = frame.width;
+      ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
+    };
+
+    async function getVideoElement() {
+      // const video = document.createElement("video");
+      // video.crossOrigin = "anonymous";
+      // video.src = "https://upload.wikimedia.org/wikipedia/commons/a/a4/BBH_gravitational_lensing_of_gw150914.webm";
+      // video.src = "./barbara.mp4";
+      // document.body.append(video);
+      await video.play();
+      return video;
+    }
+
+    input.addEventListener('change', function () {
+      // const video = document.createElement("video");
+      const file = this.files[0];
+      if (file && file.type === 'video/mp4') {
+        const url = URL.createObjectURL(file);
+        video.src = url;
+        // video.load();
+        // video.play();
+      } else {
+        alert('Vui lòng chọn file .mp4 hợp lệ.');
+      }
+    });
+  </script>
+</body>
+</html>
