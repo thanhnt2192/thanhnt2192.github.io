@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  user-select: none;
 }
 
 .solid-frame {
@@ -126,9 +127,9 @@
 .ready {
   position: absolute;
   bottom: 0px;
-  left: 0px;
-  width: 200px;
-  height: 80px;
+  left: 30px;
+  width: 120px;
+  height: 70px;
   background-size: 100% 100%;
 }
 
@@ -136,7 +137,14 @@
   position: absolute;
   bottom: 0px;
   right: 0px;
-  width: 560px;
+  width: 500px;
   height: 70px;
   background-size: 100% 100%;
+}
+
+.information .solid-frame {
+  width: 55px;
+  height: 45px;
+  margin-top: 7px;
+  margin-left: 30px;
 }
