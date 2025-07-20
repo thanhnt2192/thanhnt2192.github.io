@@ -1,6 +1,7 @@
 * {
   margin: 0;
   padding: 0;
+  font-family: monospace;
   box-sizing: border-box;
   user-select: none;
 }
@@ -124,27 +125,79 @@
   flex-direction: row-reverse;
 }
 
-.ready {
+.control {
   position: absolute;
   bottom: 0px;
   left: 30px;
-  width: 120px;
-  height: 70px;
+  width: 150px;
+  height: 74px;
   background-size: 100% 100%;
+  background-color: bisque;
+  border: 4px solid brown;
+  padding: 2px;
+}
+
+.energy-pool {
+  display: flex;
+}
+
+.energy {
+  width: 13px;
+  height: 11px;
+  margin-left: 16px;
+}
+
+.energy:first-child {
+  margin-left: 0px;
+}
+
+.elemental-energy {
+  background-color: blue;
+}
+
+.random-energy {
+  background-color: black;
+}
+
+.energy-count {
+  line-height: 11px;
+  margin-left: 2px;
+}
+
+.ready {
+  width: 110px;
+  height: 45px;
+  margin-top: 6px;
+  margin-left: 14px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.ready-label {
+  padding-top: 4px;
+  padding-left: 8px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.required-random-energy {
+  display: flex;
+  padding-left: 44px;
+  margin-top: 4px;
 }
 
 .information {
   position: absolute;
   bottom: 0px;
   right: 0px;
-  width: 500px;
-  height: 70px;
+  width: 480px;
+  height: 76px;
   background-size: 100% 100%;
 }
 
 .information .solid-frame {
   width: 55px;
   height: 45px;
-  margin-top: 7px;
+  margin-top: 15px;
   margin-left: 30px;
 }

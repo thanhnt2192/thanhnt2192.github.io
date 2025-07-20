@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="./assets.css">
     <title>Arena</title>
   </head>
-  <body>
+  <body style="user-select: none;">
     <div class="container">
       <div id="btn-end-turn">PRESS WHEN READY</div>
       <div class="board">
@@ -94,7 +94,24 @@
           </div>
         </div>
       </div>
-      <div class="ready">
+      <div class="control">
+        <div class="energy-pool">
+          <div class="solid-frame energy elemental-energy"></div>
+          <div class="energy-count">2</div>
+          <div class="solid-frame energy elemental-energy"></div>
+          <div class="energy-count">2</div>
+          <div class="solid-frame energy elemental-energy"></div>
+          <div class="energy-count">2</div>
+          <div class="solid-frame energy elemental-energy"></div>
+          <div class="energy-count">2</div>
+        </div>
+        <div class="solid-frame ready">
+          <div class="ready-label">READY (09)</div>
+          <div class="required-random-energy">
+            <div class="solid-frame energy random-energy"></div>
+            <div class="energy-count">2</div>
+          </div>
+        </div>
       </div>
       <div class="information">
         <div class="solid-frame"></div>
