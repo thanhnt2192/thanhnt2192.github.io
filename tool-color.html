@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đếm màu trong ảnh PNG</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+        .color-item {
+            display: flex;
+            align-items: center;
+            margin: 4px 0;
+            padding: 6px;
+            background: #f9f9f9;
+            border-radius: 4px;
+        }
+        .color-swatch {
+            width: 24px;
+            height: 24px;
+            border: 1px solid #ccc;
+            margin-right: 12px;
+        }
+        .stats {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        canvas {
+            display: none;
+        }
+        #preview {
+            max-width: 100%;
+            max-height: 300px;
+            border: 1px solid #ddd;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Đếm màu trong ảnh PNG</h1>
+    <input type="file" id="imageInput" accept="image/png, image/jpeg, image/webp">
+    <div id="previewContainer"></div>
+    <div class="stats" id="stats"></div>
+    <div id="colorList"></div>
+
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const previewContainer = document.getElementById('previewContainer');
+        const colorList = document.getElementById('colorList');
+        const statsDiv = document.getElementById('stats');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        imageInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            try {
+                const imgUrl = URL.createObjectURL(file);
+                const img = new Image();
+                img.crossOrigin = "Anonymous"; // Hỗ trợ CORS nếu cần
+
+                img.onload = () => {
+                    URL.revokeObjectURL(imgUrl);
+
+                    // Đặt kích thước canvas = ảnh
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+
+                    // Vẽ ảnh lên canvas
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0);
+
+                    // Lấy pixel data
+                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const data = imageData.data; // Uint8ClampedArray [r, g, b, a, r, g, b, a, ...]
+
+                    const colorCount = {};
+
+                    // Duyệt từng pixel
+                    for (let i = 0; i < data.length; i += 4) {
+                        const r = data[i];
+                        const g = data[i + 1];
+                        const b = data[i + 2];
+                        const a = data[i + 3];
+
+                        // Bỏ qua pixel trong suốt (alpha = 0)
+                        if (a === 0) continue;
+
+                        // Chuyển sang hex (6 ký tự, không alpha)
+                        const hex = rgbToHex(r, g, b);
+
+                        colorCount[hex] = (colorCount[hex] || 0) + 1;
+                    }
+
+                    // Sắp xếp theo tần suất giảm dần
+                    const sortedColors = Object.entries(colorCount)
+                        .sort((a, b) => b[1] - a[1]);
+
+                    // Hiển thị preview ảnh
+                    const previewImg = document.createElement('img');
+                    previewImg.id = 'preview';
+                    previewImg.src = imgUrl;
+                    previewContainer.innerHTML = '';
+                    previewContainer.appendChild(previewImg);
+
+                    // Hiển thị thống kê
+                    statsDiv.textContent = `Tổng số màu khác nhau: ${sortedColors.length} (trên ${canvas.width}×${canvas.height} = ${canvas.width * canvas.height} pixel)`;
+
+                    // Hiển thị danh sách
+                    colorList.innerHTML = '<h2>Danh sách màu (theo tần suất giảm dần):</h2>';
+                    if (sortedColors.length === 0) {
+                        colorList.innerHTML += '<p>Không tìm thấy màu nào (ảnh trong suốt hoàn toàn)</p>';
+                        return;
+                    }
+
+                    const list = document.createElement('div');
+                    sortedColors.forEach(([hex, count]) => {
+                        const item = document.createElement('div');
+                        item.className = 'color-item';
+                        item.innerHTML = `
+                            <div class="color-swatch" style="background-color:${hex}"></div>
+                            <div><strong>${hex}</strong> — ${count} pixel</div>
+                        `;
+                        list.appendChild(item);
+                    });
+                    colorList.appendChild(list);
+                };
+
+                img.onerror = () => {
+                    alert('❌ Không thể tải ảnh. Đảm bảo ảnh hợp lệ và không vi phạm CORS.');
+                };
+
+                img.src = imgUrl;
+            } catch (err) {
+                console.error(err);
+                alert('❌ Lỗi xử lý ảnh: ' + err.message);
+            }
+        });
+
+        // Chuyển RGB → Hex (#RRGGBB)
+        function rgbToHex(r, g, b) {
+            return '#' + [r, g, b].map(x => {
+                const hex = Math.round(x).toString(16).padStart(2, '0');
+                return hex;
+            }).join('').toUpperCase();
+        }
+    </script>
+</body>
+</html>
