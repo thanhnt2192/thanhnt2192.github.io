@@ -67,8 +67,6 @@
                 img.crossOrigin = "Anonymous"; // Hỗ trợ CORS nếu cần
 
                 img.onload = () => {
-                    URL.revokeObjectURL(imgUrl);
-
                     // Đặt kích thước canvas = ảnh
                     canvas.width = img.width;
                     canvas.height = img.height;
@@ -82,22 +80,41 @@
                     const data = imageData.data; // Uint8ClampedArray [r, g, b, a, r, g, b, a, ...]
 
                     const colorCount = {};
+                    const colorDraw = {};
+                    let lastColor = null;
 
                     // Duyệt từng pixel
                     for (let i = 0; i < data.length; i += 4) {
+                        const col = i / 4;
+                        const row = Math.floor(col / canvas.width);
+
                         const r = data[i];
                         const g = data[i + 1];
                         const b = data[i + 2];
                         const a = data[i + 3];
 
                         // Bỏ qua pixel trong suốt (alpha = 0)
-                        if (a === 0) continue;
+                        if (a === 0) {
+                            if (lastColor !== null) {
+                                colorDraw[lastColor] += ' H' + col + ' V' + row + ' Z';
+                                lastColor = null;
+                            }
+                            continue;
+                        }
 
                         // Chuyển sang hex (6 ký tự, không alpha)
                         const hex = rgbToHex(r, g, b);
 
                         colorCount[hex] = (colorCount[hex] || 0) + 1;
+
+                        // Draw
+                        colorDraw[hex] = (colorDraw[hex] || '') + ' M' + col + ',' + row + ' V' + (row + 1);
+                        lastColor = hex;
+                        if (i < 4 * 1 * canvas.width) {
+                            console.log('thanhnt has pixel: ' + i / 4);
+                        }
                     }
+                    console.log('svg:' + JSON.stringify(colorDraw));
 
                     // Sắp xếp theo tần suất giảm dần
                     const sortedColors = Object.entries(colorCount)
@@ -107,6 +124,14 @@
                     const previewImg = document.createElement('img');
                     previewImg.id = 'preview';
                     previewImg.src = imgUrl;
+                    previewImg.onload = () => {
+                        // Sau khi preview load xong → mới revoke
+                        URL.revokeObjectURL(imgUrl);
+                    };
+                    previewImg.onerror = () => {
+                        URL.revokeObjectURL(imgUrl);
+                        console.warn('Preview image failed to load, but analysis may still work.');
+                    };
                     previewContainer.innerHTML = '';
                     previewContainer.appendChild(previewImg);
 
