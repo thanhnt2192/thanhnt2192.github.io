@@ -85,8 +85,8 @@
 
                     // Duyệt từng pixel
                     for (let i = 0; i < data.length; i += 4) {
-                        const col = i / 4;
-                        const row = Math.floor(col / canvas.width);
+                        const col = (i / 4) % canvas.width;
+                        const row = Math.floor((i / 4) / canvas.width);
 
                         const r = data[i];
                         const g = data[i + 1];
@@ -97,8 +97,8 @@
                         if (a === 0) {
                             if (lastColor !== null) {
                                 colorDraw[lastColor] += ' H' + col + ' V' + row + ' Z';
-                                lastColor = null;
                             }
+                            lastColor = null;
                             continue;
                         }
 
@@ -108,10 +108,12 @@
                         colorCount[hex] = (colorCount[hex] || 0) + 1;
 
                         // Draw
-                        colorDraw[hex] = (colorDraw[hex] || '') + ' M' + col + ',' + row + ' V' + (row + 1);
-                        lastColor = hex;
-                        if (i < 4 * 1 * canvas.width) {
-                            console.log('thanhnt has pixel: ' + i / 4);
+                        if (hex !== lastColor) {
+                            if (lastColor !== null) {
+                                colorDraw[lastColor] += ' H' + col + ' V' + row + ' Z';
+                            }
+                            colorDraw[hex] = (colorDraw[hex] || '') + ' M' + col + ',' + row + ' V' + (row + 1);
+                            lastColor = hex;
                         }
                     }
                     console.log('svg:' + JSON.stringify(colorDraw));
