@@ -46,6 +46,7 @@
     <div id="previewContainer"></div>
     <div class="stats" id="stats"></div>
     <div id="colorList"></div>
+    <textarea id="svg" readonly></textarea>
 
     <canvas id="canvas"></canvas>
 
@@ -53,6 +54,7 @@
         const imageInput = document.getElementById('imageInput');
         const previewContainer = document.getElementById('previewContainer');
         const colorList = document.getElementById('colorList');
+        const svg = document.getElementById('svg');
         const statsDiv = document.getElementById('stats');
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
@@ -116,7 +118,14 @@
                             lastColor = hex;
                         }
                     }
-                    console.log('svg:' + JSON.stringify(colorDraw));
+                    // console.log('svg:' + JSON.stringify(colorDraw));
+                    let svgValue = '';
+                    for (let k in colorDraw) {
+                        console.log(k);
+                        console.log(colorDraw[k].trim());
+                        svgValue += '<path fill="' + k + '" d="' + colorDraw[k].trim() + '" />\n';
+                    }
+                    svg.value = svgValue;
 
                     // Sắp xếp theo tần suất giảm dần
                     const sortedColors = Object.entries(colorCount)
