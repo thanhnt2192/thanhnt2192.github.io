@@ -1,4 +1,4 @@
-<button onclick="playViolin()">Play Violin</button>
+<button onclick="playSlash()">Play Violin</button>
 
 <script>
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -45,4 +45,112 @@ function playViolin() {
     vibrato.stop();
   };
 }
+
+function createNoise(ctx) {
+  const buffer = ctx.createBuffer(1, ctx.sampleRate * 1, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < data.length; i++) {
+    data[i] = Math.random() * 2 - 1;
+  }
+  return buffer;
+}
+
+function playSlash() {
+  const noiseSource = audioCtx.createBufferSource();
+  noiseSource.buffer = createNoise(audioCtx);
+
+  const gain = audioCtx.createGain();
+  const filter = audioCtx.createBiquadFilter();
+  const distortion = audioCtx.createWaveShaper();
+
+  // Filter – tạo whoosh
+  filter.type = "bandpass";
+  filter.frequency.setValueAtTime(1200, audioCtx.currentTime);
+  filter.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.2);
+  filter.Q.value = 0.8;
+
+  // Distortion nhẹ
+  distortion.curve = makeDistortionCurve(50);
+
+  // Envelope (rất nhanh)
+  const now = audioCtx.currentTime;
+  gain.gain.setValueAtTime(0, now);
+  gain.gain.linearRampToValueAtTime(0.8, now + 0.02);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+
+  noiseSource
+    .connect(filter)
+    .connect(distortion)
+    .connect(gain)
+    .connect(audioCtx.destination);
+
+  noiseSource.start();
+  noiseSource.stop(now + 0.3);
+}
+
+function makeDistortionCurve(amount = 50) {
+  const n = 44100;
+  const curve = new Float32Array(n);
+  for (let i = 0; i < n; i++) {
+    const x = (i * 2) / n - 1;
+    curve[i] = Math.tanh(amount * x);
+  }
+  return curve;
+}
+
+function playHit() {
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  const filter = audioCtx.createBiquadFilter();
+
+  osc.type = "square";
+  osc.frequency.value = 180;
+
+  filter.type = "lowpass";
+  filter.frequency.value = 800;
+
+  const now = audioCtx.currentTime;
+  gain.gain.setValueAtTime(0, now);
+  gain.gain.linearRampToValueAtTime(0.6, now + 0.005);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+
+  osc.connect(filter).connect(gain).connect(audioCtx.destination);
+  osc.start();
+  osc.stop(now + 0.2);
+}
+
+function playXoet() {
+  const noise = audioCtx.createBufferSource();
+  noise.buffer = createNoise(audioCtx, 0.25);
+
+  const filter = audioCtx.createBiquadFilter();
+  const gain = audioCtx.createGain();
+
+  // Band-pass tạo cảm giác "xé gió"
+  filter.type = "bandpass";
+  filter.Q.value = 1.2;
+
+  const now = audioCtx.currentTime;
+
+  // Sweep tần số (rất quan trọng)
+  filter.frequency.setValueAtTime(1800, now);
+  filter.frequency.exponentialRampToValueAtTime(400, now + 0.2);
+
+  // Envelope (attack cực nhanh, decay ngắn)
+  gain.gain.setValueAtTime(0, now);
+  gain.gain.linearRampToValueAtTime(0.9, now + 0.01);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+
+  noise
+    .connect(filter)
+    .connect(gain)
+    .connect(audioCtx.destination);
+
+  noise.start();
+  noise.stop(now + 0.3);
+}
+
+// playSlash();
+// setTimeout(playHit, 80);
+
 </script>
