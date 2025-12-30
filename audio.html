@@ -1,0 +1,48 @@
+<button onclick="playViolin()">Play Violin</button>
+
+<script>
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+function playViolin() {
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  const filter = audioCtx.createBiquadFilter();
+
+  // Oscillator
+  osc.type = "sawtooth";
+  osc.frequency.value = 440; // A4
+
+  // Filter (làm mềm tiếng)
+  filter.type = "lowpass";
+  filter.frequency.value = 2000;
+
+  // Envelope (giống kéo vĩ)
+  const now = audioCtx.currentTime;
+  gain.gain.setValueAtTime(0, now);
+  gain.gain.linearRampToValueAtTime(0.5, now + 0.3); // Attack
+  gain.gain.linearRampToValueAtTime(0.4, now + 1.5); // Sustain
+  gain.gain.linearRampToValueAtTime(0, now + 2.5);   // Release
+
+  // Vibrato (LFO)
+  const vibrato = audioCtx.createOscillator();
+  const vibratoGain = audioCtx.createGain();
+  vibrato.frequency.value = 6;     // tốc độ rung
+  vibratoGain.gain.value = 8;      // độ rung
+
+  vibrato.connect(vibratoGain);
+  vibratoGain.connect(osc.frequency);
+
+  // Kết nối node
+  osc.connect(filter);
+  filter.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  vibrato.start();
+  osc.start();
+  osc.stop(now + 2.5);
+
+  osc.onended = () => {
+    vibrato.stop();
+  };
+}
+</script>
