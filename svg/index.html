@@ -2,9 +2,21 @@
 <html>
   <head>
     <title>Demo SVG</title>
+    <style>
+      html, body {
+        margin: 0px;
+        padding: 0px;
+        width: 100%;
+        height: 100%;
+      }
+      svg {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
   </head>
   <body>
-    <svg xmlns="http://www.w3.org/2000/svg" width="640" height="540" viewBox="0 0 160 120">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" preserveAspectRatio="xMidYMid meet">
       <path d="M10,20 H40 V30 H10 Z" />
     </svg>
   </body>
