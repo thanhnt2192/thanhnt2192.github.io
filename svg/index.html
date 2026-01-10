@@ -2,6 +2,8 @@
 <html>
   <head>
     <title>Demo SVG</title>
+    <script type="text/javascript" src="js/core.js" defer></script>
+    <script type="text/javascript" src="js/app.js" defer></script>
     <style>
       html, body {
         margin: 0px;
@@ -17,16 +19,6 @@
   </head>
   <body>
     <svg xmlns="http://www.w3.org/2000/svg" id="app" viewBox="0 0 180 320" preserveAspectRatio="xMidYMid meet">
-      <path d="M10,20 H40 V30 H10 Z" />
     </svg>
-
-    <script>
-      const app = document.getElementById("app");
-      const svgNS = "http://www.w3.org/2000/svg";
-      const comboBar = document.createElementNS(svgNS, "path");
-      comboBar.setAttribute("d", "M10,20 H80 V30 H10 Z");
-      comboBar.setAttribute("fill", "red");
-      app.appendChild(comboBar);
-    </script>
   </body>
 </html>
