@@ -96,7 +96,7 @@
                         const a = data[i + 3];
 
                         // Bỏ qua pixel trong suốt (alpha = 0)
-                        if (a === 0) {
+                        if (a === 0 || col == canvas.width - 1) {
                             if (lastColor !== null) {
                                 colorDraw[lastColor] += ' H' + col + ' V' + row + ' Z';
                             }
