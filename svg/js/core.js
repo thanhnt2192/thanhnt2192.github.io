@@ -3,6 +3,7 @@ function createPath(attributes) {
   for (let key in attributes) {
     path.setAttribute(key, attributes[key]);
   }
+  path.setAttribute("shape-rendering", "crispEdges");
   return path;
 }
 
