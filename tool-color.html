@@ -96,7 +96,7 @@
                         const a = data[i + 3];
 
                         // Bỏ qua pixel trong suốt (alpha = 0)
-                        if (a === 0 || col == canvas.width - 1) {
+                        if (a === 0) {
                             if (lastColor !== null) {
                                 colorDraw[lastColor] += ' H' + col + ' V' + row + ' Z';
                             }
@@ -116,6 +116,12 @@
                             }
                             colorDraw[hex] = (colorDraw[hex] || '') + ' M' + col + ',' + row + ' V' + (row + 1);
                             lastColor = hex;
+                        }
+
+                        // last column
+                        if (col + 1 == canvas.width) {
+                            colorDraw[lastColor] += ' H' + (col + 1) + ' V' + row + ' Z';
+                            lastColor = null;
                         }
                     }
                     // console.log('svg:' + JSON.stringify(colorDraw));
