@@ -12,7 +12,8 @@ app.appendChild(createPath({
   "d": "M1,16 h10 v-2 h-1 v1 h-8 v-1 h-1 Z m1,-2 h8 v-3 h-1 v2 h-6 v-1 h-1 z m1,-2 h1 v-1 h-1 z m1,-1 h1 v-1 h-1 z m1,-1 h1 v-2 h-3 v1 h2 z m-4,0 h2 v-1 h-2 z m0,-1 v-2 h-1 v2 z m0,-2 h1 v-1 h-1 z m1,-1 h1 v-1 h-1 z m1,-1 h1 v-1 h-1 z m0,-1 v-1 h3 v-1 h-4 v2 z m3,0 h3 v-1 h-3 z m3,0 h1 v1 h-1 z m1,1 v6 h1 v-6 z m-3,2 v1 h-1 v-1 z"
 }));
 
-app.appendChild(createGroup({ "transform": "translate(10, 10)" }, [
+const frames = [];
+frames.push(createGroup({ "transform": "translate(0, 0)" }, [
   {
     "fill": "#39314B",
     "d": "M3,1 V2 H5 V1 Z M11,1 V2 H13 V1 Z M3,2 V3 H4 V2 Z M5,2 V3 H6 V2 Z M10,2 V3 H11 V2 Z M12,2 V3 H13 V2 Z M3,3 V4 H4 V3 Z M6,3 V4 H10 V3 Z M12,3 V4 H13 V3 Z M2,4 V5 H3 V4 Z M5,4 V5 H6 V4 Z M10,4 V5 H11 V4 Z M13,4 V5 H14 V4 Z M2,5 V6 H3 V5 Z M7,5 V6 H9 V5 Z M13,5 V6 H14 V5 Z M0,7 V8 H2 V7 Z M3,7 V8 H4 V7 Z M5,7 V8 H6 V7 Z M10,7 V8 H11 V7 Z M12,7 V8 H13 V7 Z M14,7 V8 H16 V7 Z M3,8 V9 H4 V8 Z M12,8 V9 H13 V8 Z M6,9 V10 H7 V9 Z M9,9 V10 H10 V9 Z M7,10 V11 H9 V10 Z M1,11 V12 H2 V11 Z M14,11 V12 H15 V11 Z M6,14 V15 H7 V14 Z M9,14 V15 H10 V14 Z M4,16 V17 H5 V16 Z"
@@ -63,7 +64,7 @@ app.appendChild(createGroup({ "transform": "translate(10, 10)" }, [
   }
 ]));
 
-app.appendChild(createGroup({ "transform": "translate(10, 30)" }, [
+frames.push(createGroup({ "transform": "translate(0, 0)" }, [
   {
     "fill": "#39314B",
     "d": "M3,0 V1 H5 V0 Z M11,0 V1 H13 V0 Z M3,1 V2 H4 V1 Z M5,1 V2 H6 V1 Z M10,1 V2 H11 V1 Z M12,1 V2 H13 V1 Z M3,2 V3 H4 V2 Z M6,2 V3 H10 V2 Z M12,2 V3 H13 V2 Z M2,3 V4 H3 V3 Z M5,3 V4 H6 V3 Z M10,3 V4 H11 V3 Z M13,3 V4 H14 V3 Z M2,4 V5 H3 V4 Z M7,4 V5 H9 V4 Z M13,4 V5 H14 V4 Z M0,6 V7 H2 V6 Z M3,6 V7 H4 V6 Z M5,6 V7 H6 V6 Z M10,6 V7 H11 V6 Z M12,6 V7 H13 V6 Z M14,6 V7 H16 V6 Z M3,7 V8 H4 V7 Z M12,7 V8 H13 V7 Z M6,8 V9 H7 V8 Z M9,8 V9 H10 V8 Z M7,9 V10 H9 V9 Z M1,10 V11 H2 V10 Z M14,10 V11 H15 V10 Z M6,13 V14 H7 V13 Z M9,13 V14 H10 V13 Z M5,15 V16 H7 V15 Z M9,15 V16 H11 V15 Z"
@@ -110,7 +111,7 @@ app.appendChild(createGroup({ "transform": "translate(10, 30)" }, [
   }
 ]));
 
-app.appendChild(createGroup({ "transform": "translate(10, 50)" }, [
+frames.push(createGroup({ "transform": "translate(0, 0)" }, [
   {
     "fill": "#39314B",
     "d": "M3,1 V2 H5 V1 Z M11,1 V2 H13 V1 Z M3,2 V3 H4 V2 Z M5,2 V3 H6 V2 Z M10,2 V3 H11 V2 Z M12,2 V3 H13 V2 Z M3,3 V4 H4 V3 Z M6,3 V4 H10 V3 Z M12,3 V4 H13 V3 Z M2,4 V5 H3 V4 Z M5,4 V5 H6 V4 Z M10,4 V5 H11 V4 Z M13,4 V5 H14 V4 Z M2,5 V6 H3 V5 Z M7,5 V6 H9 V5 Z M13,5 V6 H14 V5 Z M0,7 V8 H2 V7 Z M3,7 V8 H4 V7 Z M5,7 V8 H6 V7 Z M10,7 V8 H11 V7 Z M12,7 V8 H13 V7 Z M14,7 V8 H16 V7 Z M3,8 V9 H4 V8 Z M12,8 V9 H13 V8 Z M6,9 V10 H7 V9 Z M9,9 V10 H10 V9 Z M7,10 V11 H9 V10 Z M1,11 V12 H2 V11 Z M14,11 V12 H15 V11 Z M6,14 V15 H7 V14 Z M9,14 V15 H10 V14 Z M11,16 V17 H12 V16 Z"
@@ -160,3 +161,27 @@ app.appendChild(createGroup({ "transform": "translate(10, 50)" }, [
     "d": "M8,18 V19 H11 V18 Z"
   }
 ]));
+
+const enemy = createGroup({ "transform": "translate(10, 50)" });
+let frame = frames[0];
+app.appendChild(frame);
+
+let startTime;
+function moveChar(timestamp) {
+  if (!startTime) {
+    startTime = timestamp;
+    console.log(startTime);
+  }
+  let index = parseInt((timestamp - startTime) / 200 % 4);
+  if (index > 2) {
+    index = 1;
+  }
+
+  frame.remove();
+  frame = frames[index];
+  app.appendChild(frame);
+
+  requestAnimationFrame(moveChar);
+}
+
+requestAnimationFrame(moveChar);
