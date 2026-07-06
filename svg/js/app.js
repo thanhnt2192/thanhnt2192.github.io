@@ -162,9 +162,10 @@ frames.push(createGroup({ "transform": "translate(0, 0)" }, [
   }
 ]));
 
-const enemy = createGroup({ "transform": "translate(10, 50)" });
+const enemy = createGroup({ "transform": "translate(0, 0)" });
 let frame = frames[0];
-app.appendChild(frame);
+enemy.appendChild(frame);
+app.appendChild(enemy);
 
 let startTime;
 function moveChar(timestamp) {
@@ -179,7 +180,10 @@ function moveChar(timestamp) {
 
   frame.remove();
   frame = frames[index];
-  app.appendChild(frame);
+  enemy.appendChild(frame);
+
+  let x = parseInt((timestamp - startTime) / 40 % 50);
+  enemy.setAttribute("transform", "translate(" + x + ", 0)");
 
   requestAnimationFrame(moveChar);
 }
