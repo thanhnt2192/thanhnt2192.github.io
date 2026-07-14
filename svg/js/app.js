@@ -1,5 +1,10 @@
 const app = document.getElementById("app");
 
+app.appendChild(createPath({
+  "fill": "#000000",
+  "d": "M50,0 " + font["B"]
+}));
+
 app.appendChild(createGroup({}, [
   {
     "fill": "red",
