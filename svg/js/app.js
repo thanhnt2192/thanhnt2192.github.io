@@ -1,10 +1,5 @@
 const app = document.getElementById("app");
 
-app.appendChild(createPath({
-  "fill": "#000000",
-  "d": "M50,0 " + font["B"]
-}));
-
 app.appendChild(createGroup({}, [
   {
     "fill": "red",
@@ -194,3 +189,18 @@ function moveChar(timestamp) {
 }
 
 requestAnimationFrame(moveChar);
+
+app.appendChild(createGroup({}, [
+  {
+    "fill": "yellow",
+    "d": "M0,0 V30 H200 V0 Z",
+  },
+  {
+    "fill": "#000000",
+    "d": "M44,1 " + font["A"]
+  },
+  {
+    "fill": "#000000",
+    "d": "M50,1 " + font["W"]
+  }
+]));
