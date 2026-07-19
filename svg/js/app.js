@@ -197,10 +197,10 @@ app.appendChild(createGroup({}, [
   },
   {
     "fill": "#000000",
-    "d": "M44,1 " + font["s"]
+    "d": "M44,1 " + font["b"]
   },
   {
     "fill": "#000000",
-    "d": "M50,1 " + font["S"]
+    "d": "M50,1 " + font["d"]
   }
 ]));
