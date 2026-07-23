@@ -1,6 +1,7 @@
 const CACHE_NAME = "v1";
 
 self.addEventListener("install", (event) => {
+  console.log("Service Worker: install");
   event.waitUntil(
     caches
       .open(CACHE_NAME)
@@ -15,6 +16,7 @@ self.addEventListener("install", (event) => {
 });
 
 self.addEventListener("activate", (event) => {
+  console.log("Service Worker: activate");
   const cacheAllowlist = [CACHE_NAME];
   event.waitUntil(
     caches.keys().then((cacheNames) => {
@@ -50,6 +52,7 @@ self.addEventListener("fetch", (event) => {
       }
 
       // If we didn't find a match in the cache, use the network.
+      console.log("Fetching:", event.request.url);
       return fetch(event.request)
         .then((response) => {
           if (response.ok) {
