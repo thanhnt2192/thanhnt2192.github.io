@@ -64,6 +64,8 @@ const font = {
   ",": "m+1,+12 v-1 h-1 v-2 h+2 v+3 z h-1 v+1 h+1 z",
   "'": "m0,0 h+1 v+2 h-1 z",
   "\"": "m0,0 h+1 v+2 h-1 z m+2,0 h+1 v+2 h-1 z",
+  "?": "m0,+1 v+3 h+1 v-2 h+1 v-1 h+1 v+1 h+1 v+3 h+1 v-4 h-1 v-1 h-3 v+1 z m+3,+5 h+1 v-1 h-1 z h-1 v+2 h+1 z m0,+3 h-1 v+2 h+1 z",
+  "!": "m0,0 v+8 h+1 v-3 h+1 v-5 z m0,+9 h+1 v+2 h-1 z",
 
   "A2": "m0,11 v-8 h1 v3 h3 v-3 h1 v8 h-1 v-4 h-3 v4 z m1,-8 v-2 h1 v2 z m1,-2 v-1 h1 v1 z m1,0 v2 h1 v-2 z",
   "a2": "m1,4 h-1 v1 h1 z v-1 h2 v1 z m0,6 h-1 v-3 h1 z h1 v1 h-1 z m1,0 h1 v1 h1 v-7 h-1 v2 h-2 v1 h2 v2 h-1 z",

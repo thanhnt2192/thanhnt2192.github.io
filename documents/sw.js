@@ -7,6 +7,7 @@ self.addEventListener("install", (event) => {
       .open(CACHE_NAME)
       .then((cache) =>
         cache.addAll([
+          "/documents/app.js",
           "/documents/blaze-union-guide.html",
           "/documents/blaze-union-translation.html",
           "/documents/ogre-battle-64.html"
