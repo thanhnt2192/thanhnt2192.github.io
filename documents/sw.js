@@ -56,7 +56,7 @@ self.addEventListener("fetch", (event) => {
       return fetch(event.request)
         .then((response) => {
           const responseClone = response.clone();
-          if (response.ok) {
+          if (responseClone.ok) {
             // update the entry in the cache
             caches.open(CACHE_NAME).then((cache) => {
               cache.put(event.request, responseClone);
