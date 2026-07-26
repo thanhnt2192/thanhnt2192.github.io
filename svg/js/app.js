@@ -237,16 +237,23 @@ function moveChar(timestamp) {
   if (currentTime == 0) {
     console.log("Start time = " + timestamp);
   }
-  let y = 400;
   while (!(currentTime + 20 > timestamp)) {
-    currentTime += 20;
+    currentTime += 10;
     for (const playerAttack of playerAttacks) {
-      y -= 1;
-      playerAttack.setAttribute("transform", "translate(10, " + y + ")");
+      playerAttack.y -= 1;
+      playerAttack.element.setAttribute("transform", "translate(" + playerAttack.x + ", " + playerAttack.y + ")");
     }
   }
   if (playerAttacks.length == 0) {
+    const x = 10;
+    const y = 400;
+    const newElement = createGroup({ "transform": "translate(" + x + ", " + y + ")" });
+    newElement.appendChild(projectiles[0][0]);
+    app.appendChild(newElement);
     playerAttacks.push({
+      x: 10,
+      y: 400,
+      element: newElement
     });
   }
 
