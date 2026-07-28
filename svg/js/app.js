@@ -47,7 +47,7 @@ punch.push(createGroup({}, [
 ]));
 punch.push(createGroup({}, [
   {
-    "fill": "#",
+    "fill": "#3003D9",
     "d": "M10,8 V9 H12 V8 Z M20,8 V9 H22 V8 Z M9,9 V10 H10 V9 Z M12,9 V10 H13 V9 Z M19,9 V10 H20 V9 Z M22,9 V10 H23 V9 Z M8,10 V11 H9 V10 Z M12,10 V11 H13 V10 Z M19,10 V11 H20 V10 Z M22,10 V11 H23 V10 Z M8,11 V12 H9 V11 Z M13,11 V12 H14 V11 Z M19,11 V12 H20 V11 Z M22,11 V12 H23 V11 Z M8,12 V13 H9 V12 Z M14,12 V13 H15 V12 Z M18,12 V13 H19 V12 Z M22,12 V13 H23 V12 Z M9,13 V14 H10 V13 Z M15,13 V14 H18 V13 Z M21,13 V14 H22 V13 Z M10,14 V15 H11 V14 Z M16,14 V15 H18 V14 Z M20,14 V15 H21 V14 Z M11,15 V16 H12 V15 Z M18,15 V16 H20 V15 Z M12,16 V17 H16 V16 Z M19,16 V17 H20 V16 Z M11,17 V18 H12 V17 Z M13,17 V18 H18 V17 Z M20,17 V18 H21 V17 Z M10,18 V19 H11 V18 Z M12,18 V19 H13 V18 Z M18,18 V19 H20 V18 Z M21,18 V19 H22 V18 Z M10,19 V20 H12 V19 Z M20,19 V20 H22 V19 Z M9,20 V21 H11 V20 Z M20,20 V21 H21 V20 Z M22,20 V21 H23 V20 Z M9,21 V22 H11 V21 Z M21,21 V22 H23 V21 Z M9,22 V23 H11 V22 Z M21,22 V23 H23 V22 Z M9,23 V24 H10 V23 Z M9,24 V25 H10 V24 Z M22,24 V25 H23 V24 Z M9,25 V26 H10 V25 Z M22,25 V26 H23 V25 Z M10,26 V27 H11 V26 Z M21,26 V27 H22 V26 Z M11,27 V28 H12 V27 Z M20,27 V28 H21 V27 Z"
   },
   {
@@ -57,7 +57,7 @@ punch.push(createGroup({}, [
 ]));
 projectiles.push(punch);
 
-const playerAttacks = [];
+let playerAttacks = [];
 
 const frames = [];
 frames.push(createGroup({ "transform": "translate(0, 0)" }, [
@@ -238,21 +238,51 @@ function moveChar(timestamp) {
     console.log("Start time = " + timestamp);
   }
   while (!(currentTime + 20 > timestamp)) {
-    currentTime += 10;
+    currentTime += 5;
     for (const playerAttack of playerAttacks) {
-      playerAttack.y -= 1;
-      playerAttack.element.setAttribute("transform", "translate(" + playerAttack.x + ", " + playerAttack.y + ")");
+      if (playerAttack.yt < 2) {
+        playerAttack.yt++;
+      } else {
+        if (playerAttack.y > 10) {
+          playerAttack.y -= 1;
+          playerAttack.element.setAttribute("transform", "translate(" + playerAttack.x + ", " + playerAttack.y + ")");
+          playerAttack.yt = 0;
+        } else {
+          playerAttack.element.remove();
+          playerAttack.show = false;
+        }
+      }
+      if (playerAttack.ft < 40) {
+        playerAttack.ft++;
+      } else {
+        playerAttack.fi = (playerAttack.fi + 1) % 4;
+        playerAttack.f.remove();
+        playerAttack.f = projectiles[0][playerAttack.fi].cloneNode(true);
+        playerAttack.element.appendChild(playerAttack.f);
+        playerAttack.ft = 0;
+      }
     }
   }
+
+  playerAttacks = playerAttacks.filter(playerAttack => playerAttack.show);
+
   if (playerAttacks.length == 0) {
     const x = 10;
     const y = 400;
     const newElement = createGroup({ "transform": "translate(" + x + ", " + y + ")" });
-    newElement.appendChild(projectiles[0][0]);
+    const fi = 0;
+    const f = projectiles[0][fi].cloneNode(true);
+    newElement.appendChild(f);
     app.appendChild(newElement);
     playerAttacks.push({
-      x: 10,
-      y: 400,
+      x: x,
+      y: y,
+      f: f,
+      fi: fi,
+      ft: 0,
+      xt: 0,
+      yt: 0,
+      show: true,
       element: newElement
     });
   }
