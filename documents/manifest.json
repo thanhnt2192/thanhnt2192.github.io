@@ -1,0 +1,11 @@
+{
+  "name": "Phoenix Wright 3 Guide",
+  "short_name": "Phoenix Wright 3",
+  "scope": "/documents/",
+  "start_url": "/documents/index.html",
+  "display": "standalone",
+  "orientation": "landscape",
+  "theme_color": "black",
+  "background_color": "white"
+}
+
