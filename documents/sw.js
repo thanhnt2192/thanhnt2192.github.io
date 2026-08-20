@@ -9,6 +9,7 @@ self.addEventListener("install", (event) => {
         cache.addAll([
           "/documents/app.js",
           "/documents/images/phoenix-wright-3.jpg",
+          "/documents/phoenix-wright-1-guide.html",
           "/documents/phoenix-wright-3-guide.html",
           "/documents/hotel-dusk-guide.html",
           "/documents/blaze-union-guide.html",
