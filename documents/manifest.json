@@ -1,6 +1,6 @@
 {
-  "name": "Phoenix Wright 3 Guide",
-  "short_name": "Phoenix Wright 3",
+  "name": "Game Guides",
+  "short_name": "Game Guides",
   "scope": "/documents/",
   "start_url": "/documents/index.html",
   "display": "standalone",
