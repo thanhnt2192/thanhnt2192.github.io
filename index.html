@@ -4,10 +4,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Demo</title>
   <style>
+    canvas {
+      border: 1px solid black;
+      image-rendering: pixelated;
+    }
   </style>
 </head>
 <body>
   <script>
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = 320;
+    canvas.height = 240;
+    document.body.appendChild(canvas);
   </script>
 </body>
 </html>
