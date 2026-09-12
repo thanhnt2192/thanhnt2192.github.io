@@ -17,6 +17,19 @@
     canvas.width = 320;
     canvas.height = 240;
     document.body.appendChild(canvas);
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height, { colorSpace: 'srgb', pixelFormat: 'rgba-unorm8' });
+    console.log(imageData);
+    function putScreenData({ data, width, height }, x, y) {
+      const screenData = imageData.data;
+      for (let i = 0; i < data.length; i++) {
+        const dy = Math.floor(i / (width * 4)) + y;
+        const dx = Math.floor(i / 4) % width + x;
+        if (dx < 0 || dx >= canvas.width || dy < 0 || dy >= canvas.height) {
+          continue;
+        }
+        screenData[dy * canvas.width * 4 + dx * 4 + (i % 4)] = data[i];
+      }
+    }
   </script>
 </body>
 </html>
