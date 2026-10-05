@@ -35,6 +35,25 @@
         ctx.restore();
       }
 
+      function mapColor(imageData, dw, dh) {
+        const colorMap = {};
+        for (let i = 0; i < imageData.data.length; i += 4) {
+          const a = imageData.data[i + 3];
+          if (a > 0) {
+            const r = imageData.data[i + 0];
+            const g = imageData.data[i + 1];
+            const b = imageData.data[i + 2];
+            const color = ("0" + r.toString(16)).slice(-2) + ("0" + g.toString(16)).slice(-2) + ("0" + b.toString(16)).slice(-2);
+            if (colorMap[color] === undefined) {
+              colorMap[color] = new Array(dw * dh).fill(0);
+            }
+            colorMap[color][Math.floor(i / 4)] = 1;
+          }
+        }
+        const resultDiv = document.getElementById("colormap");
+        resultDiv.value = JSON.stringify(colorMap);
+      }
+
       function loadImage() {
         var img = document.getElementById('output');
         var rows = parseInt(document.getElementById("rows").value);
@@ -51,6 +70,8 @@
         var ctx = tileCanvas.getContext("2d");
         ctx.clearRect(0, 0, dw, dh);
         drawTile(ctx, img, x, y, tileCanvas.width, tileCanvas.height, 0, 0, h, v);
+        
+        mapColor(ctx.getImageData(0, 0, dw, dh), dw, dh);
 
         var isTransparent = true;
         var mapValue = "";
@@ -175,5 +196,8 @@
       <textarea id="hex" readonly></textarea>
     </div>
     <div><button onclick="copyHex()">Copy</button></div>
+    <div>
+      <textarea id="colormap" readonly></textarea>
+    </div>
   </body>
 </html>

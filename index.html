@@ -23,6 +23,26 @@
         refresh: function () {
           this.context.putImageData(this.image, 0, 0);
         },
+        putDataRaw: function ({ data, width, height }, { x, y }) {
+          for (const c in data) {
+            const r = parseInt(c.slice(0, 2), 16);
+            const g = parseInt(c.slice(2, 4), 16);
+            const b = parseInt(c.slice(4, 6), 16);
+            for (let i = 0; i < data[c].length; i++) {
+              if (data[c][i] === 0) {
+                continue;
+              }
+              const dy = Math.floor(i / width) + y;
+              const dx = i % width + x;
+              if (dx >= 0 && dx < this.canvas.width && dy >= 0 && dy < this.canvas.height) {
+                this.image.data[dy * this.canvas.width * 4 + dx * 4 + 0] = r;
+                this.image.data[dy * this.canvas.width * 4 + dx * 4 + 1] = g;
+                this.image.data[dy * this.canvas.width * 4 + dx * 4 + 2] = b;
+                this.image.data[dy * this.canvas.width * 4 + dx * 4 + 3] = 255;
+              }
+            }
+          }
+        },
         putData: function ({ data, width, height }, { x, y }) {
           for (let i = 0; i < data.length; i++) {
             const dy = Math.floor(i / (width * 4)) + y;
@@ -33,6 +53,28 @@
             this.image.data[dy * this.canvas.width * 4 + dx * 4 + (i % 4)] = data[i];
           }
         }
+      },
+      loadImage: function({ width, height, data }) {
+        const arr = new Uint8ClampedArray(width * height * 4).fill(0);
+        for (const c in data) {
+          const r = parseInt(c.slice(0, 2), 16);
+          const g = parseInt(c.slice(2, 4), 16);
+          const b = parseInt(c.slice(4, 6), 16);
+          for (let i = 0; i < data[c].length; i++) {
+            if (data[c][i] === 0) {
+              continue;
+            }
+            arr[i * 4 + 0] = r;
+            arr[i * 4 + 1] = g;
+            arr[i * 4 + 2] = b;
+            arr[i * 4 + 3] = 255;
+          }
+        }
+        return {
+          width,
+          height,
+          data: arr
+        };
       },
       launch: function () {
         this.screen.initialize();
