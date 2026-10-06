@@ -55,6 +55,7 @@
         }
       },
       loadImage: function({ width, height, data }) {
+        // TODO: save index of image
         const arr = new Uint8ClampedArray(width * height * 4).fill(0);
         for (const c in data) {
           const r = parseInt(c.slice(0, 2), 16);
@@ -90,8 +91,8 @@
     window.addEventListener('load', (event) => {
       window.app.launch();
       window.requestAnimationFrame(function animate(timestamp) {
-        window.app.render(timestamp);
-        window.requestAnimationFrame(animate);
+        this.app.render(timestamp);
+        this.requestAnimationFrame(animate);
       });
     });
   </script>
