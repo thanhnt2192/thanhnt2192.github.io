@@ -43,19 +43,25 @@
             }
           }
         },
-        putData: function ({ data, width, height }, { x, y }) {
+        putData: function ({ data, width, height }, { x, y, w, h }) {
           for (let i = 0; i < data.length; i++) {
             const dy = Math.floor(i / (width * 4)) + y;
             const dx = Math.floor(i / 4) % width + x;
             if (dx < 0 || dx >= this.canvas.width || dy < 0 || dy >= this.canvas.height) {
               continue;
             }
-            this.image.data[dy * this.canvas.width * 4 + dx * 4 + (i % 4)] = data[i];
+            if (dx >= 0 && dx < this.canvas.width && dy >= 0 && dy < this.canvas.height) {
+              if ((typeof w === 'undefined' || dx < (x + w)) && (typeof h === 'undefined' || dy < (y + h))) {
+                this.image.data[dy * this.canvas.width * 4 + dx * 4 + (i % 4)] = data[i];
+              }
+            }
           }
         }
       },
-      loadImage: function({ width, height, data }) {
-        // TODO: save index of image
+      index: {},
+      images: [],
+      scripts: [],
+      loadImage: function(index, { width, height, data }) {
         const arr = new Uint8ClampedArray(width * height * 4).fill(0);
         for (const c in data) {
           const r = parseInt(c.slice(0, 2), 16);
@@ -71,18 +77,21 @@
             arr[i * 4 + 3] = 255;
           }
         }
-        return {
+        if (!!index) {
+          this.index[index] = this.images.length;
+        }
+        this.images.push({
           width,
           height,
           data: arr
-        };
+        });
       },
       launch: function () {
         this.screen.initialize();
       },
       render: function (timestamp) {
         // TODO: do something
-        this.screen.putData(this.font["A"], { x: 0, y: 0 });
+        this.screen.putData(this.images[this.index["A"]], { x: 0, y: 0 });
         // console.log('render', this);
         this.screen.refresh();
       }
