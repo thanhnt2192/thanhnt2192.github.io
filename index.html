@@ -61,6 +61,7 @@
       index: {},
       images: [],
       scripts: [],
+      mainScript: 0,
       loadImage: function(index, { width, height, data }) {
         const arr = new Uint8ClampedArray(width * height * 4).fill(0);
         for (const c in data) {
@@ -86,10 +87,17 @@
           data: arr
         });
       },
+      loadScript: function (index, s) {
+        if (!!index) {
+          this.index[index] = this.scripts.length;
+        }
+        this.scripts.push(s.bind(this));
+      },
       launch: function () {
         this.screen.initialize();
       },
       render: function (timestamp) {
+        this.scripts[this.mainScript](timestamp);
         // TODO: do something
         this.screen.putData(this.images[this.index["A"]], { x: 0, y: 0 });
         // console.log('render', this);
