@@ -1,4 +1,4 @@
-const app = document.getElementById("app");
+//const app = document.getElementById("app");
 
 function createPath(attributes) {
   const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
