@@ -61,6 +61,32 @@
       index: {},
       images: [],
       scripts: [],
+      data: {
+        list: [],
+        load: function (i) {
+          return this.list[i];
+        }
+      },
+      script: {
+        list: [],
+        main: () => {},
+        activate: function (i) {
+          this.main = this.list[i];
+        },
+        run: function (i) {
+          const f = this.list[i];
+          f();
+        }
+      },
+      memory: {
+        list: [],
+        read: function (i) {
+          return this.list[i];
+        },
+        write: function (i, value) {
+          this.list[i] = value;
+        }
+      },
       mainScript: 0,
       loadImage: function(index, { width, height, data }) {
         const arr = new Uint8ClampedArray(width * height * 4).fill(0);
@@ -95,10 +121,30 @@
       },
       launch: function () {
         this.screen.initialize();
+        this.data.define = (index, o) => {
+          if (!!index) {
+            this.index[index] = this.data.list.length;
+          }
+          this.data.list.push(o);
+        };
+        this.script.define = (index, f) => {
+          if (!!index) {
+            this.index[index] = this.script.list.length;
+          }
+          this.script.list.push(f);
+        };
+        this.memory.define = (index, quantity, value) => {
+          if (!!index) {
+            this.index[index] = this.memory.list.length;
+          }
+          for (let count = 0; count < quantity; count++) {
+            this.memory.list.push(value);
+          }
+        };
       },
       render: function (timestamp) {
-        this.scripts[this.mainScript](timestamp);
         // TODO: do something
+        this.script.main();
         this.screen.putData(this.images[this.index["A"]], { x: 0, y: 0 });
         // console.log('render', this);
         this.screen.refresh();
