@@ -1,5 +1,5 @@
 window.app.memory.define("timestamp", 1, 0);
-window.app.memory.define("fpt_updated_at", 1, 0);
+window.app.memory.define("fps_updated_at", 1, 0);
 
 console.log('test');
 window.app.script.define("main", function () {
