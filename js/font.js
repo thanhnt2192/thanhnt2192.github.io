@@ -1,9 +1,9 @@
 console.log('load font');
-window.app.loadImage("A", {
+window.app.data.define("A", {
   "width": 4,
   "height": 12,
   "data": {
-    "000000": [
+    "#000000": [
       0, 0, 0, 0,
       0, 0, 1, 0,
       0, 1, 0, 1,
@@ -20,11 +20,32 @@ window.app.loadImage("A", {
   }
 });
 
-window.app.loadImage("0", {
+window.app.data.define(" ", {
   "width": 4,
   "height": 12,
   "data": {
-    "000000": [
+    "#ffffff": [
+      1, 1, 1, 1,
+      1, 1, 1, 1,
+      1, 1, 1, 1,
+      1, 1, 1, 1,
+      1, 1, 1, 1,
+      1, 1, 1, 1,
+      1, 1, 1, 1,
+      1, 1, 1, 1,
+      1, 1, 1, 1,
+      1, 1, 1, 1,
+      1, 1, 1, 1,
+      1, 1, 1, 1
+    ]
+  }
+});
+
+window.app.data.define("0", {
+  "width": 4,
+  "height": 12,
+  "data": {
+    "#000000": [
       0, 0, 0, 0,
       0, 1, 1, 0,
       1, 0, 0, 1,
@@ -41,11 +62,11 @@ window.app.loadImage("0", {
   }
 });
 
-window.app.loadImage("1", {
+window.app.data.define("1", {
   "width": 4,
   "height": 12,
   "data": {
-    "000000": [
+    "#000000": [
       0, 0, 0, 0,
       0, 0, 1, 0,
       0, 1, 1, 0,
@@ -62,11 +83,11 @@ window.app.loadImage("1", {
   }
 });
 
-window.app.loadImage("2", {
+window.app.data.define("2", {
   "width": 4,
   "height": 12,
   "data": {
-    "000000": [
+    "#000000": [
       0, 0, 0, 0,
       0, 1, 1, 0,
       1, 0, 0, 1,
@@ -83,11 +104,11 @@ window.app.loadImage("2", {
   }
 });
 
-window.app.loadImage("3", {
+window.app.data.define("3", {
   "width": 4,
   "height": 12,
   "data": {
-    "000000": [
+    "#000000": [
       0, 0, 0, 0,
       0, 1, 1, 0,
       1, 0, 0, 1,
@@ -104,11 +125,11 @@ window.app.loadImage("3", {
   }
 });
 
-window.app.loadImage("4", {
+window.app.data.define("4", {
   "width": 4,
   "height": 12,
   "data": {
-    "000000": [
+    "#000000": [
       0, 0, 0, 0,
       0, 0, 1, 0,
       0, 1, 1, 0,
@@ -125,11 +146,11 @@ window.app.loadImage("4", {
   }
 });
 
-window.app.loadImage("5", {
+window.app.data.define("5", {
   "width": 4,
   "height": 12,
   "data": {
-    "000000": [
+    "#000000": [
       0, 0, 0, 0,
       1, 1, 1, 1,
       1, 0, 0, 0,
@@ -146,11 +167,11 @@ window.app.loadImage("5", {
   }
 });
 
-window.app.loadImage("6", {
+window.app.data.define("6", {
   "width": 4,
   "height": 12,
   "data": {
-    "000000": [
+    "#000000": [
       0, 0, 0, 0,
       0, 1, 1, 0,
       1, 0, 0, 1,
@@ -167,11 +188,11 @@ window.app.loadImage("6", {
   }
 });
 
-window.app.loadImage("7", {
+window.app.data.define("7", {
   "width": 4,
   "height": 12,
   "data": {
-    "000000": [
+    "#000000": [
       0, 0, 0, 0,
       1, 1, 1, 1,
       0, 0, 0, 1,
@@ -188,11 +209,11 @@ window.app.loadImage("7", {
   }
 });
 
-window.app.loadImage("8", {
+window.app.data.define("8", {
   "width": 4,
   "height": 12,
   "data": {
-    "000000": [
+    "#000000": [
       0, 0, 0, 0,
       0, 1, 1, 0,
       1, 0, 0, 1,
@@ -209,11 +230,11 @@ window.app.loadImage("8", {
   }
 });
 
-window.app.loadImage("9", {
+window.app.data.define("9", {
   "width": 4,
   "height": 12,
   "data": {
-    "000000": [
+    "#000000": [
       0, 0, 0, 0,
       0, 1, 1, 0,
       1, 0, 0, 1,

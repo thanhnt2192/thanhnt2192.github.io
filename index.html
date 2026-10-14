@@ -23,11 +23,12 @@
         refresh: function () {
           this.context.putImageData(this.image, 0, 0);
         },
-        putDataRaw: function ({ data, width, height }, { x, y }) {
+        put: function ({ data, width, height }, { x, y }) {
           for (const c in data) {
-            const r = parseInt(c.slice(0, 2), 16);
-            const g = parseInt(c.slice(2, 4), 16);
-            const b = parseInt(c.slice(4, 6), 16);
+            const color = c.replace(/^#/, "");
+            const r = parseInt(color.slice(0, 2), 16);
+            const g = parseInt(color.slice(2, 4), 16);
+            const b = parseInt(color.slice(4, 6), 16);
             for (let i = 0; i < data[c].length; i++) {
               if (data[c][i] === 0) {
                 continue;
@@ -59,37 +60,16 @@
         }
       },
       index: {},
-      register: function (name, i) {
-        this.index[name] = i;
-      },
       images: [],
       scripts: [],
       data: {
         list: [],
-        register: (name, i) => {
-          window.app.index[name] = i;
-        },
-        define: function (index, o) {
-          if (!!index) {
-            this.register(index, this.list.length);
-          }
-          this.list.push(o);
-        },
         load: function (i) {
           return this.list[i];
         }
       },
       script: {
         list: [],
-        register: (name, i) => {
-          window.app.index[name] = i;
-        },
-        define: function (index, f) {
-          if (!!index) {
-            this.register(index, this.list.length);
-          }
-          this.list.push(f);
-        },
         main: () => {},
         activate: function (i) {
           this.main = this.list[i];
@@ -101,17 +81,6 @@
       },
       memory: {
         list: [],
-        register: (name, i) => {
-          window.app.index[name] = i;
-        },
-        define: function (index, quantity, value) {
-          if (!!index) {
-            this.register(index, this.list.length);
-          }
-          for (let count = 0; count < quantity; count++) {
-            this.list.push(value);
-          }
-        },
         read: function (i) {
           return this.list[i];
         },
@@ -119,7 +88,6 @@
           this.list[i] = value;
         }
       },
-      mainScript: 0,
       loadImage: function(index, { width, height, data }) {
         const arr = new Uint8ClampedArray(width * height * 4).fill(0);
         for (const c in data) {
@@ -151,7 +119,7 @@
         }
         this.scripts.push(s.bind(this));
       },
-      initialize: function () {
+      load: function () {
         this.data.define = (index, o) => {
           if (!!index) {
             this.index[index] = this.data.list.length;
@@ -180,13 +148,13 @@
         // TODO: do something
         this.timestamp = timestamp;
         this.script.main();
-        this.screen.putData(this.images[this.index["A"]], { x: 0, y: 0 });
+        // this.screen.putData(this.images[this.index["A"]], { x: 0, y: 0 });
         // console.log('render', this);
         this.screen.refresh();
       }
     };
 
-    window.app.initialize();
+    window.app.load();
 
     window.addEventListener('load', (event) => {
       window.app.launch();
