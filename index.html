@@ -70,7 +70,9 @@
       },
       script: {
         list: [],
-        main: () => {},
+        main: function () {
+          this.activate(0);
+        },
         activate: function (i) {
           this.main = this.list[i];
         },
@@ -87,6 +89,15 @@
         write: function (i, value) {
           this.list[i] = value;
         }
+      },
+      mul: (a, b) => {
+        return a * b;
+      },
+      div: (a, b) => {
+        return Math.trunc(a / b);
+      },
+      mod: (a, b) => {
+        return a % b;
       },
       loadImage: function(index, { width, height, data }) {
         const arr = new Uint8ClampedArray(width * height * 4).fill(0);
@@ -146,7 +157,7 @@
       },
       render: function (timestamp) {
         // TODO: do something
-        this.timestamp = timestamp;
+        this.timestamp = Math.trunc(timestamp);
         this.script.main();
         // this.screen.putData(this.images[this.index["A"]], { x: 0, y: 0 });
         // console.log('render', this);
