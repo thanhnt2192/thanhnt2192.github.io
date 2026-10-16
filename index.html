@@ -81,6 +81,26 @@
           f();
         }
       },
+      text: {
+        font: {
+          list: []
+        },
+        sequence: {
+          list: []
+        }
+        print: function (fi, si) {
+          const f = this.font.list[fi];
+          const s = this.sequence.list[si];
+          let lineWidth = 0;
+          let lineHeight = 0;
+          for (const c of s) {
+            lineWidth += f[c].width;
+            if (lineHeight < f[c].height) {
+              lineHeight = f[c].height;
+            }
+          }
+        }
+      },
       memory: {
         list: [],
         read: function (i) {
