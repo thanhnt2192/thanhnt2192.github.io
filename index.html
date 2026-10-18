@@ -65,7 +65,7 @@
       data: {
         list: [],
         load: function (i) {
-          return this.list[i];
+          return window.structuredClone(this.list[i]);
         }
       },
       script: {
@@ -87,7 +87,7 @@
         },
         sequence: {
           list: []
-        }
+        },
         print: function (fi, si) {
           const f = this.font.list[fi];
           const s = this.sequence.list[si];
