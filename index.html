@@ -23,6 +23,10 @@
         refresh: function () {
           this.context.putImageData(this.image, 0, 0);
         },
+        image: {
+          list: [],
+          buffer: null
+        },
         put: function ({ data, width, height }, { x, y }) {
           for (const c in data) {
             const color = c.replace(/^#/, "");
