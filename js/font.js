@@ -1,4 +1,41 @@
 console.log('load font');
+
+window.app.image.define('player', {
+  "palette": [
+    { "r": 255, "g": 0, "b": 255 }
+  ],
+  "bitmap": [
+    [
+      [0, 0, 0, 0],
+      [0, 1, 1, 0]
+    ]
+  ]
+});
+
+window.app.text.font.define('font1', {
+  "palette": [
+    { "r": 0, "g": 0, "b": 0 },
+  ],
+  "bitmap": {
+    "0": [
+      [
+        [0, 0, 0, 0],
+        [0, 1, 1, 0],
+        [1, 0, 0, 1],
+        [1, 0, 0, 1],
+        [1, 0, 1, 1],
+        [1, 0, 1, 1],
+        [1, 1, 0, 1],
+        [1, 1, 0, 1],
+        [1, 0, 0, 1],
+        [1, 0, 0, 1],
+        [1, 0, 0, 1],
+        [0, 1, 1, 0]
+      ]
+    ]
+  }
+});
+
 window.app.data.define("A", {
   "width": 4,
   "height": 12,
