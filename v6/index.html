@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo</title>
+  <style>
+    canvas {
+      border: 1px solid black;
+      image-rendering: pixelated;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="screen" width="320" height="240"></canvas>
+  <script>
+    window.app = {
+      screen: {
+        canvas: window.document.getElementById("screen"),
+        initialize: function () {
+          this.context = this.canvas.getContext('2d');
+          this.image = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height, { colorSpace: 'srgb', pixelFormat: 'rgba-unorm8' });
+        },
+        refresh: function () {
+          this.context.putImageData(this.image, 0, 0);
+        },
+        image: {
+          list: [],
+          buffer: null
+        },
+        put: function ({ data, width, height }, { x, y }) {
+          for (const c in data) {
+            const color = c.replace(/^#/, "");
+            const r = parseInt(color.slice(0, 2), 16);
+            const g = parseInt(color.slice(2, 4), 16);
+            const b = parseInt(color.slice(4, 6), 16);
+            for (let i = 0; i < data[c].length; i++) {
+              if (data[c][i] === 0) {
+                continue;
+              }
+              const dy = Math.floor(i / width) + y;
+              const dx = i % width + x;
+              if (dx >= 0 && dx < this.canvas.width && dy >= 0 && dy < this.canvas.height) {
+                this.image.data[dy * this.canvas.width * 4 + dx * 4 + 0] = r;
+                this.image.data[dy * this.canvas.width * 4 + dx * 4 + 1] = g;
+                this.image.data[dy * this.canvas.width * 4 + dx * 4 + 2] = b;
+                this.image.data[dy * this.canvas.width * 4 + dx * 4 + 3] = 255;
+              }
+            }
+          }
+        },
+        putData: function ({ data, width, height }, { x, y, w, h }) {
+          for (let i = 0; i < data.length; i++) {
+            const dy = Math.floor(i / (width * 4)) + y;
+            const dx = Math.floor(i / 4) % width + x;
+            if (dx < 0 || dx >= this.canvas.width || dy < 0 || dy >= this.canvas.height) {
+              continue;
+            }
+            if (dx >= 0 && dx < this.canvas.width && dy >= 0 && dy < this.canvas.height) {
+              if ((typeof w === 'undefined' || dx < (x + w)) && (typeof h === 'undefined' || dy < (y + h))) {
+                this.image.data[dy * this.canvas.width * 4 + dx * 4 + (i % 4)] = data[i];
+              }
+            }
+          }
+        }
+      },
+      index: {},
+      images: [],
+      scripts: [],
+      data: {
+        list: [],
+        load: function (i) {
+          return window.structuredClone(this.list[i]);
+        }
+      },
+      script: {
+        list: [],
+        main: function () {
+          this.activate(0);
+        },
+        activate: function (i) {
+          this.main = this.list[i];
+        },
+        run: function (i) {
+          const f = this.list[i];
+          f();
+        }
+      },
+      text: {
+        font: {
+          list: []
+        },
+        sequence: {
+          list: []
+        },
+        print: function (fi, si) {
+          const f = this.font.list[fi];
+          const s = this.sequence.list[si];
+          let lineWidth = 0;
+          let lineHeight = 0;
+          for (const c of s) {
+            lineWidth += f[c].width;
+            if (lineHeight < f[c].height) {
+              lineHeight = f[c].height;
+            }
+          }
+        }
+      },
+      memory: {
+        list: [],
+        read: function (i) {
+          return this.list[i];
+        },
+        write: function (i, value) {
+          this.list[i] = value;
+        }
+      },
+      mul: (a, b) => {
+        return a * b;
+      },
+      div: (a, b) => {
+        return Math.trunc(a / b);
+      },
+      mod: (a, b) => {
+        return a % b;
+      },
+      loadImage: function(index, { width, height, data }) {
+        const arr = new Uint8ClampedArray(width * height * 4).fill(0);
+        for (const c in data) {
+          const r = parseInt(c.slice(0, 2), 16);
+          const g = parseInt(c.slice(2, 4), 16);
+          const b = parseInt(c.slice(4, 6), 16);
+          for (let i = 0; i < data[c].length; i++) {
+            if (data[c][i] === 0) {
+              continue;
+            }
+            arr[i * 4 + 0] = r;
+            arr[i * 4 + 1] = g;
+            arr[i * 4 + 2] = b;
+            arr[i * 4 + 3] = 255;
+          }
+        }
+        if (!!index) {
+          this.index[index] = this.images.length;
+        }
+        this.images.push({
+          width,
+          height,
+          data: arr
+        });
+      },
+      loadScript: function (index, s) {
+        if (!!index) {
+          this.index[index] = this.scripts.length;
+        }
+        this.scripts.push(s.bind(this));
+      },
+      load: function () {
+        this.data.define = (index, o) => {
+          if (!!index) {
+            this.index[index] = this.data.list.length;
+          }
+          this.data.list.push(o);
+        };
+        this.script.define = (index, f) => {
+          if (!!index) {
+            this.index[index] = this.script.list.length;
+          }
+          this.script.list.push(f.bind(this));
+        };
+        this.memory.define = (index, quantity, value) => {
+          if (!!index) {
+            this.index[index] = this.memory.list.length;
+          }
+          for (let count = 0; count < quantity; count++) {
+            this.memory.list.push(value);
+          }
+        };
+      },
+      launch: function () {
+        this.screen.initialize();
+      },
+      render: function (timestamp) {
+        // TODO: do something
+        this.timestamp = Math.trunc(timestamp);
+        this.script.main();
+        // this.screen.putData(this.images[this.index["A"]], { x: 0, y: 0 });
+        // console.log('render', this);
+        this.screen.refresh();
+      }
+    };
+
+    window.app.load();
+
+    window.addEventListener('load', (event) => {
+      window.app.launch();
+      window.requestAnimationFrame(function animate(timestamp) {
+        this.app.render(timestamp);
+        this.requestAnimationFrame(animate);
+      });
+    });
+  </script>
+  <script src="./js/font.js"></script>
+  <script src="./js/main.js"></script>
+</body>
+</html>
