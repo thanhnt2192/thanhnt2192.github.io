@@ -20,8 +20,28 @@
           this.context = this.canvas.getContext('2d');
           this.image = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height, { colorSpace: 'srgb', pixelFormat: 'rgba-unorm8' });
         },
-        data: [],
+        sprite: {
+          list: []
+        },
         refresh: function () {
+          for (let i = 0; i < this.sprite.list.length; i++) {
+            const { palette, bitmap, x, y, width, height } = this.sprite.list[i];
+            for (let color = 0; color < palette.length; color++) {
+              for (let row = 0; row < bitmap[color].length && row < height; row++) {
+                for (let column = 0; column < bitmap[color][row].length && column < width; column++) {
+                  if (bitmap[color][row][column] === 0) {
+                    continue;
+                  }
+                  const dy = row + y;
+                  const dx = column + x;
+                  this.image.data[dy * this.canvas.width * 4 + dx * 4 + 0] = palette[color]["r"];
+                  this.image.data[dy * this.canvas.width * 4 + dx * 4 + 1] = palette[color]["g"];
+                  this.image.data[dy * this.canvas.width * 4 + dx * 4 + 2] = palette[color]["b"];
+                  this.image.data[dy * this.canvas.width * 4 + dx * 4 + 3] = 255;
+                }
+              }
+            }
+          }
           this.context.putImageData(this.image, 0, 0);
         },
         put: function ({ data, width, height }, { x, y }) {
@@ -63,6 +83,9 @@
       index: {},
       images: [],
       scripts: [],
+      image: {
+        list: []
+      },
       data: {
         list: [],
         load: function (i) {
@@ -151,7 +174,34 @@
         }
         this.scripts.push(s.bind(this));
       },
+      clone: window.structuredClone,
       load: function () {
+        this.screen.sprite.define = (index) => {
+          if (!!index) {
+            this.index[index] = this.screen.sprite.list.length;
+          }
+          this.screen.sprite.list.push({
+            palette: [],
+            bitmap: [],
+            x: 0,
+            y: 0,
+            width: 0,
+            height: 0
+          });
+        };
+        this.image.define = (index, o) => {
+          if (!!index) {
+            this.index[index] = this.image.list.length;
+          }
+          this.image.list.push(o);
+        };
+        this.image.load = (screenDataIndex, imageIndex) => {
+          this.screen.sprite.list[screenDataIndex] = this.clone(this.image.list[imageIndex]);
+          this.screen.sprite.list[screenDataIndex].x = 0;
+          this.screen.sprite.list[screenDataIndex].y = 0;
+          this.screen.sprite.list[screenDataIndex].width = 0;
+          this.screen.sprite.list[screenDataIndex].height = 0;
+        };
         this.data.define = (index, o) => {
           if (!!index) {
             this.index[index] = this.data.list.length;
