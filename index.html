@@ -20,12 +20,12 @@
           this.context = this.canvas.getContext('2d');
           this.image = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height, { colorSpace: 'srgb', pixelFormat: 'rgba-unorm8' });
         },
-        sprite: {
+        drawable: {
           list: []
         },
         refresh: function () {
-          for (let i = 0; i < this.sprite.list.length; i++) {
-            const { palette, bitmap, x, y, width, height } = this.sprite.list[i];
+          for (let i = 0; i < this.drawable.list.length; i++) {
+            const { palette, bitmap, x, y, width, height } = this.drawable.list[i];
             for (let color = 0; color < palette.length; color++) {
               for (let row = 0; row < bitmap[color].length && row < height; row++) {
                 for (let column = 0; column < bitmap[color][row].length && column < width; column++) {
@@ -43,54 +43,11 @@
             }
           }
           this.context.putImageData(this.image, 0, 0);
-        },
-        put: function ({ data, width, height }, { x, y }) {
-          for (const c in data) {
-            const color = c.replace(/^#/, "");
-            const r = parseInt(color.slice(0, 2), 16);
-            const g = parseInt(color.slice(2, 4), 16);
-            const b = parseInt(color.slice(4, 6), 16);
-            for (let i = 0; i < data[c].length; i++) {
-              if (data[c][i] === 0) {
-                continue;
-              }
-              const dy = Math.floor(i / width) + y;
-              const dx = i % width + x;
-              if (dx >= 0 && dx < this.canvas.width && dy >= 0 && dy < this.canvas.height) {
-                this.image.data[dy * this.canvas.width * 4 + dx * 4 + 0] = r;
-                this.image.data[dy * this.canvas.width * 4 + dx * 4 + 1] = g;
-                this.image.data[dy * this.canvas.width * 4 + dx * 4 + 2] = b;
-                this.image.data[dy * this.canvas.width * 4 + dx * 4 + 3] = 255;
-              }
-            }
-          }
-        },
-        putData: function ({ data, width, height }, { x, y, w, h }) {
-          for (let i = 0; i < data.length; i++) {
-            const dy = Math.floor(i / (width * 4)) + y;
-            const dx = Math.floor(i / 4) % width + x;
-            if (dx < 0 || dx >= this.canvas.width || dy < 0 || dy >= this.canvas.height) {
-              continue;
-            }
-            if (dx >= 0 && dx < this.canvas.width && dy >= 0 && dy < this.canvas.height) {
-              if ((typeof w === 'undefined' || dx < (x + w)) && (typeof h === 'undefined' || dy < (y + h))) {
-                this.image.data[dy * this.canvas.width * 4 + dx * 4 + (i % 4)] = data[i];
-              }
-            }
-          }
         }
       },
       index: {},
-      images: [],
-      scripts: [],
       image: {
         list: []
-      },
-      data: {
-        list: [],
-        load: function (i) {
-          return window.structuredClone(this.list[i]);
-        }
       },
       script: {
         list: [],
@@ -143,44 +100,13 @@
       mod: (a, b) => {
         return a % b;
       },
-      loadImage: function(index, { width, height, data }) {
-        const arr = new Uint8ClampedArray(width * height * 4).fill(0);
-        for (const c in data) {
-          const r = parseInt(c.slice(0, 2), 16);
-          const g = parseInt(c.slice(2, 4), 16);
-          const b = parseInt(c.slice(4, 6), 16);
-          for (let i = 0; i < data[c].length; i++) {
-            if (data[c][i] === 0) {
-              continue;
-            }
-            arr[i * 4 + 0] = r;
-            arr[i * 4 + 1] = g;
-            arr[i * 4 + 2] = b;
-            arr[i * 4 + 3] = 255;
-          }
-        }
-        if (!!index) {
-          this.index[index] = this.images.length;
-        }
-        this.images.push({
-          width,
-          height,
-          data: arr
-        });
-      },
-      loadScript: function (index, s) {
-        if (!!index) {
-          this.index[index] = this.scripts.length;
-        }
-        this.scripts.push(s.bind(this));
-      },
-      clone: window.structuredClone,
+      clone: (value) => window.structuredClone(value),
       load: function () {
-        this.screen.sprite.define = (index) => {
+        this.screen.drawable.define = (index) => {
           if (!!index) {
-            this.index[index] = this.screen.sprite.list.length;
+            this.index[index] = this.screen.drawable.list.length;
           }
-          this.screen.sprite.list.push({
+          this.screen.drawable.list.push({
             palette: [],
             bitmap: [],
             x: 0,
@@ -196,17 +122,8 @@
           this.image.list.push(o);
         };
         this.image.load = (screenDataIndex, imageIndex) => {
-          this.screen.sprite.list[screenDataIndex] = this.clone(this.image.list[imageIndex]);
-          this.screen.sprite.list[screenDataIndex].x = 0;
-          this.screen.sprite.list[screenDataIndex].y = 0;
-          this.screen.sprite.list[screenDataIndex].width = 0;
-          this.screen.sprite.list[screenDataIndex].height = 0;
-        };
-        this.data.define = (index, o) => {
-          if (!!index) {
-            this.index[index] = this.data.list.length;
-          }
-          this.data.list.push(o);
+          this.screen.drawable.list[screenDataIndex]["palette"] = this.clone(this.image.list[imageIndex]["palette"]);
+          this.screen.drawable.list[screenDataIndex]["bitmap"] = this.clone(this.image.list[imageIndex]["bitmap"]);
         };
         this.script.define = (index, f) => {
           if (!!index) {
@@ -230,8 +147,6 @@
         // TODO: do something
         this.timestamp = Math.trunc(timestamp);
         this.script.main();
-        // this.screen.putData(this.images[this.index["A"]], { x: 0, y: 0 });
-        // console.log('render', this);
         this.screen.refresh();
       }
     };
