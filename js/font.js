@@ -1,5 +1,14 @@
 console.log('load font');
 
+window.app.image.define('atb', [
+  [
+    [0, 0, 0, 0],
+    [0, 1, 1, 2]
+  ],
+  { "r": 255, "g": 0, "b": 255 },
+  { "r": 255, "g": 0, "b": 0 }
+]);
+
 window.app.image.define('player', {
   "palette": [
     { "r": 255, "g": 0, "b": 255 }
