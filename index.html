@@ -121,9 +121,9 @@
           }
           this.image.list.push(o);
         };
-        this.image.load = (screenDataIndex, imageIndex) => {
-          this.screen.drawable.list[screenDataIndex]["palette"] = this.clone(this.image.list[imageIndex]["palette"]);
-          this.screen.drawable.list[screenDataIndex]["bitmap"] = this.clone(this.image.list[imageIndex]["bitmap"]);
+        this.image.load = (imageIndex, screenDrawableIndex, x, y) => {
+          this.screen.drawable.list[screenDrawableIndex]["palette"] = this.clone(this.image.list[imageIndex]["palette"]);
+          this.screen.drawable.list[screenDrawableIndex]["bitmap"] = this.clone(this.image.list[imageIndex]["bitmap"]);
         };
         this.script.define = (index, f) => {
           if (!!index) {
