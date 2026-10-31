@@ -122,8 +122,47 @@
           this.image.list.push(o);
         };
         this.image.load = (imageIndex, screenDrawableIndex, x, y) => {
-          this.screen.drawable.list[screenDrawableIndex]["palette"] = this.clone(this.image.list[imageIndex]["palette"]);
-          this.screen.drawable.list[screenDrawableIndex]["bitmap"] = this.clone(this.image.list[imageIndex]["bitmap"]);
+          const d = this.screen.drawable.list[screenDrawableIndex];
+
+          const palette = {};
+          for (let color = 1; color < this.screen.drawable.list[screenDrawableIndex].length; color++) {
+            let key = '#';
+            key += this.screen.drawable.list[screenDrawableIndex][color]["r".toString(16).toUpperCase().padStart(2, "0")];
+            key += this.screen.drawable.list[screenDrawableIndex][color]["g".toString(16).toUpperCase().padStart(2, "0")];
+            key += this.screen.drawable.list[screenDrawableIndex][color]["b".toString(16).toUpperCase().padStart(2, "0")];
+            palette[key] = color;
+          }
+          for (let color = 1; color < this.image.list[imageIndex].length; color++) {
+            let key = '#';
+            key += this.image.list[imageIndex][color]["r".toString(16).toUpperCase().padStart(2, "0")];
+            key += this.image.list[imageIndex][color]["g".toString(16).toUpperCase().padStart(2, "0")];
+            key += this.image.list[imageIndex][color]["b".toString(16).toUpperCase().padStart(2, "0")];
+            if (palette[key] === undefined) {
+              palette[key] = d.length;
+              d.push(this.clone(this.image.list[imageIndex][color]));
+            }
+          }
+
+          for (let row = y; row < this.image.list[imageIndex][0].length; row++) {
+            if (d[0].length > row) {
+              //
+            } else {
+              for (let i = d[0].length - 1; i < row; i++) {
+                d[0].push([]);
+              }
+            }
+
+            for (let column = x; column < this.image.list[imageIndex][0][row].length; column++) {
+              if (d[0][row].length > column) {
+                d[0][row][column] = this.image.list[imageIndex][0][row][column];
+              } else {
+                for (let i = d[0][row].length - 1; i < column; i++) {
+                  d[0][row].push(0);
+                }
+                d[0][row][column] = this.image.list[imageIndex][0][row][column];
+              }
+            }
+          }
         };
         this.script.define = (index, f) => {
           if (!!index) {
