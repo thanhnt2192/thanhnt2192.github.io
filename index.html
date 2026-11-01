@@ -25,20 +25,18 @@
         },
         refresh: function () {
           for (let i = 0; i < this.drawable.list.length; i++) {
-            const { palette, bitmap, x, y, width, height } = this.drawable.list[i];
-            for (let color = 0; color < palette.length; color++) {
-              for (let row = 0; row < bitmap[color].length && row < height; row++) {
-                for (let column = 0; column < bitmap[color][row].length && column < width; column++) {
-                  if (bitmap[color][row][column] === 0) {
-                    continue;
-                  }
-                  const dy = row + y;
-                  const dx = column + x;
-                  this.image.data[dy * this.canvas.width * 4 + dx * 4 + 0] = palette[color]["r"];
-                  this.image.data[dy * this.canvas.width * 4 + dx * 4 + 1] = palette[color]["g"];
-                  this.image.data[dy * this.canvas.width * 4 + dx * 4 + 2] = palette[color]["b"];
-                  this.image.data[dy * this.canvas.width * 4 + dx * 4 + 3] = 255;
+            const { image, x, y, offsetX, offsetY, width, height } = this.drawable.list[i];
+            for (let row = offsetY; row < image[0].length && row < height; row++) {
+              for (let column = offsetX; column < image[0][row].length && column < width; column++) {
+                if (image[0][row][column] === 0) {
+                  continue;
                 }
+                const dy = row + y;
+                const dx = column + x;
+                this.image.data[dy * this.canvas.width * 4 + dx * 4 + 0] = image[image[0][row][column]]["r"];
+                this.image.data[dy * this.canvas.width * 4 + dx * 4 + 1] = image[image[0][row][column]]["g"];
+                this.image.data[dy * this.canvas.width * 4 + dx * 4 + 2] = image[image[0][row][column]]["b"];
+                this.image.data[dy * this.canvas.width * 4 + dx * 4 + 3] = 255;
               }
             }
           }
@@ -107,10 +105,11 @@
             this.index[index] = this.screen.drawable.list.length;
           }
           this.screen.drawable.list.push({
-            palette: [],
-            bitmap: [],
+            image: [[]],
             x: 0,
             y: 0,
+            offsetX: 0,
+            offsetY: 0,
             width: 0,
             height: 0
           });
@@ -122,45 +121,46 @@
           this.image.list.push(o);
         };
         this.image.load = (imageIndex, screenDrawableIndex, x, y) => {
-          const d = this.screen.drawable.list[screenDrawableIndex];
+          const d = this.screen.drawable.list[screenDrawableIndex]["image"];
+          const img = this.image.list[imageIndex];
 
           const palette = {};
-          for (let color = 1; color < this.screen.drawable.list[screenDrawableIndex].length; color++) {
+          for (let color = 1; color < d.length; color++) {
             let key = '#';
-            key += this.screen.drawable.list[screenDrawableIndex][color]["r".toString(16).toUpperCase().padStart(2, "0")];
-            key += this.screen.drawable.list[screenDrawableIndex][color]["g".toString(16).toUpperCase().padStart(2, "0")];
-            key += this.screen.drawable.list[screenDrawableIndex][color]["b".toString(16).toUpperCase().padStart(2, "0")];
+            key += d[color]["r"].toString(16).toUpperCase().padStart(2, "0");
+            key += d[color]["g"].toString(16).toUpperCase().padStart(2, "0");
+            key += d[color]["b"].toString(16).toUpperCase().padStart(2, "0");
             palette[key] = color;
           }
-          for (let color = 1; color < this.image.list[imageIndex].length; color++) {
+          for (let color = 1; color < img.length; color++) {
             let key = '#';
-            key += this.image.list[imageIndex][color]["r".toString(16).toUpperCase().padStart(2, "0")];
-            key += this.image.list[imageIndex][color]["g".toString(16).toUpperCase().padStart(2, "0")];
-            key += this.image.list[imageIndex][color]["b".toString(16).toUpperCase().padStart(2, "0")];
+            key += img[color]["r"].toString(16).toUpperCase().padStart(2, "0");
+            key += img[color]["g"].toString(16).toUpperCase().padStart(2, "0");
+            key += img[color]["b"].toString(16).toUpperCase().padStart(2, "0");
             if (palette[key] === undefined) {
               palette[key] = d.length;
-              d.push(this.clone(this.image.list[imageIndex][color]));
+              d.push(this.clone(img[color]));
             }
           }
 
-          for (let row = y; row < this.image.list[imageIndex][0].length; row++) {
-            if (d[0].length > row) {
+          for (let row = 0; row < img[0].length; row++) {
+            if (d[0].length > row + y) {
               //
             } else {
-              for (let i = d[0].length - 1; i < row; i++) {
+              for (let i = d[0].length; i < row + y + 1; i++) {
                 d[0].push([]);
               }
             }
 
-            for (let column = x; column < this.image.list[imageIndex][0][row].length; column++) {
-              if (d[0][row].length > column) {
-                d[0][row][column] = this.image.list[imageIndex][0][row][column];
+            for (let column = 0; column < img[0][row].length; column++) {
+              if (d[0][row + y].length > column + x) {
+                //
               } else {
-                for (let i = d[0][row].length - 1; i < column; i++) {
-                  d[0][row].push(0);
+                for (let i = d[0][row + y].length; i < column + x + 1; i++) {
+                  d[0][row + y].push(0);
                 }
-                d[0][row][column] = this.image.list[imageIndex][0][row][column];
               }
+              d[0][row + y][column + x] = img[0][row][column];
             }
           }
         };

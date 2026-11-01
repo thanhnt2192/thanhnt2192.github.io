@@ -15,7 +15,11 @@ window.app.script.define("main", function () {
   this.screen.drawable.list[this.index["drawable03"]].width = 4;
   this.screen.drawable.list[this.index["drawable03"]].height = 12;
   this.screen.drawable.list[this.index["drawable03"]].x = 312;
-  this.script.activate(this.index["fps"]);
+  this.script.activate(this.index["test"]);
+});
+
+window.app.script.define("test", function () {
+  this.image.load(this.index["0"], this.index["drawable01"], 0, 0);
 });
 
 window.app.script.define("fps", function () {
