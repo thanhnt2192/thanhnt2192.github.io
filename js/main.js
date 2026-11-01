@@ -6,7 +6,7 @@ window.app.screen.drawable.define("drawable02");
 window.app.screen.drawable.define("drawable03");
 
 window.app.script.define("main", function () {
-  this.screen.drawable.list[this.index["drawable01"]].width = 4;
+  this.screen.drawable.list[this.index["drawable01"]].width = 16;
   this.screen.drawable.list[this.index["drawable01"]].height = 12;
   this.screen.drawable.list[this.index["drawable01"]].x = 300;
   this.screen.drawable.list[this.index["drawable02"]].width = 4;
@@ -20,6 +20,8 @@ window.app.script.define("main", function () {
 
 window.app.script.define("test", function () {
   this.image.load(this.index["0"], this.index["drawable01"], 0, 0);
+  this.image.load(this.index["0"], this.index["drawable01"], 6, 0);
+  this.image.load(this.index["0"], this.index["drawable01"], 12, 0);
 });
 
 window.app.script.define("fps", function () {
