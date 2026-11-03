@@ -14,6 +14,26 @@
   <canvas id="screen" width="320" height="240"></canvas>
   <script>
     window.app = {
+      graphics: [],
+      construct: function (size, index) {
+        for (let i = 0; i < size[0]; i++) {
+          this.memory.push(0);
+        }
+        for (let i = 0; i < size[1]; i++) {
+          this.graphics.push({
+            x: 0,
+            y: 0,
+            column: 0,
+            row: 0,
+            width: 0,
+            height: 0,
+            image: []
+          });
+        }
+        for (let key in indexSet) {
+          this.index[key] = indexSet[key];
+        }
+      },
       screen: {
         canvas: window.document.getElementById("screen"),
         initialize: function () {
