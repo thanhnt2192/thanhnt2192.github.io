@@ -14,13 +14,13 @@
   <canvas id="screen" width="320" height="240"></canvas>
   <script>
     window.app = {
-      graphics: [],
-      construct: function (size, index) {
+      memory: [[], []],
+      construct: function (size, indexSet) {
         for (let i = 0; i < size[0]; i++) {
-          this.memory.push(0);
+          this.memory[0].push(0);
         }
         for (let i = 0; i < size[1]; i++) {
-          this.graphics.push({
+          this.memory[1].push({
             x: 0,
             y: 0,
             column: 0,
@@ -98,15 +98,6 @@
               lineHeight = f[c].height;
             }
           }
-        }
-      },
-      memory: {
-        list: [],
-        read: function (i) {
-          return this.list[i];
-        },
-        write: function (i, value) {
-          this.list[i] = value;
         }
       },
       mul: (a, b) => {
@@ -189,14 +180,6 @@
             this.index[index] = this.script.list.length;
           }
           this.script.list.push(f.bind(this));
-        };
-        this.memory.define = (index, quantity, value) => {
-          if (!!index) {
-            this.index[index] = this.memory.list.length;
-          }
-          for (let count = 0; count < quantity; count++) {
-            this.memory.list.push(value);
-          }
         };
       },
       launch: function () {
