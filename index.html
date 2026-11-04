@@ -41,12 +41,9 @@
           this.context = this.canvas.getContext('2d');
           this.image = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height, { colorSpace: 'srgb', pixelFormat: 'rgba-unorm8' });
         },
-        drawable: {
-          list: []
-        },
-        refresh: function () {
-          for (let i = 0; i < this.drawable.list.length; i++) {
-            const { image, x, y, column, row, width, height } = this.drawable.list[i];
+        refresh: function (drawable) {
+          for (let i = 0; i < drawable.length; i++) {
+            const { image, x, y, column, row, width, height } = drawable[i];
             for (let sy = row; sy < image[0].length && sy < height; sy++) {
               for (let sx = column; sx < image[0][sy].length && sx < width; sx++) {
                 if (image[0][sy][sx] === 0) {
@@ -118,7 +115,7 @@
           this.image.list.push(o);
         };
         this.image.load = (imageIndex, screenDrawableIndex, x, y) => {
-          const d = this.screen.drawable.list[screenDrawableIndex]["image"];
+          const d = this.memory[1][screenDrawableIndex]["image"];
           const img = this.image.list[imageIndex];
 
           const palette = {};
