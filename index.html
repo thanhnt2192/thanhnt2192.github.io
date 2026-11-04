@@ -14,6 +14,7 @@
   <canvas id="screen" width="320" height="240"></canvas>
   <script>
     window.app = {
+      index: {},
       memory: [[], []],
       construct: function (size, indexSet) {
         for (let i = 0; i < size[0]; i++) {
@@ -63,7 +64,6 @@
           this.context.putImageData(this.image, 0, 0);
         }
       },
-      index: {},
       image: {
         list: []
       },
@@ -111,20 +111,6 @@
       },
       clone: (value) => window.structuredClone(value),
       load: function () {
-        this.screen.drawable.define = (index) => {
-          if (!!index) {
-            this.index[index] = this.screen.drawable.list.length;
-          }
-          this.screen.drawable.list.push({
-            image: [[]],
-            x: 0,
-            y: 0,
-            column: 0,
-            row: 0,
-            width: 0,
-            height: 0
-          });
-        };
         this.image.define = (index, o) => {
           if (!!index) {
             this.index[index] = this.image.list.length;
@@ -189,7 +175,7 @@
         // TODO: do something
         this.timestamp = Math.trunc(timestamp);
         this.script.main();
-        this.screen.refresh();
+        this.screen.refresh(this.memory[1]);
       }
     };
 
