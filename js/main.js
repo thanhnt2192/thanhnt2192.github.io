@@ -1,33 +1,20 @@
-window.app.memory.define("timestamp", 1, 0);
-window.app.memory.define("fps_updated_at", 1, 0);
-window.app.memory.define("fps_count", 1, 0);
-window.app.screen.drawable.define("drawable01");
-window.app.screen.drawable.define("drawable02");
-window.app.screen.drawable.define("drawable03");
-
 window.app.script.define("main", function () {
-  this.screen.drawable.list[this.index["drawable01"]].width = 16;
-  this.screen.drawable.list[this.index["drawable01"]].height = 12;
-  this.screen.drawable.list[this.index["drawable01"]].x = 300;
-  this.screen.drawable.list[this.index["drawable02"]].width = 4;
-  this.screen.drawable.list[this.index["drawable02"]].height = 12;
-  this.screen.drawable.list[this.index["drawable02"]].x = 306;
-  this.screen.drawable.list[this.index["drawable03"]].width = 4;
-  this.screen.drawable.list[this.index["drawable03"]].height = 12;
-  this.screen.drawable.list[this.index["drawable03"]].x = 312;
-  this.script.activate(this.index["test"]);
+  this.memory[1][this.index["fps"]].width = 16;
+  this.memory[1][this.index["fps"]].height = 12;
+  this.memory[1][this.index["fps"]].x = 300;
+  this.script.activate(this.index["function_fps"]);
 });
 
 window.app.script.define("test", function () {
-  this.image.load(this.index["0"], this.index["drawable01"], 0, 0);
-  this.image.load(this.index["0"], this.index["drawable01"], 6, 0);
-  this.image.load(this.index["0"], this.index["drawable01"], 12, 0);
+  this.image.load(this.index["0"], this.index["fps"], 0, 0);
+  this.image.load(this.index["0"], this.index["fps"], 6, 0);
+  this.image.load(this.index["0"], this.index["fps"], 12, 0);
 });
 
-window.app.script.define("fps", function () {
-  const fps = this.memory.read(this.index["fps_count"]);
-  this.memory.write(this.index["fps_count"], fps + 1);
-  if ((this.timestamp - this.memory.read(this.index["fps_updated_at"])) > 1000) {
+window.app.script.define("function_fps", function () {
+  const fps = this.memory[0][this.index["fps_count"]];
+  this.memory[0][this.index["fps_count"]] = fps + 1;
+  if ((this.timestamp - this.memory[0][this.index["fps_updated_at"]]) > 1000) {
     const n1 = this.div(fps, 100);
     const n2 = this.div(this.mod(fps, 100), 10);
     const n3 = this.mod(fps, 10);
@@ -40,10 +27,13 @@ window.app.script.define("fps", function () {
     // this.screen.put(this.data.load(this.index["0"] + n1), { x: 300, y: 0 });
     // this.screen.put(this.data.load(this.index["0"] + n2), { x: 306, y: 0 });
     // this.screen.put(this.data.load(this.index["0"] + n3), { x: 312, y: 0 });
-    this.image.load(this.index["drawable01"], this.index["0"] + n1);
-    this.image.load(this.index["drawable02"], this.index["0"] + n2);
-    this.image.load(this.index["drawable03"], this.index["0"] + n3);
-    this.memory.write(this.index["fps_updated_at"], this.timestamp);
-    this.memory.write(this.index["fps_count"], 0);
+    // this.image.load(this.index["fps"], this.index["0"] + n1);
+    // this.image.load(this.index["drawable02"], this.index["0"] + n2);
+    // this.image.load(this.index["drawable03"], this.index["0"] + n3);
+    this.image.load(this.index["0"] + n1, this.index["fps"], 0, 0);
+    this.image.load(this.index["0"] + n2, this.index["fps"], 6, 0);
+    this.image.load(this.index["0"] + n3, this.index["fps"], 12, 0);
+    this.memory[0][this.index["fps_updated_at"]] = this.timestamp;
+    this.memory[0][this.index["fps_count"]] = 0;
   }
 });
