@@ -14,18 +14,15 @@
   <canvas id="screen" width="320" height="240"></canvas>
   <script>
     window.app = {
-      primary: [],
-      secondary: [],
-      main: [],
       graphics: [],
       index: {},
-      memory: [[], []],
-      construct: function (size, indexSet) {
-        for (let i = 0; i < size[0]; i++) {
-          this.memory[0].push(0);
+      memory: [],
+      construct: function (indexSet) {
+        for (let i = 0; i < 20; i++) {
+          this.memory.push(0);
         }
-        for (let i = 0; i < size[1]; i++) {
-          this.memory[1].push({
+        for (let i = 0; i < 21; i++) {
+          this.graphics.push({
             x: 0,
             y: 0,
             column: 0,
@@ -120,7 +117,7 @@
           this.image.list.push(o);
         };
         this.image.load = (imageIndex, screenDrawableIndex, x, y) => {
-          const d = this.memory[1][screenDrawableIndex]["image"];
+          const d = this.graphics[screenDrawableIndex]["image"];
           const img = this.image.list[imageIndex];
 
           const palette = {};
@@ -177,11 +174,11 @@
         // TODO: do something
         this.timestamp = Math.trunc(timestamp);
         this.script.main();
-        this.screen.refresh(this.memory[1]);
+        this.screen.refresh(this.graphics);
       }
     };
 
-    window.app.construct([20, 21], {
+    window.app.construct({
       "fps_updated_at": 0,
       "fps_count": 1,
       "background": 0,
